@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "708558852229",
+    "project_id": "realifs-prototype",
+    "storage_bucket": "realifs-prototype.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708558852229:android:fe80f227e2e63a4df9d9ec",
+        "android_client_info": {
+          "package_name": "com.reactnativeplayground"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708558852229-7c8nr7sb2rcv2i4tkocct3sdqrfdlv0a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUH2s8tzjDoTW5Gs5MRdLtosuOi9411J4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708558852229-7c8nr7sb2rcv2i4tkocct3sdqrfdlv0a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708558852229:android:4592c7a6b490e08ef9d9ec",
+        "android_client_info": {
+          "package_name": "com.realifs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708558852229-7c8nr7sb2rcv2i4tkocct3sdqrfdlv0a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUH2s8tzjDoTW5Gs5MRdLtosuOi9411J4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708558852229-7c8nr7sb2rcv2i4tkocct3sdqrfdlv0a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
