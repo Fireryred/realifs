@@ -1,5 +1,6 @@
 const initialState = {
   userSession: null,
+  userData: null
 };
 
 export default (state = initialState, action) => {
@@ -9,12 +10,14 @@ export default (state = initialState, action) => {
     case 'auth/login':
       return Object.assign({}, state, {
         userSession: action.payload.userSession,
+        userData: action.payload.userData
       });
   
 
     case 'auth/logout':
       return Object.assign({}, state, {
-        userSession: action.payload.userSession,
+        userSession: null,
+        userData: null
       });
 
 

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import  AuthAction from '../../redux/actions/AuthAction';
 import {Button, Text, TextInput, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
@@ -8,78 +7,64 @@ class LoginScreen extends Component {
 
   constructor() {
     // This executes first. It is best to set declare state properties here.
+    // Read more: https://reactjs.org/docs/react-component.html#the-component-lifecycle
+    
     super();
 
     this.state = {
-      inputEmail: 'realifs_johndoe3@gmail.com',
-      inputPassword: 'test123456'
+      donorCredentials: {
+        inputEmail: 'realifs_johndoe3@gmail.com',
+        inputPassword: 'test123456'
+      },
+
+      riderCredentials: {
+        inputEmail: 'realifs_rider1@gmail.com',
+        inputPassword: 'test123456'
+      }
+      
     }
   }
   
   componentDidMount() {
-    // After component loads, this executes. It is best for fetching data asyncronously
-    
-    auth().onAuthStateChanged( (user) => {
-      if(user) {
-        // Signed in / Currently logged in
-
-        let user_exploded = JSON.stringify(user, null, 2);
-        console.log('onAuthStateChanged: Logged in as', user_exploded);
-
-        this.props.dispatch(AuthAction.getActionLogin(user));
-      } else {
-        // Signed out / Not logged in
-
-        console.log('onAuthStateChanged: No user logged in')
-        this.props.dispatch(AuthAction.getActionLogin(null));
-      }
-    })
+    // This executes only once, after render loads.
   }
 
   componentDidUpdate() {
-    // After state and props change, this executes. It is best for updating other values in the state.
+    // Everytime state and props change, this executes.
   }
 
   render() {
-    // This executes before componentDidMount and componenDidUpdate. 
+    // This executes before componentDidMount and componenDidUpdate. Best not to put logic here
 
-    const {email, password} = this.props;
     return (
-      
       <View>
-        <Text>Login</Text>
+        <Text>Login Screen</Text>
 
-        {this.props.userSession ?
-          (
             <View>
-              <Text>Welcome {this.props.userSession.email}</Text>
-              <Button 
-                title="Logout"
-                onPress={this.handleLogout}
-              />
-            </View>
-          ) : 
-          (
-            <View>
-              <TextInput placeholder="Email" value={this.state.inputEmail} />
+              <TextInput placeholder="Email" value={this.state.donorCredentials.inputEmail} />
               <TextInput
                 placeholder="Password"
                 secureTextEntry={true}
-                value={this.state.inputPassword}
+                value={this.state.donorCredentials.inputPassword}
               />
               <Button
-                title="Login"
-                onPress={() => this.handleLogin(this.state.inputEmail, this.state.inputPassword)}
+                title="Login as Donor"
+                onPress={() => this.handleLogin(this.state.donorCredentials.inputEmail, this.state.donorCredentials.inputPassword)}
+              />
+
+
+              <TextInput placeholder="Email" value={this.state.riderCredentials.inputEmail} />
+              <TextInput
+                placeholder="Password"
+                secureTextEntry={true}
+                value={this.state.riderCredentials.inputPassword}
               />
               <Button
-                title="Show AuthReducer's state"
-                onPress={() => this.handleShow()}
+                title="Login as Rider"
+                onPress={() => this.handleLogin(this.state.riderCredentials.inputEmail, this.state.riderCredentials.inputPassword)}
               />
             </View>
-          )
-        }
       </View>
-
     );
   }
 
@@ -98,31 +83,18 @@ class LoginScreen extends Component {
     }
   }
 
-  async handleLogout() {
-    try {
-      auth().signOut();
-
-    } catch(error) {
-      console.log(error);
-    }
-  }
-
-  handleShow() {
-    const {userSession} = this.props;
-    let exploded = JSON.stringify(userSession, null, 2);
-    alert(exploded);
-  }
-
 }
 
 const mapStateToProps = state => {
   return {
-    userSession: state.authReducer.userSession
+    auth: state.authReducer
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: dispatch
   };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

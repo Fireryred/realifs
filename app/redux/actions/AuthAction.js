@@ -1,13 +1,20 @@
-function getActionLogin(userSession) {
+function getActionLogin(userSession, userData) {
   return {
     type: 'auth/login',
     payload: {
-      userSession: userSession
+      userSession: userSession,
+      userData: userData,
     },
   }
+};
 
+function getActionLogout() {
+  return {
+    type: 'auth/logout',
+  }
 };
 
 export default {
-  getActionLogin
+  getActionLogin,
+  getActionLogout
 }
