@@ -42,6 +42,7 @@ class MapScreen extends React.Component {
           region={origin}
           showsUserLocation={true}>
           <Marker coordinate={origin}></Marker>
+          <Marker coordinate={destination}></Marker>
           <MapViewDirection
             origin={origin}
             destination={destination}
