@@ -13,8 +13,8 @@ class LoginScreen extends Component {
 
     this.state = {
       donorCredentials: {
-        inputEmail: 'realifs_johndoe3@gmail.com',
-        inputPassword: 'test123456'
+        inputEmail: 'remer.irineo@gmail.com',
+        inputPassword: 'password'
       },
 
       riderCredentials: {
@@ -27,6 +27,7 @@ class LoginScreen extends Component {
   
   componentDidMount() {
     // This executes only once, after render loads.
+    
   }
 
   componentDidUpdate() {
@@ -41,11 +42,30 @@ class LoginScreen extends Component {
         <Text>Login Screen</Text>
 
             <View>
-              <TextInput placeholder="Email" value={this.state.donorCredentials.inputEmail} />
+              <TextInput 
+                placeholder="Email" 
+                value={this.state.donorCredentials.inputEmail} 
+                onChangeText={(text) => { 
+                  this.setState({
+                    donorCredentials: {
+                      ...this.state.donorCredentials,
+                      inputEmail: text
+                    }
+                  })
+                }}
+              />
               <TextInput
                 placeholder="Password"
                 secureTextEntry={true}
                 value={this.state.donorCredentials.inputPassword}
+                onChangeText={(text) => { 
+                  this.setState({
+                    donorCredentials: {
+                      ...this.state.donorCredentials,
+                      inputPassword: text
+                    }
+                  })
+                }}
               />
               <Button
                 title="Login as Donor"
@@ -53,11 +73,30 @@ class LoginScreen extends Component {
               />
 
 
-              <TextInput placeholder="Email" value={this.state.riderCredentials.inputEmail} />
+              <TextInput 
+                placeholder="Email" 
+                value={this.state.riderCredentials.inputEmail} 
+                onChangeText={(text) => { 
+                  this.setState({
+                    riderCredentials: {
+                      ...this.state.riderCredentials,
+                      inputEmail: text
+                    }
+                  })
+                }}
+              />
               <TextInput
                 placeholder="Password"
                 secureTextEntry={true}
                 value={this.state.riderCredentials.inputPassword}
+                onChangeText={(text) => { 
+                  this.setState({
+                    riderCredentials: {
+                      ...this.state.riderCredentials,
+                      inputPassword: text
+                    }
+                  })
+                }}
               />
               <Button
                 title="Login as Rider"

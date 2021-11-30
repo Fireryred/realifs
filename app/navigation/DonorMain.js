@@ -11,6 +11,8 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import Efforts from '../screens/donor/Efforts';
 import Donations from '../screens/donor/Donations';
 
+import MaterialCommunityIcons from 'react-native-vector-icons/FontAwesome5';
+
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
@@ -50,7 +52,11 @@ class DonorTabs extends React.Component {
         return (
             <Tab.Navigator>
                 <Tab.Screen name="Efforts" component={Efforts} />
-                <Tab.Screen name="Donations" component={Donations} />
+                <Tab.Screen name="Donations" component={Donations} options={ {
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name="hand-holding-heart" color={color} size={20} />
+                    )
+                }}/>
             </Tab.Navigator>
         )
     }
