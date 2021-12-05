@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Button, Linking, View} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import MapStyles from '../../styles/MapStyles';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -20,20 +20,32 @@ class MapScreen extends React.Component {
         longitude: 121.00805475813596,
       },
     };
-  }
-  render() {
-    const {origin, destination} = this.state;
     Geolocation.setRNConfiguration();
     Geolocation.getCurrentPosition(
       location => {
-        origin.latitude = location.coords.latitude;
-        origin.longitude = location.coords.longitude;
+        this.setState({
+          origin: {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.0121,
+          },
+        });
         console.log(location);
       },
       error => {
         console.error(error);
       },
     );
+  }
+  render() {
+    const {origin, destination} = this.state;
+
+    const url = `https://www.google.com/maps/dir/?api=1&origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}`;
+    console.log(url);
+    changeMapsApp = () => {
+      Linking.openURL(url);
+    };
     return (
       <View style={MapStyles.container}>
         <MapView
@@ -50,6 +62,7 @@ class MapScreen extends React.Component {
               'AIzaSyDIbDFd-QJ0MicKOvggJ6kmpHaDXMXuOfA'
             }></MapViewDirection>
         </MapView>
+        <Button title="Go to Google Map App" onPress={changeMapsApp} />
       </View>
     );
   }
