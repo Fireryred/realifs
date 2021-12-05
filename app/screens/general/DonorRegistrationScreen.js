@@ -22,7 +22,6 @@ export default class DonorRegistrationScreen extends Component {
             password: 'password',
             confirmPassword: 'password',
             agreeToTerms: null,
-            formValid: false,
             errors: {
                 firstname: {
                     empty: null,
@@ -45,6 +44,9 @@ export default class DonorRegistrationScreen extends Component {
                 confirmPassword: {
                     empty: true,
                     doesNotMatch: true
+                },
+                agreeToTerms: {
+                    disagree: true
                 },
             }
         }
@@ -159,7 +161,7 @@ export default class DonorRegistrationScreen extends Component {
                     <Text>Agree to 
                         <Text style={styles.termsUrl}
                             onPress={() => Linking.openURL('http://google.com')}>
-                            Terms and Conditions
+                            Terms and Conditions & Privacy Policy
                         </Text>
                     </Text>
                     
@@ -177,7 +179,7 @@ export default class DonorRegistrationScreen extends Component {
 
     handleChange() {
         const { errors } = this.state;
-        const {firstname, lastname, email, username, password, confirmPassword} = this.state;
+        const {firstname, lastname, email, username, password, confirmPassword, agreeToTerms} = this.state;
 
         this.setState({
             ...this.state,
@@ -202,6 +204,9 @@ export default class DonorRegistrationScreen extends Component {
                 confirmPassword: {
                     doesNotMatch: confirmPassword !== password
                 },
+                agreeToTerms: {
+                    disagree: !agreeToTerms
+                },
             }
         }, () => {
             console.log(JSON.stringify(this.state, null, 2))
@@ -212,7 +217,6 @@ export default class DonorRegistrationScreen extends Component {
         const {errors, agreeToTerms} = this.state;
         let result = true;
 
-        if(!agreeToTerms) result = false;
 
         for(let i of Object.values(errors)) {
             if(typeof i === 'object') {
@@ -273,6 +277,8 @@ export default class DonorRegistrationScreen extends Component {
                             console.log('error', error)
                      }
                 });
+        } else {
+            Alert.alert('Form invalid','Please fill up all the fields')
         }
     }
 }
