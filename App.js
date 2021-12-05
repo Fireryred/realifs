@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { ActivityIndicator, Text, View, Button, StyleSheet, Alert } from 'react-native';
+import { Platform, ActivityIndicator, Text, View, Button, StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux';
 
 import auth from '@react-native-firebase/auth';
@@ -11,6 +11,7 @@ import WelcomeScreen from './app/screens/general/WelcomeScreen';
 import RiderMain from './app/navigation/RiderMain';
 class App extends React.Component {
     componentDidMount() {
+        console.log(`Running on Android Version: ${Platform.Version}`)
         // console.log(JSON.stringify(this.props.auth.userSession, null, 2))
 
         auth().onAuthStateChanged(async (user) => { 
