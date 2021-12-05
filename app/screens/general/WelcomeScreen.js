@@ -10,6 +10,7 @@ import LoginScreen from './LoginScreen';
 import RegisterScreen from './RegisterScreen';
 import DonorRegistrationScreen from './DonorRegistrationScreen';
 import RiderRegistrationScreen from './RiderRegistrationScreen';
+import CSORegistrationScreen from './CSORegistrationScreen';
 
 // UI Override
 import { TextInput, Button, Text } from 'react-native-paper'
@@ -78,30 +79,6 @@ class WelcomeScreenComponent extends Component {
                     mode="contained"
                     style={ {width: '100%'} }
                 >Register</Button>
-            </View>
-        )
-    }
-}
-
-
-
-class CSORegistrationScreen extends Component {
-    render() {
-        return (
-            <View>
-                <TextInput placeholder="Full Organization Name" value={''} />
-                <TextInput placeholder="Email" value={''} />
-                <TextInput placeholder="Username" value={''} />
-                <TextInput
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    value={''}
-                />
-                <TextInput
-                    placeholder="Confirm Password"
-                    secureTextEntry={true}
-                    value={''}
-                />
             </View>
         )
     }
