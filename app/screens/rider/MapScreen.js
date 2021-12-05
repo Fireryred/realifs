@@ -43,9 +43,6 @@ class MapScreen extends React.Component {
 
     const url = `https://www.google.com/maps/dir/?api=1&origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}`;
     console.log(url);
-    changeMapsApp = () => {
-      Linking.openURL(url);
-    };
     return (
       <View style={MapStyles.container}>
         <MapView
@@ -62,7 +59,10 @@ class MapScreen extends React.Component {
               'AIzaSyDIbDFd-QJ0MicKOvggJ6kmpHaDXMXuOfA'
             }></MapViewDirection>
         </MapView>
-        <Button title="Go to Google Map App" onPress={changeMapsApp} />
+        <Button
+          title="Go to Google Map App"
+          onPress={() => Linking.openURL(url)}
+        />
       </View>
     );
   }
