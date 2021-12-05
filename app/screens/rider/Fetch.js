@@ -13,7 +13,6 @@ export class Fetch extends Component {
     });
   }
   toMaps = () => {
-    alert('button boop');
     this.props.navigation.navigate('Maps');
   };
 
