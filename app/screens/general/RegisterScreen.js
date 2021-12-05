@@ -19,7 +19,7 @@ export default class RegisterScreen extends Component {
                     title="Register as Fetcher"
                     mode="outlined"
                     contentStyle={styles.portalButton}
-                    onPress={() => {this.props.navigation.navigate("LoginScreen")}}
+                    onPress={() => {this.props.navigation.navigate("RiderRegistrationScreen")}}
                 >Register as Fetcher</Button>
                 <Button
                     title="Register as CSO Administrator"

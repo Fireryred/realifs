@@ -9,6 +9,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import LoginScreen from './LoginScreen';
 import RegisterScreen from './RegisterScreen';
 import DonorRegistrationScreen from './DonorRegistrationScreen';
+import RiderRegistrationScreen from './RiderRegistrationScreen';
 
 // UI Override
 import { TextInput, Button, Text } from 'react-native-paper'
@@ -41,6 +42,11 @@ export default class WelcomeScreen extends Component {
                         name="DonorRegistrationScreen"
                         component={DonorRegistrationScreen}
                         options={{ title: 'Register as Donor'}}
+                    ></Stack.Screen>
+                    <Stack.Screen
+                        name="RiderRegistrationScreen"
+                        component={RiderRegistrationScreen}
+                        options={{ title: 'Register as Rider'}}
                     ></Stack.Screen>
                     <Stack.Screen
                         name="CSORegistrationScreen"
