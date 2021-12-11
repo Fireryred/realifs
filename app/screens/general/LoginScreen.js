@@ -109,11 +109,30 @@ class LoginScreen extends Component {
               />
 
 
-              <TextInput placeholder="Email" value={this.state.CSOCredentials.inputEmail} />
+              <TextInput 
+                placeholder="Email" 
+                value={this.state.CSOCredentials.inputEmail} 
+                onChangeText={(text) => { 
+                  this.setState({
+                    CSOCredentials: {
+                      ...this.state.CSOCredentials,
+                      inputEmail: text
+                    }
+                  })
+                }}
+              />
               <TextInput
                 placeholder="Password"
                 secureTextEntry={true}
                 value={this.state.CSOCredentials.inputPassword}
+                onChangeText={(text) => { 
+                  this.setState({
+                    CSOCredentials: {
+                      ...this.state.CSOCredentials,
+                      inputPassword: text
+                    }
+                  })
+                }}
               />
               <Button
                 title="Login as CSO Administrator"

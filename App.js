@@ -7,16 +7,16 @@ import firestore from '@react-native-firebase/firestore';
 
 import AuthAction from './app/redux/actions/AuthAction';
 import DonorMain from './app/navigation/DonorMain';
-import WelcomeScreen from './app/screens/general/WelcomeScreen';
+import WelcomeScreen from './app/screens/general/WelcomeScreen'
 import CSOMain from './app/navigation/CSOMain';
 import RiderMain from './app/navigation/RiderMain';
-import LoginScreen from './app/screens/general/LoginScreen';
+
 class App extends React.Component {
     componentDidMount() {
         console.log(`Running on Android Version: ${Platform.Version}`)
         // console.log(JSON.stringify(this.props.auth.userSession, null, 2))
 
-        auth().onAuthStateChanged(async (user) => { 
+        auth().onAuthStateChanged(async (user) => {
             if (user) {
                 // Signed in / Currently logged i
 
@@ -31,7 +31,7 @@ class App extends React.Component {
                             .collection('users')
                             .doc(user.uid)
                             .get();
-                        let userData = documentSnapshot.data();    
+                        let userData = documentSnapshot.data();
 
                         this.props.dispatch(AuthAction.getActionLogin(user, userData));
                         console.log(`Logged in as: ${userData.account_type}`);
@@ -52,12 +52,8 @@ class App extends React.Component {
 
     render() {
         if (this.props.auth.userSession && this.props.auth.userData?.account_type) {
-            if (this.props.auth.userData.account_type === 'cso') {
-                return (
-                    <DonorMain />
-                )
-            }
-            else if (this.props.auth.userData.account_type === 'donor') {
+
+            if (this.props.auth.userData.account_type === 'donor') {
                 return (
                     <DonorMain />
                 )
@@ -67,33 +63,30 @@ class App extends React.Component {
                     <RiderMain />
                 )
             }
+            else if (this.props.auth.userData.account_type === 'cso') {
+                return (
+                    <CSOMain />
+                )
+            }
 
-  render() {
-    if(this.props.auth.userSession && this.props.auth.userData?.account_type) {
+        }
+        else {
+            return (
+                <WelcomeScreen></WelcomeScreen>
+            )
+        }
 
-      if(this.props.auth.userData.account_type === 'donor') {
-        return (
-          <DonorMain/>
-        )
-      }
-      else if(this.props.auth.userData.account_type === 'rider') {
-        return (
-          <RiderMain/>
-        )
-      }
-      else if(this.props.auth.userData.account_type === 'cso') {
-        return (
-          <CSOMain/>
-        )
-      } 
-      
-    } 
-    else {
-      return (
-        <LoginScreen></LoginScreen>
-      )
     }
 
+    verifyAlert() {
+        Alert.alert(
+            "Verify your email",
+            "Please check the verification link sent to your email",
+            [
+                { text: "OK", onPress: () => { } }
+            ]
+        );
+    }
 }
 
 const mapStateToProps = state => ({
