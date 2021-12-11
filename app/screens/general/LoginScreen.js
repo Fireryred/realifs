@@ -96,6 +96,7 @@ class LoginScreen extends Component {
       // I don't know if the returned credentials can be used for anything
       let credentials = await auth().signInWithEmailAndPassword(email, password);
     } catch(error) {
+      Alert.alert('Login Failed', error.toString())
       console.log(error);
     }
   }
