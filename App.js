@@ -8,7 +8,9 @@ import firestore from '@react-native-firebase/firestore';
 import AuthAction from './app/redux/actions/AuthAction';
 import DonorMain from './app/navigation/DonorMain';
 import WelcomeScreen from './app/screens/general/WelcomeScreen';
+import CSOMain from './app/navigation/CSOMain';
 import RiderMain from './app/navigation/RiderMain';
+import LoginScreen from './app/screens/general/LoginScreen';
 class App extends React.Component {
     componentDidMount() {
         console.log(`Running on Android Version: ${Platform.Version}`)
@@ -66,22 +68,30 @@ class App extends React.Component {
                 )
             }
 
-        }
-        else {
-            return (
-                <WelcomeScreen></WelcomeScreen>
-            )
-        }
-    }
+  render() {
+    if(this.props.auth.userSession && this.props.auth.userData?.account_type) {
 
-    verifyAlert() {
-        Alert.alert(
-            "Verify your email",
-            "Please check the verification link sent to your email",
-            [
-                { text: "OK", onPress: () => { } }
-            ]
-        );
+      if(this.props.auth.userData.account_type === 'donor') {
+        return (
+          <DonorMain/>
+        )
+      }
+      else if(this.props.auth.userData.account_type === 'rider') {
+        return (
+          <RiderMain/>
+        )
+      }
+      else if(this.props.auth.userData.account_type === 'cso') {
+        return (
+          <CSOMain/>
+        )
+      } 
+      
+    } 
+    else {
+      return (
+        <LoginScreen></LoginScreen>
+      )
     }
 
 }

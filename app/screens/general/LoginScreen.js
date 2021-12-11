@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Button, Text, TextInput, View} from 'react-native';
+import {Button, Text, TextInput, View, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 class LoginScreen extends Component {
@@ -14,11 +14,16 @@ class LoginScreen extends Component {
     this.state = {
       donorCredentials: {
         inputEmail: 'remer.irineo@gmail.com',
-        inputPassword: 'password'
+        inputPassword: 'test123456'
       },
 
       riderCredentials: {
-        inputEmail: 'realifs_rider1@gmail.com',
+        inputEmail: '201801360@iacademy.edu.ph',
+        inputPassword: 'test123456'
+      },
+
+      CSOCredentials: {
+        inputEmail: 'realifs.cso1@gmail.com',
         inputPassword: 'test123456'
       }
       
@@ -102,6 +107,18 @@ class LoginScreen extends Component {
                 title="Login as Rider"
                 onPress={() => this.handleLogin(this.state.riderCredentials.inputEmail, this.state.riderCredentials.inputPassword)}
               />
+
+
+              <TextInput placeholder="Email" value={this.state.CSOCredentials.inputEmail} />
+              <TextInput
+                placeholder="Password"
+                secureTextEntry={true}
+                value={this.state.CSOCredentials.inputPassword}
+              />
+              <Button
+                title="Login as CSO Administrator"
+                onPress={() => this.handleLogin(this.state.CSOCredentials.inputEmail, this.state.CSOCredentials.inputPassword)}
+              />
             </View>
       </View>
     );
@@ -118,6 +135,7 @@ class LoginScreen extends Component {
       // I don't know if the returned credentials can be used for anything
       let credentials = await auth().signInWithEmailAndPassword(email, password);
     } catch(error) {
+      Alert.alert('Login Failed', error.toString())
       console.log(error);
     }
   }
