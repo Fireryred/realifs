@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Button, Text, TextInput, View} from 'react-native';
+import {Button, Text, TextInput, View, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 class LoginScreen extends Component {
@@ -19,6 +19,11 @@ class LoginScreen extends Component {
 
       riderCredentials: {
         inputEmail: 'realifs_rider1@gmail.com',
+        inputPassword: 'test123456'
+      },
+
+      CSOCredentials: {
+        inputEmail: 'realifs.cso1@gmail.com',
         inputPassword: 'test123456'
       }
       
@@ -62,6 +67,18 @@ class LoginScreen extends Component {
               <Button
                 title="Login as Rider"
                 onPress={() => this.handleLogin(this.state.riderCredentials.inputEmail, this.state.riderCredentials.inputPassword)}
+              />
+
+
+              <TextInput placeholder="Email" value={this.state.CSOCredentials.inputEmail} />
+              <TextInput
+                placeholder="Password"
+                secureTextEntry={true}
+                value={this.state.CSOCredentials.inputPassword}
+              />
+              <Button
+                title="Login as CSO Administrator"
+                onPress={() => this.handleLogin(this.state.CSOCredentials.inputEmail, this.state.CSOCredentials.inputPassword)}
               />
             </View>
       </View>

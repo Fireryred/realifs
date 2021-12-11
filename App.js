@@ -7,8 +7,9 @@ import firestore from '@react-native-firebase/firestore';
 
 import AuthAction from './app/redux/actions/AuthAction';
 import DonorMain from './app/navigation/DonorMain';
-import LoginScreen from './app/screens/general/LoginScreen';
+import CSOMain from './app/navigation/CSOMain';
 import RiderMain from './app/navigation/RiderMain';
+import LoginScreen from './app/screens/general/LoginScreen';
 class App extends React.Component {
   componentDidMount() {
     // console.log(JSON.stringify(this.props.auth.userSession, null, 2))
@@ -47,12 +48,8 @@ class App extends React.Component {
 
   render() {
     if(this.props.auth.userSession && this.props.auth.userData?.account_type) {
-      if(this.props.auth.userData.account_type === 'cso') {
-        return (
-          <DonorMain/>
-        )
-      } 
-      else if(this.props.auth.userData.account_type === 'donor') {
+
+      if(this.props.auth.userData.account_type === 'donor') {
         return (
           <DonorMain/>
         )
@@ -62,6 +59,11 @@ class App extends React.Component {
           <RiderMain/>
         )
       }
+      else if(this.props.auth.userData.account_type === 'cso') {
+        return (
+          <CSOMain/>
+        )
+      } 
       
     } 
     else {
