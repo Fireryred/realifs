@@ -16,7 +16,7 @@ export default class CSORegistrationScreen extends Component {
         super();
 
         this.state = {
-            organizationName: 'John',
+            organizationName: 'Give Relief PH',
             email: '201801360@iacademy.edu.ph',
             username: 'johndoe',
             password: 'password',
