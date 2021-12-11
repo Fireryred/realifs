@@ -17,8 +17,8 @@ export default class CSORegistrationScreen extends Component {
 
         this.state = {
             organizationName: 'Give Relief PH',
-            email: '201801360@iacademy.edu.ph',
-            username: 'johndoe',
+            email: 'realifs.cso1@gmail.com',
+            username: 'givereliefph',
             password: 'password',
             confirmPassword: 'password',
             SECCertificateExists: null,
@@ -401,7 +401,7 @@ export default class CSORegistrationScreen extends Component {
     }
  
     async handleRegister() {
-        let {organizationName, email, username, password, driversLicenseWebURL } = this.state;
+        let {organizationName, email, username, password, SECCertificateWebURL, PCNCCertificateWebURL } = this.state;
 
         console.log(`ALL VALID ${this.allValid()}`);
 
@@ -416,7 +416,8 @@ export default class CSORegistrationScreen extends Component {
                     organizationName,
                     email,
                     username,
-                    driversLicenseWebURL,
+                    SECCertificateWebURL,
+                    PCNCCertificateWebURL,
                     verifiedByHR: false
                 })
                     .then( () => {console.log('User data creation: success')} )
@@ -437,7 +438,7 @@ export default class CSORegistrationScreen extends Component {
                         Alert.alert('Request failed. Please check your network')
                         break;
                     default:
-                        console.log('error', error)
+                        console.log('error CSORegistrationScreen > handleRegister', error)
                     }
             });
         } else {
