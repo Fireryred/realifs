@@ -13,12 +13,12 @@ class LoginScreen extends Component {
 
     this.state = {
       donorCredentials: {
-        inputEmail: 'realifs_johndoe3@gmail.com',
+        inputEmail: 'remer.irineo@gmail.com',
         inputPassword: 'test123456'
       },
 
       riderCredentials: {
-        inputEmail: 'realifs_rider1@gmail.com',
+        inputEmail: '201801360@iacademy.edu.ph',
         inputPassword: 'test123456'
       },
 
