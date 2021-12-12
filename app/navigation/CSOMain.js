@@ -8,15 +8,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
-import Efforts from '../screens/donor/Efforts';
-import Donations from '../screens/donor/Donations';
-
-import MaterialCommunityIcons from 'react-native-vector-icons/FontAwesome5';
+import Dashboard from '../screens/cso/Dashboard';
+import IncomingDonations from '../screens/cso/IncomingDonations';
 
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
-class DonorMain extends Component {
+class CSOMain extends Component {
 
     render() {
         return (
@@ -26,7 +24,7 @@ class DonorMain extends Component {
                 >
                     <Drawer.Screen
                         name="Home"
-                        component={DonorTabs}
+                        component={CSOTabs}
                     />
 
                 </Drawer.Navigator>  
@@ -47,16 +45,12 @@ class CustomDrawerContent extends React.Component {
     }
 }
 
-class DonorTabs extends React.Component {
+class CSOTabs extends React.Component {
     render() {
         return (
             <Tab.Navigator>
-                <Tab.Screen name="Efforts" component={Efforts} />
-                <Tab.Screen name="Donations" component={Donations} options={ {
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="hand-holding-heart" color={color} size={20} />
-                    )
-                }}/>
+                <Tab.Screen name="Dashboard" component={Dashboard} />
+                <Tab.Screen name="IncomingDonations" component={IncomingDonations} />
             </Tab.Navigator>
         )
     }
@@ -77,4 +71,4 @@ const mapDispatchToProps = dispatch => {
     };
   };
 
-export default connect(undefined, mapDispatchToProps)(DonorMain)
+export default connect(undefined, mapDispatchToProps)(CSOMain)
