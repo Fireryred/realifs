@@ -14,17 +14,17 @@ class LoginScreen extends Component {
     this.state = {
       donorCredentials: {
         inputEmail: 'remer.irineo@gmail.com',
-        inputPassword: 'test123456'
+        inputPassword: 'password'
       },
 
       riderCredentials: {
         inputEmail: '201801360@iacademy.edu.ph',
-        inputPassword: 'test123456'
+        inputPassword: 'password'
       },
 
       CSOCredentials: {
         inputEmail: 'realifs.cso1@gmail.com',
-        inputPassword: 'test123456'
+        inputPassword: 'password'
       }
       
     }
@@ -32,6 +32,7 @@ class LoginScreen extends Component {
   
   componentDidMount() {
     // This executes only once, after render loads.
+    
   }
 
   componentDidUpdate() {
@@ -46,11 +47,30 @@ class LoginScreen extends Component {
         <Text>Login Screen</Text>
 
             <View>
-              <TextInput placeholder="Email" value={this.state.donorCredentials.inputEmail} />
+              <TextInput 
+                placeholder="Email" 
+                value={this.state.donorCredentials.inputEmail} 
+                onChangeText={(text) => { 
+                  this.setState({
+                    donorCredentials: {
+                      ...this.state.donorCredentials,
+                      inputEmail: text
+                    }
+                  })
+                }}
+              />
               <TextInput
                 placeholder="Password"
                 secureTextEntry={true}
                 value={this.state.donorCredentials.inputPassword}
+                onChangeText={(text) => { 
+                  this.setState({
+                    donorCredentials: {
+                      ...this.state.donorCredentials,
+                      inputPassword: text
+                    }
+                  })
+                }}
               />
               <Button
                 title="Login as Donor"
@@ -58,11 +78,30 @@ class LoginScreen extends Component {
               />
 
 
-              <TextInput placeholder="Email" value={this.state.riderCredentials.inputEmail} />
+              <TextInput 
+                placeholder="Email" 
+                value={this.state.riderCredentials.inputEmail} 
+                onChangeText={(text) => { 
+                  this.setState({
+                    riderCredentials: {
+                      ...this.state.riderCredentials,
+                      inputEmail: text
+                    }
+                  })
+                }}
+              />
               <TextInput
                 placeholder="Password"
                 secureTextEntry={true}
                 value={this.state.riderCredentials.inputPassword}
+                onChangeText={(text) => { 
+                  this.setState({
+                    riderCredentials: {
+                      ...this.state.riderCredentials,
+                      inputPassword: text
+                    }
+                  })
+                }}
               />
               <Button
                 title="Login as Rider"
@@ -70,11 +109,30 @@ class LoginScreen extends Component {
               />
 
 
-              <TextInput placeholder="Email" value={this.state.CSOCredentials.inputEmail} />
+              <TextInput 
+                placeholder="Email" 
+                value={this.state.CSOCredentials.inputEmail} 
+                onChangeText={(text) => { 
+                  this.setState({
+                    CSOCredentials: {
+                      ...this.state.CSOCredentials,
+                      inputEmail: text
+                    }
+                  })
+                }}
+              />
               <TextInput
                 placeholder="Password"
                 secureTextEntry={true}
                 value={this.state.CSOCredentials.inputPassword}
+                onChangeText={(text) => { 
+                  this.setState({
+                    CSOCredentials: {
+                      ...this.state.CSOCredentials,
+                      inputPassword: text
+                    }
+                  })
+                }}
               />
               <Button
                 title="Login as CSO Administrator"

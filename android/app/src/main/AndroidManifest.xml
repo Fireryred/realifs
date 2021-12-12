@@ -2,8 +2,9 @@
   package="com.realifs">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <application
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<application 
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
