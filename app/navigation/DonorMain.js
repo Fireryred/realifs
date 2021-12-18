@@ -4,32 +4,46 @@ import { Text, View } from 'react-native'
 import {connect} from 'react-redux';
 import auth from '@react-native-firebase/auth';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Efforts from '../screens/donor/Efforts';
 import Donations from '../screens/donor/Donations';
+import EffortDetails from '../screens/donor/EffortDetails'
+import RequestFetch from '../screens/donor/RequestFetch'
 
-import MaterialCommunityIcons from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { DefaultTheme as PaperDefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
+const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      ...PaperDefaultTheme.colors,
+    },
+};
 
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 class DonorMain extends Component {
 
     render() {
         return (
-            <NavigationContainer>
-                <Drawer.Navigator initialRouteName="Home"
-                drawerContent={(props) => <CustomDrawerContent {...props}></CustomDrawerContent>}
-                >
-                    <Drawer.Screen
-                        name="Home"
-                        component={DonorTabs}
-                    />
-
-                </Drawer.Navigator>  
+            <NavigationContainer theme={MyTheme}>
+                <Stack.Navigator>
+                    <Stack.Screen name="DonorDrawer" component={DonorDrawer} 
+                        options={{headerShown: false}}/>
+                    <Stack.Screen name="EffortDetails" component={EffortDetails} 
+                        options={{headerShown: true}}/>
+                    <Stack.Screen name="RequestFetch" component={RequestFetch} 
+                        options={{headerShown: true}}/>
+                </Stack.Navigator>
             </NavigationContainer>
         )
     }
@@ -51,14 +65,60 @@ class DonorTabs extends React.Component {
     render() {
         return (
             <Tab.Navigator>
-                <Tab.Screen name="Efforts" component={Efforts} />
-                <Tab.Screen name="Donations" component={Donations} options={ {
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="hand-holding-heart" color={color} size={20} />
-                    )
-                }}/>
+                <Tab.Screen 
+                    name="Efforts" 
+                    component={Efforts} 
+                    options={ {
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons  name="map-marker-radius" color={color} size={20} />
+                        )
+                    }}
+                    listeners={{
+                        tabPress: (e) => {
+                            // Prevent default action
+                            // e.preventDefault();
+                            this.props.navigation.setOptions({title: 'Donation Efforts'});
+                        }
+                    }}
+                />
+                <Tab.Screen 
+                    name="Donations" 
+                    component={Donations} 
+                    options={ {
+                        tabBarIcon: ({ color }) => (
+                            <FontAwesome name="hand-holding-heart" color={color} size={20} />
+                        )
+                    }}
+                    listeners={{
+                        tabPress: (e) => {
+                            // Prevent default action
+                            // e.preventDefault();
+                            this.props.navigation.setOptions({title: 'Donations'});
+                        }
+                    }}
+                    />
             </Tab.Navigator>
         )
+    }
+}
+
+
+class DonorDrawer extends React.Component {
+    render() {
+        return (
+            <Drawer.Navigator 
+                initialRouteName="Home"
+                drawerContent={(props) => <CustomDrawerContent {...props}></CustomDrawerContent>}
+                
+            >
+                <Drawer.Screen
+                    name="Home"
+                    component={DonorTabs}
+                    headerShown={false}
+                />
+
+            </Drawer.Navigator> 
+        );
     }
 }
 
