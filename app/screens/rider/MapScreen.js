@@ -41,7 +41,7 @@ class MapScreen extends React.Component {
   render() {
     const {origin, destination} = this.state;
 
-    const url = `https://www.google.com/maps/dir/?api=1&origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}`;
+    const url = `https://www.google.com/maps/dir/?api=1&origin=Your Location&destination=${destination.latitude},${destination.longitude}`;
     console.log(url);
     return (
       <View style={MapStyles.container}>
@@ -55,9 +55,9 @@ class MapScreen extends React.Component {
           <MapViewDirection
             origin={origin}
             destination={destination}
-            apikey={
-              'AIzaSyDIbDFd-QJ0MicKOvggJ6kmpHaDXMXuOfA'
-            }></MapViewDirection>
+            apikey={'AIzaSyDIbDFd-QJ0MicKOvggJ6kmpHaDXMXuOfA'}
+            strokeWidth={4}
+            strokeColor="royalblue"></MapViewDirection>
         </MapView>
         <Button
           title="Go to Google Map App"
