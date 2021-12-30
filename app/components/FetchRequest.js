@@ -5,24 +5,24 @@ class FetchRequest extends React.Component {
     return (
       <View>
         <View>
-          <Text>FETCH REQUEST BY</Text>
+          <Text style={{color: 'black'}}>FETCH REQUEST BY</Text>
           <View>
             <Image></Image>
-            <Text></Text>
-            <Text></Text>
+            <Text style={{color: 'black'}}></Text>
+            <Text style={{color: 'black'}}></Text>
           </View>
           <View>
             <View>
-              <Text>POINT A (PICK-UP)</Text>
-              <Text></Text>
+              <Text style={{color: 'black'}}>POINT A (PICK-UP)</Text>
+              <Text style={{color: 'black'}}></Text>
             </View>
             <View>
-              <Text>POINT B (DROP-OFF)</Text>
-              <Text></Text>
+              <Text style={{color: 'black'}}>POINT B (DROP-OFF)</Text>
+              <Text style={{color: 'black'}}></Text>
             </View>
           </View>
           <View>
-            <Text></Text>
+            <Text style={{color: 'black'}}></Text>
             <Button title="TAKE" onPress={() => this.props.toMaps()} />
           </View>
         </View>
