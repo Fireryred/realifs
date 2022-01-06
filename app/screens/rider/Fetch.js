@@ -1,8 +1,15 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {Button, ScrollView, View} from 'react-native';
 import FetchRequest from '../../components/FetchRequest';
+import firestore from '@react-native-firebase/firestore';
 
 export class Fetch extends Component {
+  constructor() {
+    super();
+    this.state = {
+      requests: {},
+    };
+  }
   componentDidMount() {
     this.props.navigation.getParent().setOptions({title: 'Fetch'});
 
@@ -11,16 +18,31 @@ export class Fetch extends Component {
       // e.preventDefault();
       this.props.navigation.getParent().setOptions({title: 'Fetch'});
     });
+    this.getRequests().catch(error => {
+      console.error();
+    });
   }
+  async getRequests() {
+    const requests = {};
+    const fetchRequest = await firestore().collection('fetch_requests').get();
+    fetchRequest.forEach(doc => {
+      requests[doc.id] = doc.data();
+    });
+    this.setState({requests: {...requests}});
+  }
+
   toMaps = () => {
     this.props.navigation.navigate('Maps');
   };
 
   render() {
+    const {requests} = this.state;
     return (
-      <View>
-        <FetchRequest toMaps={this.toMaps} />
-      </View>
+      <ScrollView>
+        {Object.entries(requests).map((request, key) => (
+          <FetchRequest data={request} key={key} toMaps={this.toMaps} />
+        ))}
+      </ScrollView>
     );
   }
 }
