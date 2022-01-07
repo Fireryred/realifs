@@ -88,7 +88,7 @@ class FetchRequest extends React.Component {
             <Text style={{color: 'black'}}>{`\u20B1${data[1].cost} (${
               Math.floor((data[1].distance / 1000) * 10) / 10
             }KM)`}</Text>
-            <Button title="TAKE" onPress={() => toMaps()} />
+            <Button title="TAKE" onPress={() => toMaps(data, donorData)} />
           </View>
         </View>
       </View>

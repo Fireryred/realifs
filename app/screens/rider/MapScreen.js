@@ -9,59 +9,69 @@ class MapScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      origin: {
-        latitude: 0,
-        longitude: 0,
-        latitudeDelta: 0.015,
-        longitudeDelta: 0.0121,
-      },
-      destination: {
-        latitude: 14.559776337593197,
-        longitude: 121.00805475813596,
-      },
+      location: {},
+      pickup: {},
+      dropoff: {},
     };
+  }
+  componentDidMount() {
+    const {pickup, dropoff} = this.props.route.params.data[1];
     Geolocation.setRNConfiguration();
     Geolocation.getCurrentPosition(
       location => {
+        const {latitude, longitude} = location.coords;
         this.setState({
-          origin: {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
+          location: {
+            latitude: latitude,
+            longitude: longitude,
           },
         });
-        console.log(location);
       },
       error => {
         console.error(error);
       },
     );
+    this.setState({
+      pickup: {
+        latitude: pickup._latitude,
+        longitude: pickup._longitude,
+        latitudeDelta: 0.015,
+        longitudeDelta: 0.0121,
+      },
+      dropoff: {latitude: dropoff._latitude, longitude: dropoff._longitude},
+    });
+    console.log(pickup);
+    console.log(dropoff);
   }
-  render() {
-    const {origin, destination} = this.state;
 
-    const url = `https://www.google.com/maps/dir/?api=1&origin=Your Location&destination=${destination.latitude},${destination.longitude}`;
-    console.log(url);
+  render() {
+    const {location, pickup, dropoff} = this.state;
+    console.log(pickup);
+    console.log(dropoff);
+    const toPickup = `https://www.google.com/maps/dir/?api=1&origin=Your Location&destination=${pickup.latitude},${pickup.longitude}`;
+    const toDropoff = `https://www.google.com/maps/dir/?api=1&origin=${pickup.latitude},${pickup.longitude}&destination=${dropoff.latitude},${dropoff.longitude}`;
     return (
       <View style={MapStyles.container}>
         <MapView
           style={MapStyles.map}
           provider={PROVIDER_GOOGLE}
-          region={origin}
-          showsUserLocation={true}>
-          <Marker coordinate={origin}></Marker>
-          <Marker coordinate={destination}></Marker>
+          region={pickup}>
+          <Marker coordinate={pickup}></Marker>
+          <Marker coordinate={dropoff}></Marker>
           <MapViewDirection
-            origin={origin}
-            destination={destination}
-            apikey={'AIzaSyDIbDFd-QJ0MicKOvggJ6kmpHaDXMXuOfA'}
+            origin={pickup}
+            destination={dropoff}
+            apikey={'AIzaSyDIbDFd-QJ0MicKOvggJ6kmpHaDXMXuOfA'} //hide this
             strokeWidth={4}
             strokeColor="royalblue"></MapViewDirection>
         </MapView>
         <Button
-          title="Go to Google Map App"
-          onPress={() => Linking.openURL(url)}
+          title="Go to CurrentLocation -> Pickup"
+          onPress={() => Linking.openURL(toPickup)}
+        />
+        <Button
+          title="Go to Pickup -> Dropoff"
+          onPress={() => Linking.openURL(toDropoff)}
         />
       </View>
     );

@@ -31,8 +31,11 @@ export class Fetch extends Component {
     this.setState({requests: {...requests}});
   }
 
-  toMaps = () => {
-    this.props.navigation.navigate('Maps');
+  toMaps = (data, donorDetails) => {
+    this.props.navigation.navigate('Maps', {
+      data: data,
+      donorDetails: donorDetails,
+    });
   };
 
   render() {
