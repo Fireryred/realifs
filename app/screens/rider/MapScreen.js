@@ -45,8 +45,8 @@ class MapScreen extends React.Component {
     console.log(dropoff);
   }
   autoZoom() {
-    const edgePadding = {top: 50, bottom: 50, left: 50, right: 50};
     //show all markers(zoom automatically)
+    const edgePadding = {top: 50, bottom: 50, left: 50, right: 50};
     const {pickup, dropoff} = this.state;
     const {mapRef} = this;
     console.log(mapRef);
