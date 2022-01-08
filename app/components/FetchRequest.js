@@ -1,0 +1,99 @@
+import React, {Component} from 'react';
+import {Button, Image, Text, View} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+class FetchRequest extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      donorData: {},
+      date: '',
+    };
+  }
+  componentDidMount() {
+    this.getUserData();
+    this.formatDate();
+  }
+  async getUserData() {
+    const {data} = this.props;
+    await firestore()
+      .collection('users')
+      .doc(data[1].donorID)
+      .get()
+      .then(doc => {
+        this.setState({donorData: {...doc.data()}});
+      });
+  }
+  formatTime(date) {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    const strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
+  formatDate() {
+    const month = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    const {data} = this.props;
+    const fdate = data[1].creationDate;
+    console.log(data);
+    const date = new firestore.Timestamp( //converting firestore timestamp to javascript date
+      fdate.seconds,
+      fdate.nanoseconds,
+    ).toDate();
+    const cdate = `${
+      month[date.getMonth()]
+    } ${date.getDate()},${date.getFullYear()} | ${this.formatTime(date)}`;
+    this.setState({date: cdate});
+  }
+  render() {
+    const {data, toMaps} = this.props;
+    const {donorData, date} = this.state;
+    return (
+      <View>
+        <View>
+          <Text style={{color: 'black'}}>FETCH REQUEST BY</Text>
+          <View>
+            <Image></Image>
+            <Text style={{color: 'black'}}>
+              {donorData.firstname} {donorData.lastname}
+            </Text>
+            <Text style={{color: 'black'}}>{date}</Text>
+          </View>
+          <View>
+            <View>
+              <Text style={{color: 'black'}}>POINT A (PICK-UP)</Text>
+              <Text style={{color: 'black'}}>{data[1].pickupCity} City</Text>
+            </View>
+            <View>
+              <Text style={{color: 'black'}}>POINT B (DROP-OFF)</Text>
+              <Text style={{color: 'black'}}>{data[1].dropoffCity} City</Text>
+            </View>
+          </View>
+          <View>
+            <Text style={{color: 'black'}}>{`\u20B1${data[1].cost} (${
+              Math.floor((data[1].distance / 1000) * 10) / 10
+            }KM)`}</Text>
+            <Button title="TAKE" onPress={() => toMaps(data, donorData)} />
+          </View>
+        </View>
+      </View>
+    );
+  }
+}
+
+export default FetchRequest;
