@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {Button, Linking, View} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import MapStyles from '../../styles/MapStyles';
@@ -13,6 +13,7 @@ class MapScreen extends React.Component {
       pickup: {},
       dropoff: {},
     };
+    this.mapRef = React.createRef();
   }
   componentDidMount() {
     const {pickup, dropoff} = this.props.route.params.data[1];
@@ -43,7 +44,18 @@ class MapScreen extends React.Component {
     console.log(pickup);
     console.log(dropoff);
   }
-
+  autoZoom() {
+    const edgePadding = {top: 50, bottom: 50, left: 50, right: 50};
+    //show all markers(zoom automatically)
+    const {pickup, dropoff} = this.state;
+    const {mapRef} = this;
+    console.log(mapRef);
+    if (mapRef.current) {
+      mapRef.current.fitToCoordinates([pickup, dropoff], {
+        edgePadding: edgePadding,
+      });
+    }
+  }
   render() {
     const {location, pickup, dropoff} = this.state;
     console.log(pickup);
@@ -53,6 +65,8 @@ class MapScreen extends React.Component {
     return (
       <View style={MapStyles.container}>
         <MapView
+          ref={this.mapRef}
+          onLayout={() => this.autoZoom()}
           style={MapStyles.map}
           provider={PROVIDER_GOOGLE}
           region={pickup}>
