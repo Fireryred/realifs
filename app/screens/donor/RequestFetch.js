@@ -88,7 +88,7 @@ export default class RequestFetch extends Component {
                             if(comp.types.includes('locality')) {
                                 this.setState({
                                     ...this.state,
-                                    pickupCity: comp.short_name
+                                    pickupCity: comp.long_name
                                 })
                             }
                         }
