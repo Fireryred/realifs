@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Button, Image, Text, View} from 'react-native';
+import {Image, View} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+
+import { Button, Text, Card } from 'react-native-paper'
 class FetchRequest extends React.Component {
   constructor() {
     super();
@@ -64,9 +66,15 @@ class FetchRequest extends React.Component {
     const {data, toMaps} = this.props;
     const {donorData, date} = this.state;
     return (
-      <View>
-        <View>
-          <Text style={{color: 'black'}}>FETCH REQUEST BY</Text>
+      <View
+        style={{
+          padding: 10,
+          paddingBottom: 0
+        }}
+      >
+        <Card>
+        <Card.Content>
+          <Text style={{color: 'black', fontWeight: 'bold'}}>FETCH REQUEST BY</Text>
           <View>
             <Image></Image>
             <Text style={{color: 'black'}}>
@@ -74,7 +82,16 @@ class FetchRequest extends React.Component {
             </Text>
             <Text style={{color: 'black'}}>{date}</Text>
           </View>
-          <View>
+          <View
+            style={{
+              marginTop: 20,
+              marginBottom: 20,
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}
+          >
             <View>
               <Text style={{color: 'black'}}>POINT A (PICK-UP)</Text>
               <Text style={{color: 'black'}}>{data[1].pickupCity} City</Text>
@@ -84,13 +101,21 @@ class FetchRequest extends React.Component {
               <Text style={{color: 'black'}}>{data[1].dropoffCity} City</Text>
             </View>
           </View>
-          <View>
-            <Text style={{color: 'black'}}>{`\u20B1${data[1].cost} (${
+          <View
+            style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center"
+            }}
+          >
+            <Text style={{color: 'black', fontWeight: 'bold', fontSize: 20}}>{`\u20B1${data[1].cost} (${
               Math.floor((data[1].distance / 1000) * 10) / 10
             }KM)`}</Text>
-            <Button title="TAKE" onPress={() => toMaps(data, donorData)} />
+            <Button title="TAKE" mode="contained" onPress={() => toMaps()}>TAKE</Button>
           </View>
-        </View>
+          </Card.Content>
+        </Card>
       </View>
     );
   }
