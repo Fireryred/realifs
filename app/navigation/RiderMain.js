@@ -27,8 +27,11 @@ class RiderMain extends Component {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={RiderTabs} />
-          <Stack.Screen name="RiderDrawer" component={RiderDrawer} />
+          <Stack.Screen
+            name="RiderDrawer"
+            component={RiderDrawer}
+            options={{headerShown: false}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -51,12 +54,10 @@ class RiderDrawer extends React.Component {
     return (
       <Drawer.Navigator
         initialRouteName="Home"
-        drawerContent={props => <CustomDrawerContent {...props} />}>
-        <Drawer.Screen
-          name="Home"
-          component={RiderDrawer}
-          headerShown={false}
-        />
+        drawerContent={props => (
+          <CustomDrawerContent {...props}></CustomDrawerContent>
+        )}>
+        <Drawer.Screen name="Home" component={RiderTabs} headerShown={false} />
       </Drawer.Navigator>
     );
   }
