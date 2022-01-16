@@ -26,13 +26,10 @@ class RiderMain extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Drawer.Navigator
-          initialRouteName="Home"
-          drawerContent={props => (
-            <CustomDrawerContent {...props}></CustomDrawerContent>
-          )}>
-          <Drawer.Screen name="Home" component={RiderTabs} />
-        </Drawer.Navigator>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={RiderTabs} />
+          <Stack.Screen name="RiderDrawer" component={RiderDrawer} />
+        </Stack.Navigator>
       </NavigationContainer>
     );
   }
@@ -46,6 +43,21 @@ class CustomDrawerContent extends React.Component {
         <DrawerItemList {...this.props} />
         <DrawerItem label="Logout" onPress={handleLogout} />
       </DrawerContentScrollView>
+    );
+  }
+}
+class RiderDrawer extends React.Component {
+  render() {
+    return (
+      <Drawer.Navigator
+        initialRouteName="Home"
+        drawerContent={props => <CustomDrawerContent {...props} />}>
+        <Drawer.Screen
+          name="Home"
+          component={RiderDrawer}
+          headerShown={false}
+        />
+      </Drawer.Navigator>
     );
   }
 }
