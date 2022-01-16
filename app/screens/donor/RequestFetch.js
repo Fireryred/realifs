@@ -33,11 +33,12 @@ export default class RequestFetch extends Component {
             effortGeocodeAddress: "7434 Yakal, Makati, 1203 Kalakhang Maynila, Philippines",
             effortCity: 'Makati',
             marker: null,
-            cost: 50,
+            cost: 100,
             distance: null,
             pathPolylines: null,
             pickupGeocodeAddress: null,
-            vehicleType: "motorcycle",
+            vehicleType: "motorcycle", // motorcycle or car
+            paymentMethod: "online", // online or cod
             modalVisible: false
         }
     }
@@ -158,7 +159,7 @@ export default class RequestFetch extends Component {
 
     calculateCost(distance) {
         let costPerKm = 10;
-        let baseCost = 50;
+        let baseCost = 100;
         let baseKm = 1;
 
         let cost = baseCost + (Math.floor(Math.max( (distance / 1000) - baseKm, 0)) * costPerKm);
@@ -173,6 +174,58 @@ export default class RequestFetch extends Component {
         this.setState({
             ...this.state,
             modalVisible: visibilityBool
+        })
+    }
+
+    storeFetchRequest = () => {        
+        this.setModalVisibility(true)
+        let effortCoordinates = {latitude: this.state.effortCoordinates.latitude, longitude: this.state.effortCoordinates.longitude} 
+        let pickupGeopoint = {latitude: this.state.pickupCoordinates.latitude, longitude: this.state.pickupCoordinates.longitude}
+
+        let collectionRef = firestore().collection('fetch_requests').add({
+            creationDate: firestore.Timestamp.now(),
+            donationDetails: this.state.donationDetails,
+            distance: this.state.distance,
+            donorID: auth().currentUser.uid,
+            cost: this.state.cost,
+            status: this.state.paymentMethod == "cod" ? "waiting" : "unpaid",
+            vehicleType: this.state.vehicleType,
+            paymentMethod: this.state.paymentMethod,
+            pickupHouseAddress: this.state.fullAddress,
+            pickup: new firestore.GeoPoint(pickupGeopoint.latitude, pickupGeopoint.longitude),
+            pickupAddress: this.state.pickupGeocodeAddress,
+            dropoff: new firestore.GeoPoint(effortCoordinates.latitude, effortCoordinates.longitude),
+            dropoffAddress: this.state.effortGeocodeAddress,
+            pickupCity: this.state.pickupCity,
+            dropoffCity: this.state.effortCity                   
+        }).then( doc => {
+            let fetchRequestID = doc.id;;
+            let {paymentMethod} = this.state; 
+
+            if(paymentMethod == "online") {
+                this.props.navigation.reset({
+                    index: 1,
+                    routes: [
+                      { name: 'DonorDrawer' },
+                      {
+                        name: 'PayFetchRequest',
+                        params: {fetchRequestID, cost: this.state.cost},
+                      },
+                    ],
+                  })
+            } 
+            else if(paymentMethod == "cod") {
+                Alert.alert('Fetch request success!', 'Please wait for fetchers to take your request.', undefined, {cancelable: true});
+                this.props.navigation.replace("DonorDrawer");
+            }
+            else {
+                throw new Error("No payment method")
+            }
+        } ).catch((err) => {
+            Alert.alert(undefined, 'There was an error processing your request', undefined, {cancelable: true});
+            this.props.navigation.replace("DonorDrawer");
+        }).finally(() => {
+            this.setModalVisibility(false)
         })
     }
 
@@ -226,7 +279,6 @@ export default class RequestFetch extends Component {
                 />
 
                 <Subheading>Pick-up Location</Subheading>
-
                 <View
                     style={styles.mapContainer}
                 >
@@ -280,6 +332,22 @@ export default class RequestFetch extends Component {
                 <Text>Selected Address: {`${this.state.pickupGeocodeAddress || 'No address selected'}`}</Text>
                 <Text>Distance: {`${Math.floor((this.state.distance / 1000) * 10) / 10} km`}</Text>
 
+                <Subheading>Payment Method</Subheading>
+                <RadioButton.Group 
+                    onValueChange={
+                        value => {
+                            this.setState({
+                                ...this.state,
+                                paymentMethod: value
+                            })
+                        }
+                    } 
+                    value={this.state.paymentMethod}
+                >
+                    <RadioButton.Item label="Online Payment" value="online" />
+                    <RadioButton.Item label="Cash on Delivery" value="cod" />
+                </RadioButton.Group>   
+
                 <Surface
                     style={styles.bottomContainer}
                 >
@@ -290,31 +358,7 @@ export default class RequestFetch extends Component {
                         mode="contained"
                         compact={true}
                         onPress={() => {
-                            this.setModalVisibility(true)
-                            
-                            let effortCoordinates = {latitude: this.state.effortCoordinates.latitude, longitude: this.state.effortCoordinates.longitude} 
-                            let pickupGeopoint = {latitude: this.state.pickupCoordinates.latitude, longitude: this.state.pickupCoordinates.longitude}
-
-                            let collectionRef = firestore().collection('fetch_requests').doc().set({
-                                creationDate: firestore.Timestamp.now(),
-                                donationDetails: this.state.donationDetails,
-                                distance: this.state.distance,
-                                donorID: auth().currentUser.uid,
-                                cost: this.state.cost,
-                                status: "waiting",
-                                vehicleType: this.state.vehicleType,
-                                pickupHouseAddress: this.state.fullAddress,
-                                pickup: new firestore.GeoPoint(pickupGeopoint.latitude, pickupGeopoint.longitude),
-                                pickupAddress: this.state.pickupGeocodeAddress,
-                                dropoff: new firestore.GeoPoint(effortCoordinates.latitude, effortCoordinates.longitude),
-                                dropoffAddress: this.state.effortGeocodeAddress,
-                                pickupCity: this.state.pickupCity,
-                                dropoffCity: this.state.effortCity                   
-                            }).then( () => {
-                                Alert.alert('Fetch requested success!', 'Please wait for fetchers to take your request.', undefined, {cancelable: true})
-                                this.props.navigation.navigate("DonorDrawer")
-                            } )
-                            
+                            this.storeFetchRequest();
                         }}
                     >PROCEED</Button>
                     
@@ -327,7 +371,7 @@ export default class RequestFetch extends Component {
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Text style={styles.modalText}>Submitting Fetch Request...</Text>
+                            <Text style={styles.modalText}>Please wait...</Text>
                         </View>
                     </View>
                 </Modal>

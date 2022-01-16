@@ -32,6 +32,7 @@ export class Efforts extends Component {
         })
 
         this.setState({
+            ...this.state,
             efforts: {...efforts}
         })
     }

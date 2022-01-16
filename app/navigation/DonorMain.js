@@ -13,6 +13,7 @@ import Efforts from '../screens/donor/Efforts';
 import Donations from '../screens/donor/Donations';
 import EffortDetails from '../screens/donor/EffortDetails'
 import RequestFetch from '../screens/donor/RequestFetch'
+import PayFetchRequest from '../screens/donor/PayFetchRequest'
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -42,6 +43,8 @@ class DonorMain extends Component {
                     <Stack.Screen name="EffortDetails" component={EffortDetails} 
                         options={{headerShown: true}}/>
                     <Stack.Screen name="RequestFetch" component={RequestFetch} 
+                        options={{headerShown: true}}/>
+                    <Stack.Screen name="PayFetchRequest" component={PayFetchRequest} 
                         options={{headerShown: true}}/>
                 </Stack.Navigator>
             </NavigationContainer>
