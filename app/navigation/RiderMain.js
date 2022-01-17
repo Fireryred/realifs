@@ -58,11 +58,11 @@ class RiderDrawer extends React.Component {
   render() {
     return (
       <Drawer.Navigator
-        initialRouteName="Fetch"
+        initialRouteName="Home"
         drawerContent={props => (
           <CustomDrawerContent {...props}></CustomDrawerContent>
         )}>
-        <Drawer.Screen name="Fetch" component={RiderTabs} />
+        <Drawer.Screen name="Home" component={RiderTabs} />
       </Drawer.Navigator>
     );
   }
