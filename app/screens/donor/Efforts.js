@@ -15,6 +15,7 @@ export class Efforts extends Component {
         this.state = {
             isListView: false,
             efforts: {},
+            searchString: "",
         }
 
         this.markersRef = []
@@ -59,7 +60,7 @@ export class Efforts extends Component {
     }
 
     render() {
-        let { isListView, efforts } = this.state;
+        let { isListView, efforts, searchString } = this.state;
 
         return (
             <View>
@@ -75,8 +76,32 @@ export class Efforts extends Component {
                 </Surface>
                 { !this.state.efforts && <ActivityIndicator animating={true} color={Colors.red800} /> }
                 { isListView &&
-                    <ScrollView>
-                        {Object.entries(efforts).map( (item, key) => {
+                    <ScrollView 
+                        style={styles.listViewContainer}
+                    >
+                        <Surface
+                            style={styles.searchBarContainer}
+                        >
+                            <TextInput
+                            mode="outlined"
+                            dense={true}
+                            style={styles.searchBar}
+                            placeholder='Search'
+                            value={searchString}
+                            onChangeText={(text) => { 
+                                this.setState({
+                                    ...this.state,
+                                    searchString: text
+                                })
+                            }}
+                        />
+                        </Surface>
+                        
+                        {
+                        Object.entries(efforts).filter((item) => { 
+                            console.log(item[1].title)
+                            return item[1]?.title.toLowerCase().includes(searchString.trim().toLowerCase())
+                        }).map( (item, key) => {
                             return (
                                 <EffortItem
                                     key={key}
@@ -212,7 +237,7 @@ const styles = StyleSheet.create({
 
     switchContainer: {
         width: '100%',
-        margin: '5px',
+        margin: 5,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-end',
@@ -242,8 +267,22 @@ const styles = StyleSheet.create({
         
     },
 
+    listViewContainer: {
+    },
+
     markerText: {
         color: 'white',
+    },
+
+    searchBarContainer: {
+        display: 'flex',
+        marginTop: 35,
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+
+    searchBar: {
+        // height: 10
     }
 
 })
