@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Button, Text, TextInput, View, Alert} from 'react-native';
+import {Button,TextInput, View, Alert, StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
+
+import { Text } from 'react-native-paper'
 
 class LoginScreen extends Component {
 
@@ -138,6 +140,11 @@ class LoginScreen extends Component {
                 title="Login as CSO Administrator"
                 onPress={() => this.handleLogin(this.state.CSOCredentials.inputEmail, this.state.CSOCredentials.inputPassword)}
               />
+
+              <Text 
+                style={styles.forgotPassword}
+                onPress={() => {this.props.navigation.navigate("ForgotPassword")}}
+              >Forgot Password?</Text>
             </View>
       </View>
     );
@@ -160,6 +167,14 @@ class LoginScreen extends Component {
   }
 
 }
+
+const styles = StyleSheet.create({
+  forgotPassword: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: 'blue'
+  }
+})
 
 const mapStateToProps = state => {
   return {
