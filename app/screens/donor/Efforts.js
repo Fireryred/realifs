@@ -157,8 +157,6 @@ export class Efforts extends Component {
                                         ref={this[markerName]}
                                         onPress={() => {
                                             // this[markerName].current.hideCallout();
-                                        }}
-                                        onCalloutPress={() => {
                                             this.props.navigation.navigate("EffortDetails", {effortId: effortId})
                                         }}
                                         // image={'https://firebasestorage.googleapis.com/v0/b/realifs-prototype.appspot.com/o/assets%2Flocator.png?alt=media&token=9f0f36d7-c692-46f1-8d22-e8a63a93e414'}
@@ -244,6 +242,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         zIndex: 999999,
+        right: 0,
         backgroundColor: 'rgba(0,0,0,0)'
     },
 
