@@ -14,6 +14,7 @@ import Donations from '../screens/donor/Donations';
 import EffortDetails from '../screens/donor/EffortDetails'
 import RequestFetch from '../screens/donor/RequestFetch'
 import ContactSupport from '../screens/general/ContactSupport';
+import Profile from '../screens/donor/Profile';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -46,6 +47,8 @@ class DonorMain extends Component {
                         options={{headerShown: true}}/>
                     <Stack.Screen name="ContactSupport" component={ContactSupport} 
                         options={{headerShown: true}}/>
+                        <Stack.Screen name="Profile" component={Profile} 
+                        options={{headerShown: true}}/>
                 </Stack.Navigator>
             </NavigationContainer>
         )
@@ -58,6 +61,9 @@ class CustomDrawerContent extends React.Component {
         return (
             <DrawerContentScrollView {...this.props}>
                 <DrawerItemList {...this.props} />
+                <DrawerItem label="My Profile" onPress={() => {
+                    this.props.navigation.navigate("Profile")
+                }} />
                 <DrawerItem label="Contact Support" onPress={() => {
                     this.props.navigation.navigate("ContactSupport")
                 }} />
