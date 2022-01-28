@@ -16,6 +16,7 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import Dashboard from '../screens/cso/Dashboard';
 import IncomingDonations from '../screens/cso/IncomingDonations';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {CreateDonationEffort} from '../screens/cso/CreateDonationEffort';
 
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -30,6 +31,10 @@ class CSOMain extends Component {
             name="CSODrawer"
             component={CSODrawer}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="CreateDonationEffort"
+            component={CreateDonationEffort}
           />
         </Stack.Navigator>
       </NavigationContainer>
