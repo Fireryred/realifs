@@ -11,6 +11,7 @@ import RegisterScreen from './RegisterScreen';
 import DonorRegistrationScreen from './DonorRegistrationScreen';
 import RiderRegistrationScreen from './RiderRegistrationScreen';
 import CSORegistrationScreen from './CSORegistrationScreen';
+import ForgotPassword from './ForgotPassword';
 
 // UI Override
 import { TextInput, Button, Text } from 'react-native-paper'
@@ -53,6 +54,12 @@ export default class WelcomeScreen extends Component {
                         name="CSORegistrationScreen"
                         component={CSORegistrationScreen}
                         options={{ title: 'Register as CSO Administrator'}}
+                    ></Stack.Screen>
+
+                    <Stack.Screen
+                        name="ForgotPassword"
+                        component={ForgotPassword}
+                        options={{ title: 'Forgot Password'}}
                     ></Stack.Screen>
                 </Stack.Navigator>
             </NavigationContainer>

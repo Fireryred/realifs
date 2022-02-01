@@ -26,13 +26,18 @@ class RiderMain extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Drawer.Navigator
-          initialRouteName="Home"
-          drawerContent={props => (
-            <CustomDrawerContent {...props}></CustomDrawerContent>
-          )}>
-          <Drawer.Screen name="Home" component={RiderTabs} />
-        </Drawer.Navigator>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="RiderDrawer"
+            component={RiderDrawer}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Maps"
+            component={MapScreen}
+            option={{headerTitle: 'Fetching from Donor'}}
+          />
+        </Stack.Navigator>
       </NavigationContainer>
     );
   }
@@ -49,29 +54,36 @@ class CustomDrawerContent extends React.Component {
     );
   }
 }
+class RiderDrawer extends React.Component {
+  render() {
+    return (
+      <Drawer.Navigator
+        initialRouteName="Fetch"
+        drawerContent={props => (
+          <CustomDrawerContent {...props}></CustomDrawerContent>
+        )}>
+        <Drawer.Screen name="Fetch" component={RiderTabs} />
+      </Drawer.Navigator>
+    );
+  }
+}
 
 class RiderTabs extends React.Component {
   render() {
     return (
       <Tab.Navigator>
-        <Tab.Screen name="Fetch" component={FetchStack} />
+        <Tab.Screen
+          name="Fetch"
+          component={Fetch}
+          option={{headerTitle: 'Fetch Request Pool'}}
+        />
         <Tab.Screen name="History" component={History} />
-        <Tab.Screen name="Wallet" component={Wallet} />
+        <Tab.Screen
+          name="Wallet"
+          component={Wallet}
+          option={{headerTitle: 'My Wallet'}}
+        />
       </Tab.Navigator>
-    );
-  }
-}
-
-class FetchStack extends React.Component {
-  render() {
-    return (
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="Fetch" component={Fetch} />
-        <Stack.Screen name="Maps" component={MapScreen} />
-      </Stack.Navigator>
     );
   }
 }
