@@ -16,6 +16,7 @@ import DocumentPicker from 'react-native-document-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 export class CreateDonationEffort extends Component {
   constructor() {
@@ -295,14 +296,27 @@ export class CreateDonationEffort extends Component {
                 endDateTime: firestore.Timestamp.fromDate(end.date),
                 imageUrl: imageWebURL,
                 location: new firestore.GeoPoint(loc.latitude, loc.longitude),
+                csoID: auth().currentUser.uid
               })
               .then(() => {
                 Alert.alert(
-                  'Donation Effort Created',
-                  'Done and done',
+                  'Donation effort created',
+                  "You can check your donation effort's status in the dashboard",
                   undefined,
                   {cancelable: true},
                 );
+              })
+              .catch((err) => {
+                Alert.alert(
+                  'There was an error processing your request',
+                  "Please try again",
+                  undefined,
+                  {cancelable: true},
+                );
+                console.log("error creating donation effort", err)
+              })
+              .finally(() => {
+                this.props.navigation.replace("CSODrawer");
               });
           }}
         />
