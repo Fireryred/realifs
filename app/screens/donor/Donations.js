@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Modal, StyleSheet } from 'react-native'
+import { View, Modal, StyleSheet, ScrollView } from 'react-native'
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -48,7 +48,7 @@ export class Donations extends Component {
         let {donations, modalVisible} = this.state;
 
         return (
-            <View>
+            <ScrollView>
                 { !donations && <ActivityIndicator animating={true} color={Colors.red800} /> }
                 {
                     Object.entries(donations).map( (item, key) => {
@@ -73,7 +73,7 @@ export class Donations extends Component {
                         </View>
                     </View>
                 </Modal>
-            </View>
+            </ScrollView>
         )
     }
 }
