@@ -143,8 +143,8 @@ export class Efforts extends Component {
                                 let effortId = item[0];
                                 let title = item[1].title;
                                 let description = item[1].description;
-                                let latitude = item[1].address_geopoint.latitude;
-                                let longitude = item[1].address_geopoint.longitude;
+                                let latitude = item[1].location.latitude;
+                                let longitude = item[1].location.longitude;
 
                                 let markerName = `marker${key}`;
                                 this[markerName] = React.createRef()
