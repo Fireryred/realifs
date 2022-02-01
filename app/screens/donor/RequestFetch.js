@@ -14,24 +14,21 @@ export default class RequestFetch extends Component {
         super();
 
         this.state = {
+            effortDataInitialized: false,
             donationDetails: null,
             fullAddress: null,
             pickupCoordinates: {
-                latitude: 14.55979830686066,
-                longitude: 121.00805163217159,
-                latitudeDelta: 0.002,
-                longitudeDelta: 0.001,
+                latitude: null,
+                longitude: null,
             },
             pickupCity: null,
-            effortID: null,
+            effortId: null,
             effortCoordinates: {
-                latitude: 14.55979830686066,
-                longitude: 121.00805163217159,
-                latitudeDelta: 0.002,
-                longitudeDelta: 0.001,
+                latitude: null,
+                longitude: null,
             },
-            effortGeocodeAddress: "7434 Yakal, Makati, 1203 Kalakhang Maynila, Philippines",
-            effortCity: 'Makati',
+            effortGeocodeAddress: null,
+            effortCity: null,
             marker: null,
             cost: 100,
             distance: null,
@@ -43,8 +40,19 @@ export default class RequestFetch extends Component {
         }
     }
     componentDidMount() {
-        let effortID = this.props.route.params.effortId;
-        console.log('Request Fetch EFFORT ID:', JSON.stringify(effortID, null, 2))
+        let {effortId, effortCoordinates, geocodeAddress, city} = this.props.route.params;
+        console.log('Request Fetch EFFORT ID:', JSON.stringify(effortId, null, 2))
+        
+        // Initialize data from previous screen
+        this.setState({
+            ...this.state,
+            effortId: effortId,
+            effortCoordinates: effortCoordinates,
+            effortGeocodeAddress: geocodeAddress,
+            effortCity: city,
+            pickupCoordinates: effortCoordinates, // Set initial location same as the effort location
+            effortDataInitialized: true,
+        },)
     }
 
     onRegionChange = this.debounce((region) => {
@@ -197,7 +205,8 @@ export default class RequestFetch extends Component {
             dropoff: new firestore.GeoPoint(effortCoordinates.latitude, effortCoordinates.longitude),
             dropoffAddress: this.state.effortGeocodeAddress,
             pickupCity: this.state.pickupCity,
-            dropoffCity: this.state.effortCity                   
+            dropoffCity: this.state.effortCity,
+            effortId: this.state.effortId                   
         }).then( doc => {
             let fetchRequestID = doc.id;;
             let {paymentMethod} = this.state; 
@@ -233,6 +242,8 @@ export default class RequestFetch extends Component {
         const {latitude: effortLatitude, longitude: effortLongitude} = this.state.effortCoordinates
 
         return (
+            <>
+            { this.state.effortDataInitialized && 
             <ScrollView>
                 <Subheading>Donation Details</Subheading>
                 <TextInput
@@ -286,8 +297,8 @@ export default class RequestFetch extends Component {
                         style={styles.map}
                         onRegionChange={this.onRegionChange}
                         initialRegion={{
-                            latitude: 14.55979830686066,
-                            longitude: 121.00805163217159,
+                            latitude: effortLatitude,
+                            longitude: effortLongitude,
                             latitudeDelta: 0.002,
                             longitudeDelta: 0.001,
                         }}
@@ -376,6 +387,8 @@ export default class RequestFetch extends Component {
                     </View>
                 </Modal>
             </ScrollView>
+            }
+            </>
         )
     }
 }

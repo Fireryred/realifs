@@ -44,6 +44,8 @@ export class CreateDonationEffort extends Component {
         latitudeDelta: 0.015,
         longitudeDelta: 0.0121,
       },
+      geocodeAddress: null,
+      city: ""
     };
   }
 
@@ -156,7 +158,37 @@ export class CreateDonationEffort extends Component {
   onRegionChange = region => {
     this.setState({loc: {...region}});
     console.log(this.state.loc);
+    this.getAddressWithLatlng(region.latitude, region.longitude);
   };
+
+  getAddressWithLatlng(lat, lng) {
+    let uri = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDAdKi6it1aJYQ9GUVDIPQAG4s6P_UyCjw`;
+
+    fetch(uri)
+        .then(res => {
+            res.json().then(json => {     
+                console.log(`${uri}\nResult: `, Object.entries(json).length);
+
+                for(let item of json.results) {
+                    this.setState({
+                        ...this.state,
+                        geocodeAddress: item['formatted_address']
+                    })
+
+                    for(let comp of item['address_components']) {
+                        if(comp.types.includes('locality')) {
+                            this.setState({
+                                ...this.state,
+                                city: comp.long_name
+                            })
+                        }
+                    }
+                    
+                    break;
+                }
+            }) 
+        })
+}
 
   render() {
     const {
@@ -168,6 +200,8 @@ export class CreateDonationEffort extends Component {
       imageName,
       imageWebURL,
       loc,
+      geocodeAddress,
+      city
     } = this.state;
     return (
       <ScrollView>
@@ -282,6 +316,7 @@ export class CreateDonationEffort extends Component {
             />
           </View>
         </View>
+        <Text>Selected Location: {geocodeAddress}</Text>
         <Button
           title="Create Donation Effort"
           onPress={() => {
@@ -296,7 +331,9 @@ export class CreateDonationEffort extends Component {
                 endDateTime: firestore.Timestamp.fromDate(end.date),
                 imageUrl: imageWebURL,
                 location: new firestore.GeoPoint(loc.latitude, loc.longitude),
-                csoID: auth().currentUser.uid
+                csoID: auth().currentUser.uid,
+                geocodeAddress: geocodeAddress,
+                city: city
               })
               .then(() => {
                 Alert.alert(
