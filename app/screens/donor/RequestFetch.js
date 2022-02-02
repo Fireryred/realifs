@@ -206,7 +206,8 @@ export default class RequestFetch extends Component {
             dropoffAddress: this.state.effortGeocodeAddress,
             pickupCity: this.state.pickupCity,
             dropoffCity: this.state.effortCity,
-            effortId: this.state.effortId                   
+            effortId: this.state.effortId,
+            fetcherId: null,
         }).then( doc => {
             let fetchRequestID = doc.id;;
             let {paymentMethod} = this.state; 
