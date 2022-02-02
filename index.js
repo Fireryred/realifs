@@ -11,10 +11,12 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import store from './app/redux/store';
 
-const RNRedux = () => (
-    <Provider store = { store }>
-      <App />
-    </Provider>
-)
+import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 
+const RNRedux = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+ReactNativeForegroundService.register();
 AppRegistry.registerComponent(appName, () => RNRedux);
