@@ -52,7 +52,6 @@ class FetchRequest extends React.Component {
     ];
     const {data} = this.props;
     const fdate = data[1].creationDate;
-    console.log(data);
     const date = new firestore.Timestamp( //converting firestore timestamp to javascript date
       fdate.seconds,
       fdate.nanoseconds,
