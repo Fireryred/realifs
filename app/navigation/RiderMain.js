@@ -35,7 +35,7 @@ class RiderMain extends Component {
           <Stack.Screen
             name="Maps"
             component={MapScreen}
-            option={{headerTitle: 'Fetching from Donor'}}
+            options={{headerShown: false}}
           />
         </Stack.Navigator>
       </NavigationContainer>
@@ -75,13 +75,13 @@ class RiderTabs extends React.Component {
         <Tab.Screen
           name="Fetch"
           component={Fetch}
-          option={{headerTitle: 'Fetch Request Pool'}}
+          options={{headerTitle: 'Fetch Request Pool'}}
         />
         <Tab.Screen name="History" component={History} />
         <Tab.Screen
           name="Wallet"
           component={Wallet}
-          option={{headerTitle: 'My Wallet'}}
+          options={{headerTitle: 'My Wallet'}}
         />
       </Tab.Navigator>
     );
