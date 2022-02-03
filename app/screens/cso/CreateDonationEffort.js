@@ -132,7 +132,7 @@ export class CreateDonationEffort extends Component {
       .ref(`DonationEffort/${uploadFilename}`)
       .getDownloadURL();
     const imageUrl = url.valueOf();
-    this.setState({imageName: file[0].name, imageWebURL: {imageUrl}});
+    this.setState({imageName: file[0].name, imageWebURL: imageUrl});
     console.log(url.valueOf());
   }
 
