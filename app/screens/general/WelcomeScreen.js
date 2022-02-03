@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ScrollView, Alert } from 'react-native'
+import { StyleSheet, View, ScrollView, Alert, Image } from 'react-native'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -12,6 +12,8 @@ import DonorRegistrationScreen from './DonorRegistrationScreen';
 import RiderRegistrationScreen from './RiderRegistrationScreen';
 import CSORegistrationScreen from './CSORegistrationScreen';
 import ForgotPassword from './ForgotPassword';
+
+import {realifsLogoText, welcomeBg} from '../../assets' 
 
 // UI Override
 import { TextInput, Button, Text } from 'react-native-paper'
@@ -72,13 +74,17 @@ export default class WelcomeScreen extends Component {
 class WelcomeScreenComponent extends Component {
     render() {
         return (
-            <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly', padding: 10}}>
-                <Text>Welcome to REALIFS!</Text>
+            <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10, backgroundColor: "white"}}>
+                <Image
+                    source={realifsLogoText}
+                    resizeMode='contain'
+                    style={{width: "100%", height: 175, marginVertical: 100}}
+                />
                 <Button
                     title="Login"
                     onPress={() => {this.props.navigation.navigate("LoginScreen")}}
                     mode="contained"
-                    style={ {width: '100%'} }
+                    style={ {width: '100%', marginBottom: 20} }
                 >Login</Button>
                 <Button
                     title="Register"
@@ -86,6 +92,11 @@ class WelcomeScreenComponent extends Component {
                     mode="contained"
                     style={ {width: '100%'} }
                 >Register</Button>
+                {/* <Image
+                    source={welcomeBg}
+                    resizeMode='contain'
+                    style={{position: "absolute", bottom: 0, width: "100%", height: 200}}
+                /> */}
             </View>
         )
     }
