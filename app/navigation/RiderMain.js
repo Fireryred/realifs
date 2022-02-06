@@ -35,7 +35,7 @@ class RiderMain extends Component {
           <Stack.Screen
             name="Maps"
             component={MapScreen}
-            options={{headerShown: false}}
+            options={{headerShown: true}}
           />
         </Stack.Navigator>
       </NavigationContainer>
