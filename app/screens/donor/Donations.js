@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Modal, StyleSheet, ScrollView } from 'react-native'
+import { View, Modal, StyleSheet, ScrollView, RefreshControl } from 'react-native'
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -11,14 +11,13 @@ export class Donations extends Component {
         super();
 
         this.state = {
-            donations: {},
+            donations: null,
             modalVisible: false,
+            refreshing: false,
         }
     }
 
     componentDidMount() {
-        this.props.navigation.getParent().setOptions({title: 'Donation'});
-
         this.getDonations();
     }
 
@@ -44,13 +43,26 @@ export class Donations extends Component {
         })
     }
 
+    setRefreshing = (isRefreshing) => {
+        this.setState({
+            ...this.setState,
+            refreshing: isRefreshing,
+        })
+    }
+
     render() {
         let {donations, modalVisible} = this.state;
 
         return (
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => {console.log(this.state.refreshing); this.getDonations(); this.setRefreshing(false)}}
+                    />}
+            >
                 { !donations && <ActivityIndicator animating={true} color={Colors.red800} /> }
-                {
+                { donations &&
                     Object.entries(donations).map( (item, key) => {
                         return (
                             <DonationItem
@@ -69,7 +81,7 @@ export class Donations extends Component {
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Text style={styles.modalText}>Please wait...</Text>
+                            <Text style={styles.modalText}>Please wait..</Text>
                         </View>
                     </View>
                 </Modal>
@@ -97,12 +109,16 @@ class DonationItem extends Component {
                                 alignItems: "center"
                             }}
                         >
-                            {/* <Button
+                            <Button
                                 color="orange"
                                 dark={true}
                                 compact={true}
                                 mode="contained"
-                            >TRACK</Button> */}
+                                disabled={donationData.status == "waiting" || donationData.status == "delivered" ? true : false}
+                                onPress={() => {
+                                    this.props.parentProps.navigation.navigate("TrackFetcher", {effortId: donationId})
+                                }}
+                            >TRACK</Button>
                             <Button
                                 color="red"
                                 compact={true}
@@ -123,6 +139,7 @@ class DonationItem extends Component {
                                     })
                                 }}
                             >CANCEL</Button>
+                            
                         </Surface>
                         
                     </Card.Content>
