@@ -360,7 +360,8 @@ export default class FetcherRegistrationScreen extends Component {
                     email,
                     username,
                     driversLicenseWebURL,
-                    verifiedByHR: false
+                    verifiedByHR: false,
+                    walletBalance: 0,
                 })
                     .then( () => {console.log('User data creation: success')} )
                     .catch( (error) => {console.log('User data creation: ', error)} )
