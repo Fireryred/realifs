@@ -17,6 +17,7 @@ import PayFetchRequest from '../screens/donor/PayFetchRequest'
 import ContactSupport from '../screens/general/ContactSupport';
 import Profile from '../screens/donor/Profile';
 import TrackFetcher from '../screens/donor/TrackFetcher';
+import CSOInfo from '../screens/donor/CSOInfo';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -54,6 +55,8 @@ class DonorMain extends Component {
                     <Stack.Screen name="Profile" component={Profile} 
                         options={{headerShown: true}}/>
                     <Stack.Screen name="TrackFetcher" component={TrackFetcher} 
+                        options={{headerShown: true}}/>
+                    <Stack.Screen name="CSOInfo" component={CSOInfo} 
                         options={{headerShown: true}}/>
                 </Stack.Navigator>
             </NavigationContainer>

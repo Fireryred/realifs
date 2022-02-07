@@ -28,7 +28,9 @@ export default class EffortDetails extends Component {
                 email: null,
                 organizationName: null,
                 username: null,
-            }
+            },
+            effortDataFetched: false,
+            csoDataFetched: false,
         }
     }
     componentDidMount() {
@@ -63,6 +65,7 @@ export default class EffortDetails extends Component {
             geocodeAddress: effort.geocodeAddress,
             city: effort.city,
             imageUrl: effort.imageUrl,
+            effortDataFetched: true,
         }, () => {
             console.log("effort state", this.state);
             this.loadCSOData()
@@ -80,21 +83,25 @@ export default class EffortDetails extends Component {
 
         this.setState({
             ...this.state,
-            csoData: {...csoData}
+            csoData: {...csoData},
+            csoDataFetched: true,
         }, () => console.log(csoData))
     }
 
     render() {
-        let { effortId, effortCoordinates, geocodeAddress, city } = this.state;
+        let { effortId, effortCoordinates, geocodeAddress, city, csoID, effortDataFetched, csoDataFetched } = this.state;
         let { title, description, creationDate, startDateTime, imageUrl } = this.state;
         let {organizationName} = this.state.csoData;
 
-        return (
+        return ( effortDataFetched && csoDataFetched &&
             <ScrollView style={styles.container}>
                 <View style={styles.segment}>
                     <Text style={{ color: '#fff' }}>Effort Details</Text>
                     <Headline style={{fontSize: 30}}>{title}</Headline>
-                    <Text>By {organizationName} <MaterialCommunityIcons color="blue" name="check-decagram"></MaterialCommunityIcons></Text>
+                    <Text>{"By "}
+                        <Text style={{textDecorationLine: "underline", color: "blue"}} onPress={() => { this.props.navigation.navigate("CSOInfo", { csoID }) }}>{organizationName + " "}</Text>
+                        <MaterialCommunityIcons color="blue" name="check-decagram"></MaterialCommunityIcons>
+                    </Text>
                 </View>
                 <View style={styles.segment}>
                     <Text style={{color: "#666666", fontWeight: "bold"}}>DESCRIPTION</Text>
@@ -108,7 +115,7 @@ export default class EffortDetails extends Component {
 
                 <View style={{...styles.segment, display: "flex", flexDirection: "column", alignItems: "center"}}>
                     <Text style={{color: "#666666", fontWeight: "bold"}}>FOR ONLINE CASH DONATIONS</Text>
-                    <Text>View CSO Information Page</Text>
+                    <Text style={{textDecorationLine: "underline", color: "blue"}} onPress={() => { this.props.navigation.navigate("CSOInfo", { csoID }) }}>View CSO Information Page</Text>
                 </View>
                 {/* {Object.entries(this.state).map((value, index) => { return <><Text>{value.toString()}</Text></> })} */}
                 <View style={{...styles.segment, display: "flex", flexDirection: "column", alignItems: "center"}}>
