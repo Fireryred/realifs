@@ -18,6 +18,7 @@ import History from '../screens/rider/History';
 import Wallet from '../screens/rider/Wallet';
 import MapScreen from '../screens/rider/MapScreen';
 import FetcherProfile from '../screens/rider/FetcherProfile';
+import ContactSupport from '../screens/general/ContactSupport';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -43,6 +44,8 @@ class RiderMain extends Component {
             component={FetcherProfile}
             options={{headerShown: true}}
           />
+          <Stack.Screen name="ContactSupport" component={ContactSupport} 
+            options={{headerShown: true}}/>
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -57,6 +60,9 @@ class CustomDrawerContent extends React.Component {
         <DrawerItemList {...this.props} />
         <DrawerItem label="My Profile" onPress={() => {
             this.props.navigation.navigate("FetcherProfile")
+        }} />
+        <DrawerItem label="Contact Support" onPress={() => {
+            this.props.navigation.navigate("ContactSupport")
         }} />
         <DrawerItem label="Logout" onPress={handleLogout} />
       </DrawerContentScrollView>

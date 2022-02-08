@@ -73,7 +73,8 @@ class ContactSupport extends Component {
 
                         firestore().collection('user_support_logs').add({
                             email,
-                            message        
+                            message,
+                            date: firestore.Timestamp.now(),        
                         }).then(doc => {
                             Alert.alert("Your concern has been submitted", "Please wait for our support team to get back to you")
                             this.props.navigation.popToTop()
