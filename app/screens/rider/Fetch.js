@@ -19,6 +19,7 @@ export class Fetch extends Component {
   }
   componentDidMount() {
     if (ReactNativeForegroundService.is_running) {
+      //check if any foreground service and stops it
       ReactNativeForegroundService.stop();
     }
     this.props.navigation.getParent().setOptions({title: 'Fetch'});
