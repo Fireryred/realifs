@@ -15,7 +15,7 @@ import EffortDetails from '../screens/donor/EffortDetails'
 import RequestFetch from '../screens/donor/RequestFetch'
 import PayFetchRequest from '../screens/donor/PayFetchRequest'
 import ContactSupport from '../screens/general/ContactSupport';
-import Profile from '../screens/donor/Profile';
+import DonorProfile from '../screens/donor/DonorProfile';
 import TrackFetcher from '../screens/donor/TrackFetcher';
 import CSOInfo from '../screens/donor/CSOInfo';
 
@@ -52,7 +52,7 @@ class DonorMain extends Component {
                         options={{headerShown: true}}/>
                     <Stack.Screen name="PayFetchRequest" component={PayFetchRequest} 
                         options={{headerShown: true}}/>
-                    <Stack.Screen name="Profile" component={Profile} 
+                    <Stack.Screen name="DonorProfile" component={DonorProfile} 
                         options={{headerShown: true}}/>
                     <Stack.Screen name="TrackFetcher" component={TrackFetcher} 
                         options={{headerShown: true}}/>
@@ -71,7 +71,7 @@ class CustomDrawerContent extends React.Component {
             <DrawerContentScrollView {...this.props}>
                 <DrawerItemList {...this.props} />
                 <DrawerItem label="My Profile" onPress={() => {
-                    this.props.navigation.navigate("Profile")
+                    this.props.navigation.navigate("DonorProfile")
                 }} />
                 <DrawerItem label="Contact Support" onPress={() => {
                     this.props.navigation.navigate("ContactSupport")
