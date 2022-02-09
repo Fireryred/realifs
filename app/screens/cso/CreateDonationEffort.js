@@ -23,8 +23,7 @@ export class CreateDonationEffort extends Component {
     super();
     this.state = {
       imageName: 'CHOOSE FILE',
-      imageWebURL:
-        'https://firebasestorage.googleapis.com/v0/b/realifs-prototype.appspot.com/o/DonationEffort%2F3a62433d1fc9f871jpg?alt=media&token=8adca4a3-c214-4942-b59c-1e027e8b0cc3',
+      imageWebURL: '',
       title: 'Test',
       description: 'Desc',
       address: 'Address',
