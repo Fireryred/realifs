@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
+import {Alert, ScrollView} from 'react-native';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 
 import FetchRequest from '../../components/FetchRequest';
@@ -11,6 +11,7 @@ export class Fetch extends Component {
   constructor() {
     super();
     this.state = {
+      balance: 0,
       requests: {},
       data: {},
       donorDetails: {},
@@ -77,14 +78,34 @@ export class Fetch extends Component {
   }
 
   toMaps = (data, donorDetails) => {
-    this.updateStatus(data);
-    data[1].status = 'pickup';
-    console.log(data);
-    this.props.navigation.navigate('Maps', {
-      data: data,
-      donorDetails: donorDetails,
-    });
+    const {cost, paymentMethod} = data[1];
+    const {balance, exists} = this.state;
+    this.getBalance();
+
+    if (!exists && balance < cost && paymentMethod === 'cod') {
+      Alert.alert('Does not have enough balance');
+    } else {
+      this.updateStatus(data);
+      data[1].status = 'pickup';
+      console.log(data);
+      this.props.navigation.navigate('Maps', {
+        data: data,
+        donorDetails: donorDetails,
+      });
+    }
   };
+
+  async getBalance() {
+    let balance = 0;
+    await firestore()
+      .collection('users')
+      .doc(auth().currentUser.uid)
+      .get()
+      .then(doc => {
+        balance = doc.data().balance;
+      });
+    this.setState({balance: balance});
+  }
 
   async updateStatus(data) {
     await firestore()
