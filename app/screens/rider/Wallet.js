@@ -7,7 +7,7 @@ import {Button} from 'react-native-paper';
 export class Wallet extends Component {
   constructor() {
     super();
-    this.state = {balance: 0};
+    this.state = {balance: 0, mobileNumber: ''};
   }
   componentDidMount() {
     this.getBalance();
@@ -24,8 +24,19 @@ export class Wallet extends Component {
       .collection('users')
       .doc(auth().currentUser.uid)
       .get()
-      .then(doc => this.setState({balance: doc.data().balance}));
+      .then(doc =>
+        this.setState({
+          balance: doc.data().balance,
+          mobileNumber: doc.data().mobileNumber,
+        }),
+      );
   }
+  toCashIn = () => {
+    this.props.navigation.navigate('CashIn', {...this.state});
+  };
+  toCashOut = () => {
+    this.props.navigation.navigate('CashOut', {...this.state});
+  };
   render() {
     const {balance} = this.state;
     return (
@@ -33,8 +44,12 @@ export class Wallet extends Component {
         <Text style={{color: 'black'}}> REALIFS Fetcher Wallet </Text>
         <Text style={{color: 'black'}}>₱{balance}</Text>
         <Text style={{color: 'black'}}>Current Balance</Text>
-        <Button title="CASH-IN">CASH-IN</Button>
-        <Button title="CASH-OUT">CASH-OUT</Button>
+        <Button title="CASH-IN" onPress={this.toCashIn}>
+          CASH-IN
+        </Button>
+        <Button title="CASH-OUT" onPress={this.toCashOut}>
+          CASH-OUT
+        </Button>
       </View>
     );
   }
