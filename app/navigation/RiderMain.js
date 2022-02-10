@@ -19,6 +19,7 @@ import Wallet from '../screens/rider/Wallet';
 import MapScreen from '../screens/rider/MapScreen';
 import FetcherProfile from '../screens/rider/FetcherProfile';
 import ContactSupport from '../screens/general/ContactSupport';
+import Chat from '../screens/general/Chat';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -46,6 +47,8 @@ class RiderMain extends Component {
           />
           <Stack.Screen name="ContactSupport" component={ContactSupport} 
             options={{headerShown: true}}/>
+          <Stack.Screen name="Chat" component={Chat} 
+          options={{headerShown: true}}/>
         </Stack.Navigator>
       </NavigationContainer>
     );

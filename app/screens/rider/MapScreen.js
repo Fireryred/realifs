@@ -194,6 +194,7 @@ class MapScreen extends React.Component {
           onPress={() => Linking.openURL(toDropoff)}
         />
         <Button title={status} onPress={() => this.handleConfirmButton()} />
+        <Button title={"Chat"} onPress={() => {this.props.navigation.navigate("Chat", {fetchRequestId: this.props.route.params.data[0]})}} />
       </View>
     );
   }

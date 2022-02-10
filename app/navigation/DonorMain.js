@@ -18,6 +18,7 @@ import ContactSupport from '../screens/general/ContactSupport';
 import DonorProfile from '../screens/donor/DonorProfile';
 import TrackFetcher from '../screens/donor/TrackFetcher';
 import CSOInfo from '../screens/donor/CSOInfo';
+import Chat from '../screens/general/Chat';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -57,6 +58,8 @@ class DonorMain extends Component {
                     <Stack.Screen name="TrackFetcher" component={TrackFetcher} 
                         options={{headerShown: true}}/>
                     <Stack.Screen name="CSOInfo" component={CSOInfo} 
+                        options={{headerShown: true}}/>
+                    <Stack.Screen name="Chat" component={Chat} 
                         options={{headerShown: true}}/>
                 </Stack.Navigator>
             </NavigationContainer>
