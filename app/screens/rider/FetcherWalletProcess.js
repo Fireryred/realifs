@@ -19,15 +19,9 @@ export class FetcherWalletProcess extends Component {
     const amount = parseInt(params.amount);
 
     let cost = amount ? parseInt(params.amount) * 100 : null;
-    console.log(cost);
-    let balance = parseInt(params.balance);
-    let status = '';
-    if (params.action === 'cashOut') {
-      status = 'pending';
-    } else if (params.action === 'cashIn') {
-      balance += amount;
-      status = 'success';
-    }
+    let balance = parseInt(params.balance) + amount;
+    let status = 'success';
+
     const options = {
       method: 'POST',
       headers: {
