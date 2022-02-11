@@ -24,10 +24,12 @@ export class CashOut extends Component {
     } else {
       balance = balance - amount;
       this.updateDB(amount, balance);
-      Alert.alert(`Cash-out request sent`, '', {
-        text: 'OK',
-        onPress: () => this.props.navigation.goBack(),
-      });
+      Alert.alert(`Cash-out request sent`, '', [
+        {
+          text: 'OK',
+          onPress: () => this.props.navigation.goBack(),
+        },
+      ]);
     }
   };
   async updateDB(amount, balance) {
