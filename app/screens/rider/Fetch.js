@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
+import {Alert, ScrollView} from 'react-native';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 
 import FetchRequest from '../../components/FetchRequest';
@@ -11,10 +11,11 @@ export class Fetch extends Component {
   constructor() {
     super();
     this.state = {
-      requests: {},
+      balance: 0,
       data: {},
       donorDetails: {},
       exists: false,
+      requests: {},
     };
   }
   componentDidMount() {
@@ -27,6 +28,9 @@ export class Fetch extends Component {
       // Prevent default action
       // e.preventDefault();
       this.props.navigation.getParent().setOptions({title: 'Fetch'});
+    });
+    this.getBalance().catch(error => {
+      console.error(error);
     });
     this.checkRiderStatus().catch(error => {
       console.error();
@@ -77,6 +81,7 @@ export class Fetch extends Component {
   }
 
   toMaps = (data, donorDetails) => {
+    console.log(this.state.balance);
     this.updateStatus(data);
     data[1].status = 'pickup';
     console.log(data);
@@ -85,7 +90,18 @@ export class Fetch extends Component {
       donorDetails: donorDetails,
     });
   };
-
+  checkBalance = (data, donorDetails) => {
+    const {balance, exists} = this.state;
+    if (
+      !exists &&
+      data[1].cost * 0.2 > balance &&
+      data[1].paymentMethod === 'cod'
+    ) {
+      Alert.alert("Doesn't have enough balance to accept this");
+    } else {
+      this.toMaps(data, donorDetails);
+    }
+  };
   async updateStatus(data) {
     await firestore()
       .collection('fetch_requests')
@@ -94,6 +110,16 @@ export class Fetch extends Component {
       .then(() => console.log('Status Updated to pickup'));
   }
 
+  async getBalance() {
+    await firestore()
+      .collection('users')
+      .doc(auth().currentUser.uid)
+      .get()
+      .then(doc => {
+        console.log(doc.data().balance);
+        this.setState({balance: doc.data().balance});
+      });
+  }
   render() {
     const {requests, data, donorDetails, exists} = this.state;
     if (exists) {
@@ -102,7 +128,7 @@ export class Fetch extends Component {
     return (
       <ScrollView>
         {Object.entries(requests).map((request, key) => (
-          <FetchRequest data={request} key={key} toMaps={this.toMaps} />
+          <FetchRequest data={request} key={key} toMaps={this.checkBalance} />
         ))}
       </ScrollView>
     );

@@ -13,6 +13,8 @@ import {
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
+import CashIn from '../screens/rider/CashIn';
+import CashOut from '../screens/rider/CashOut';
 import Fetch from '../screens/rider/Fetch';
 import History from '../screens/rider/History';
 import Wallet from '../screens/rider/Wallet';
@@ -20,6 +22,7 @@ import MapScreen from '../screens/rider/MapScreen';
 import FetcherProfile from '../screens/rider/FetcherProfile';
 import ContactSupport from '../screens/general/ContactSupport';
 import Chat from '../screens/general/Chat';
+import FetcherWalletProcess from '../screens/rider/FetcherWalletProcess';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -48,7 +51,22 @@ class RiderMain extends Component {
           <Stack.Screen name="ContactSupport" component={ContactSupport} 
             options={{headerShown: true}}/>
           <Stack.Screen name="Chat" component={Chat} 
-          options={{headerShown: true}}/>
+            options={{headerShown: true}}/>
+          <Stack.Screen
+              name="CashIn"
+              component={CashIn}
+              options={{headerShown: true}}
+          />
+          <Stack.Screen
+            name="CashOut"
+            component={CashOut}
+            options={{headerShown: true}}
+          />
+          <Stack.Screen
+            name="FetcherWalletProcess"
+            component={FetcherWalletProcess}
+            options={{headerShown: true}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
