@@ -17,7 +17,7 @@ export class CashOut extends Component {
     console.log(this.props);
     let balance = parseInt(this.props.route.params.balance);
     const amount = parseInt(this.state.amount);
-    if (amount === NaN || amount <= 0) {
+    if (this.state.amount === '' || amount <= 0) {
       Alert.alert('Please enter a valid amount');
     } else if (balance < amount) {
       Alert.alert(`You only have ${balance} in your account`);
