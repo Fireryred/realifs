@@ -5,48 +5,38 @@ import {Button, Text, TextInput} from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-export default class CashOut extends Component {
+export class CashOut extends Component {
   constructor() {
     super();
     this.state = {
       amount: '',
-      mobileNumber: '',
     };
   }
 
-  componentDidMount() {
-    this.setState({mobileNumber: this.props.route.params.mobileNumber});
-  }
-
-  handleCashOut() {
-    const {balance} = this.props.route.params;
+  handleCashOut = () => {
+    console.log(this.props);
+    let balance = this.props.route.params.balance;
     const {amount} = this.state;
     if (amount === '' || amount <= 0) {
       Alert.alert('Please enter a valid amount');
     } else if (balance < amount) {
       Alert.alert(`You only have ${balance} in your account`);
     } else {
-      this.updateMobileNumber();
-      this.props.navigation.reset({
-        index: 1,
-        routes: [
-          {name: 'RiderDrawer'},
-          {
-            name: 'FetcherWalletProcess',
-            params: {
-              action: 'cashOut',
-              balance,
-              amount,
-            },
-          },
-        ],
+      balance = balance - amount;
+      this.updateDB(amount, balance);
+      Alert.alert(`Cash-out request sent`, '', {
+        text: 'OK',
+        onPress: () => this.props.navigation.goBack(),
       });
     }
-  }
-  async updateMobileNumber() {
-    await firestore().collection('users').doc(auth().currentUser.uid).update({
-      mobileNumber: this.state.mobileNumber,
-    });
+  };
+  async updateDB(amount, balance) {
+    const date = firestore.Timestamp.now();
+    const fetcherId = auth().currentUser.uid;
+    await firestore()
+      .collection('transaction')
+      .add({fetcherId, amount, date, status: 'pending', action: 'cashOut'});
+    await firestore().collection('users').doc(fetcherId).update({balance});
   }
   render() {
     return (
@@ -56,15 +46,6 @@ export default class CashOut extends Component {
           value={this.state.amount}
           keyboardType="numeric"
           onChange={text => this.setState({amount: text.nativeEvent.text})}
-        />
-
-        <Text>CASH-OUT AMOUNT</Text>
-        <TextInput
-          value={this.state.mobileNumber}
-          keyboardType="numeric"
-          onChange={text =>
-            this.setState({mobileNumber: text.nativeEvent.text})
-          }
         />
 
         <View>
@@ -79,3 +60,4 @@ export default class CashOut extends Component {
     );
   }
 }
+export default CashOut;

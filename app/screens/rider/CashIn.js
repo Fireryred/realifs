@@ -9,7 +9,6 @@ class CashIn extends Component {
     };
   }
 
-  componentDidMount() {}
   handleCashIn = () => {
     const {amount} = this.state;
     const {balance} = this.props.route.params;
