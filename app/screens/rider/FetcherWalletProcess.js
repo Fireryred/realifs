@@ -18,7 +18,6 @@ export class FetcherWalletProcess extends Component {
     const fetcherId = auth().currentUser.uid;
     const amount = parseInt(params.amount);
 
-    let cost = amount ? parseInt(params.amount) * 100 : null;
     let balance = parseInt(params.balance) + amount;
     let status = 'success';
 
@@ -32,7 +31,7 @@ export class FetcherWalletProcess extends Component {
       body: JSON.stringify({
         data: {
           attributes: {
-            amount: cost,
+            amount: amount,
             redirect: {
               success:
                 `https://us-central1-realifs-prototype.cloudfunctions.net/fetcherWalletSuccess?` +

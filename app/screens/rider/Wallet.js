@@ -42,7 +42,7 @@ export class Wallet extends Component {
     return (
       <View>
         <Text style={{color: 'black'}}> REALIFS Fetcher Wallet </Text>
-        <Text style={{color: 'black'}}>₱{balance}</Text>
+        <Text style={{color: 'black'}}>₱{balance / 100}</Text>
         <Text style={{color: 'black'}}>Current Balance</Text>
         <Button title="CASH-IN" onPress={this.toCashIn}>
           CASH-IN
