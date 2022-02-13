@@ -27,6 +27,8 @@ export default class CSORegistrationScreen extends Component {
             PCNCCertificateExists: null,
             PCNCCertificateFilepath: null,
             PCNCCertificateWebURL: null,
+            about: "",
+            bankNumbers: "",
             agreeToTerms: null,
             formValid: false,
             errors: {
@@ -401,7 +403,7 @@ export default class CSORegistrationScreen extends Component {
     }
  
     async handleRegister() {
-        let {organizationName, email, username, password, SECCertificateWebURL, PCNCCertificateWebURL } = this.state;
+        let {organizationName, email, username, password, SECCertificateWebURL, PCNCCertificateWebURL, bankNumbers } = this.state;
 
         console.log(`ALL VALID ${this.allValid()}`);
 
@@ -418,6 +420,8 @@ export default class CSORegistrationScreen extends Component {
                     username,
                     SECCertificateWebURL,
                     PCNCCertificateWebURL,
+                    about,
+                    bankNumbers,
                     verifiedByHR: false
                 })
                     .then( () => {console.log('User data creation: success')} )

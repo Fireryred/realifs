@@ -20,6 +20,8 @@ import History from '../screens/rider/History';
 import Wallet from '../screens/rider/Wallet';
 import MapScreen from '../screens/rider/MapScreen';
 import FetcherWalletProcess from '../screens/rider/FetcherWalletProcess';
+import FetcherProfile from '../screens/rider/FetcherProfile';
+import ContactSupport from '../screens/general/ContactSupport';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -67,6 +69,18 @@ class CustomDrawerContent extends React.Component {
     return (
       <DrawerContentScrollView {...this.props}>
         <DrawerItemList {...this.props} />
+        <DrawerItem
+          label="My Profile"
+          onPress={() => {
+            this.props.navigation.navigate('FetcherProfile');
+          }}
+        />
+        <DrawerItem
+          label="Contact Support"
+          onPress={() => {
+            this.props.navigation.navigate('ContactSupport');
+          }}
+        />
         <DrawerItem label="Logout" onPress={handleLogout} />
       </DrawerContentScrollView>
     );

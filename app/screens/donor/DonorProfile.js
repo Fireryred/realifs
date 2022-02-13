@@ -9,7 +9,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import { TextInput, Caption, Text, Button, Surface } from 'react-native-paper'
 
-class Profile extends Component {
+class DonorProfile extends Component {
     constructor() {
         super();
         this.state = {
@@ -274,4 +274,4 @@ const mapStateToProps = state => {
     };
   };
   
-  export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+  export default connect(mapStateToProps, mapDispatchToProps)(DonorProfile);
