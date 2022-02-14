@@ -19,6 +19,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {CreateDonationEffort} from '../screens/cso/CreateDonationEffort';
 import CSOProfile from '../screens/cso/CSOProfile';
 import ContactSupport from '../screens/general/ContactSupport';
+import ViewDonationEffort from '../screens/cso/ViewDonationEffort';
 
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -38,11 +39,21 @@ class CSOMain extends Component {
             name="CreateDonationEffort"
             component={CreateDonationEffort}
           />
-          <Stack.Screen name="CSOProfile" component={CSOProfile} 
+          <Stack.Screen
+            name="CSOProfile"
+            component={CSOProfile}
             options={{headerShown: true}}
           />
-          <Stack.Screen name="ContactSupport" component={ContactSupport} 
-            options={{headerShown: true}}/>
+          <Stack.Screen
+            name="ContactSupport"
+            component={ContactSupport}
+            options={{headerShown: true}}
+          />
+          <Stack.Screen
+            name="ViewDonationEffort"
+            component={ViewDonationEffort}
+            options={{headerShown: true}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -67,12 +78,18 @@ class CustomDrawerContent extends React.Component {
     return (
       <DrawerContentScrollView {...this.props}>
         <DrawerItemList {...this.props} />
-        <DrawerItem label="Profile" onPress={() => {
-            this.props.navigation.navigate("CSOProfile")
-        }} />
-        <DrawerItem label="Contact Support" onPress={() => {
-            this.props.navigation.navigate("ContactSupport")
-        }} />
+        <DrawerItem
+          label="Profile"
+          onPress={() => {
+            this.props.navigation.navigate('CSOProfile');
+          }}
+        />
+        <DrawerItem
+          label="Contact Support"
+          onPress={() => {
+            this.props.navigation.navigate('ContactSupport');
+          }}
+        />
         <DrawerItem label="Logout" onPress={handleLogout} />
       </DrawerContentScrollView>
     );
