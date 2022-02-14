@@ -94,8 +94,8 @@ export class Fetch extends Component {
     const {balance, exists} = this.state;
     if (
       !exists &&
-      data[1].cost * 0.2 > balance &&
-      data[1].paymentMethod === 'cod'
+      data[1].paymentMethod === 'cod' &&
+      data[1].cost * 0.2 > balance
     ) {
       Alert.alert("Doesn't have enough balance to accept this");
     } else {
