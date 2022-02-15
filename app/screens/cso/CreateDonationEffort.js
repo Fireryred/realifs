@@ -332,6 +332,7 @@ export class CreateDonationEffort extends Component {
                 csoID: auth().currentUser.uid,
                 geocodeAddress: geocodeAddress,
                 city: city,
+                isDeleted: false,
               })
               .then(() => {
                 Alert.alert(
