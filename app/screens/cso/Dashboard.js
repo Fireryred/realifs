@@ -51,7 +51,6 @@ export class Dashboard extends Component {
   }
   render() {
     const {efforts} = this.state;
-    console.log(efforts.active);
     return (
       <ScrollView>
         <View>
