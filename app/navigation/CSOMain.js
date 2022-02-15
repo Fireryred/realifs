@@ -20,6 +20,7 @@ import {CreateDonationEffort} from '../screens/cso/CreateDonationEffort';
 import CSOProfile from '../screens/cso/CSOProfile';
 import ContactSupport from '../screens/general/ContactSupport';
 import ViewDonationEffort from '../screens/cso/ViewDonationEffort';
+import TrackFetcher from '../screens/donor/TrackFetcher';
 
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -52,6 +53,11 @@ class CSOMain extends Component {
           <Stack.Screen
             name="ViewDonationEffort"
             component={ViewDonationEffort}
+            options={{headerShown: true}}
+          />
+          <Stack.Screen
+            name="TrackFetcher"
+            component={TrackFetcher}
             options={{headerShown: true}}
           />
         </Stack.Navigator>
