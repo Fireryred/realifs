@@ -82,9 +82,11 @@ export class Fetch extends Component {
   }
 
   toMaps = (data, donorDetails) => {
-    console.log(this.state.balance);
-    this.updateStatus(data);
-    data[1].status = 'pickup';
+    const {exists} = this.state;
+    if (!exists) {
+      this.updateStatus(data);
+      data[1].status = 'pickup';
+    }
     console.log(data);
     this.props.navigation.navigate('Maps', {
       data: data,
