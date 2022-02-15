@@ -44,7 +44,7 @@ export class CreateDonationEffort extends Component {
         longitudeDelta: 0.0121,
       },
       geocodeAddress: null,
-      city: ""
+      city: '',
     };
   }
 
@@ -163,31 +163,30 @@ export class CreateDonationEffort extends Component {
   getAddressWithLatlng(lat, lng) {
     let uri = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDAdKi6it1aJYQ9GUVDIPQAG4s6P_UyCjw`;
 
-    fetch(uri)
-        .then(res => {
-            res.json().then(json => {     
-                console.log(`${uri}\nResult: `, Object.entries(json).length);
+    fetch(uri).then(res => {
+      res.json().then(json => {
+        console.log(`${uri}\nResult: `, Object.entries(json).length);
 
-                for(let item of json.results) {
-                    this.setState({
-                        ...this.state,
-                        geocodeAddress: item['formatted_address']
-                    })
+        for (let item of json.results) {
+          this.setState({
+            ...this.state,
+            geocodeAddress: item['formatted_address'],
+          });
 
-                    for(let comp of item['address_components']) {
-                        if(comp.types.includes('locality')) {
-                            this.setState({
-                                ...this.state,
-                                city: comp.long_name
-                            })
-                        }
-                    }
-                    
-                    break;
-                }
-            }) 
-        })
-}
+          for (let comp of item['address_components']) {
+            if (comp.types.includes('locality')) {
+              this.setState({
+                ...this.state,
+                city: comp.long_name,
+              });
+            }
+          }
+
+          break;
+        }
+      });
+    });
+  }
 
   render() {
     const {
@@ -200,7 +199,7 @@ export class CreateDonationEffort extends Component {
       imageWebURL,
       loc,
       geocodeAddress,
-      city
+      city,
     } = this.state;
     return (
       <ScrollView>
@@ -210,9 +209,7 @@ export class CreateDonationEffort extends Component {
             <TextInput
               placeholder="Title"
               value={title}
-              onChange={text =>
-                this.setState({title: text.nativeEvent.text})
-              }></TextInput>
+              onChangeText={text => this.setState({title: text})}></TextInput>
           </View>
           <View>
             {start.show && (
@@ -243,9 +240,7 @@ export class CreateDonationEffort extends Component {
               placeholder="Write Description..."
               multiline={true}
               value={description}
-              onChange={text =>
-                this.setState({description: text.nativeEvent.text})
-              }
+              onChangeText={text => this.setState({description: text})}
             />
           </View>
           <View>
@@ -262,9 +257,7 @@ export class CreateDonationEffort extends Component {
             <TextInput
               placeholder="House number, Street, Village, City, Region"
               value={address}
-              onChange={text =>
-                this.setState({address: text.nativeEvent.text})
-              }></TextInput>
+              onChangeText={text => this.setState({address: text})}></TextInput>
           </View>
           <View>
             <Subheading>AVAILABILITY</Subheading>
@@ -332,7 +325,7 @@ export class CreateDonationEffort extends Component {
                 location: new firestore.GeoPoint(loc.latitude, loc.longitude),
                 csoID: auth().currentUser.uid,
                 geocodeAddress: geocodeAddress,
-                city: city
+                city: city,
               })
               .then(() => {
                 Alert.alert(
@@ -342,17 +335,17 @@ export class CreateDonationEffort extends Component {
                   {cancelable: true},
                 );
               })
-              .catch((err) => {
+              .catch(err => {
                 Alert.alert(
                   'There was an error processing your request',
-                  "Please try again",
+                  'Please try again',
                   undefined,
                   {cancelable: true},
                 );
-                console.log("error creating donation effort", err)
+                console.log('error creating donation effort', err);
               })
               .finally(() => {
-                this.props.navigation.replace("CSODrawer");
+                this.props.navigation.replace('CSODrawer');
               });
           }}
         />

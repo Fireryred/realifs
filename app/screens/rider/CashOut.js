@@ -47,7 +47,7 @@ export class CashOut extends Component {
         <TextInput
           value={this.state.amount}
           keyboardType="numeric"
-          onChange={text => this.setState({amount: text.nativeEvent.text})}
+          onChangeText={text => this.setState({amount: text})}
         />
 
         <View>

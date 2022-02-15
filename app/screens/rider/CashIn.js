@@ -37,7 +37,7 @@ class CashIn extends Component {
         <Text>CASH-IN AMOUNT</Text>
         <TextInput
           keyboardType="numeric"
-          onChange={text => this.setState({amount: text.nativeEvent.text})}
+          onChangeText={text => this.setState({amount: text})}
         />
         <View>
           <Button title="CANCEL" onPress={() => this.props.navigation.goBack()}>
