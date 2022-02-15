@@ -94,7 +94,7 @@ class CSOIncomingDonation extends Component {
                 <Button onPress={() => toTrack(data[0])}>TRACK</Button>
                 <Button
                   disabled={requestData.status === 'pickup' ? true : false}
-                  onPress={this.updateStatus()}>
+                  onPress={() => this.updateStatus()}>
                   I RECIEVED
                 </Button>
               </View>
