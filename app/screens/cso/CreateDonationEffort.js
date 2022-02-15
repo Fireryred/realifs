@@ -22,6 +22,7 @@ export class CreateDonationEffort extends Component {
   constructor() {
     super();
     this.state = {
+      test: [],
       imageName: 'CHOOSE FILE',
       imageWebURL: '',
       title: 'Test',
@@ -103,36 +104,41 @@ export class CreateDonationEffort extends Component {
   };
 
   async pickFile() {
-    let granted = await this.requestPermissionStorage().catch(error =>
-      console.error(error),
-    );
+    await this.requestPermissionStorage().catch(error => console.error(error));
 
     let file = await DocumentPicker.pick({
+      allowMultiSelection: true,
       type: [DocumentPicker.types.images],
       copyTo: 'documentDirectory',
     });
+    let url = [];
+    file.forEach(async images => {
+      let pathToFile = `${images.fileCopyUri}`;
+      let filenameSplitLength = images.name.split('.').length ?? 0;
+      let filetype = images.name.split('.')[filenameSplitLength - 1] ?? '';
+      let uploadFilename = this.generateRandomHex() + filetype;
+      let firebaseStorageRef = storage().ref(
+        `DonationEffort/${uploadFilename}`,
+      );
+      // Upload to Firebase Storage
+      await firebaseStorageRef
+        .putFile(pathToFile, {
+          cacheControl: 'no-store',
+        })
+        .catch(error => {
+          console.log(error);
+        });
 
-    let pathToFile = `${file[0].fileCopyUri}`;
-    let filenameSplitLength = file[0].name.split('.').length ?? 0;
-    let filetype = file[0].name.split('.')[filenameSplitLength - 1] ?? '';
-    let uploadFilename = this.generateRandomHex() + filetype;
-    let firebaseStorageRef = storage().ref(`DonationEffort/${uploadFilename}`);
-
-    // Upload to Firebase Storage
-    let result = await firebaseStorageRef
-      .putFile(pathToFile, {
-        cacheControl: 'no-store',
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-    const url = await storage()
-      .ref(`DonationEffort/${uploadFilename}`)
-      .getDownloadURL();
-    const imageUrl = url.valueOf();
-    this.setState({imageName: file[0].name, imageWebURL: imageUrl});
-    console.log(url.valueOf());
+      url.push(
+        await storage()
+          .ref(`DonationEffort/${uploadFilename}`)
+          .getDownloadURL(),
+      );
+    });
+    this.setState({
+      imageName: `${file.length} Files Selected`,
+      imageWebURL: url,
+    });
   }
 
   async requestPermissionStorage() {
