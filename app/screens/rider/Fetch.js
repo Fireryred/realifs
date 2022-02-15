@@ -6,6 +6,7 @@ import FetchRequest from '../../components/FetchRequest';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import {Button} from 'react-native-paper';
 
 export class Fetch extends Component {
   constructor() {
@@ -122,14 +123,20 @@ export class Fetch extends Component {
   }
   render() {
     const {requests, data, donorDetails, exists} = this.state;
-    if (exists) {
-      this.toMaps(data, donorDetails);
-    }
+    console.log(exists);
     return (
       <ScrollView>
-        {Object.entries(requests).map((request, key) => (
-          <FetchRequest data={request} key={key} toMaps={this.checkBalance} />
-        ))}
+        {!exists ? (
+          Object.entries(requests).map((request, key) => (
+            <FetchRequest data={request} key={key} toMaps={this.checkBalance} />
+          ))
+        ) : (
+          <Button
+            title="Resume Delivery"
+            onPress={() => this.toMaps(data, donorDetails)}>
+            Resume Delivery
+          </Button>
+        )}
       </ScrollView>
     );
   }
