@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {View, Text, Image, Button} from 'react-native';
+import {View, Text, Image, Button, PermissionsAndroid} from 'react-native';
 import {TextInput} from 'react-native-paper';
+import DocumentPicker from 'react-native-document-picker';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
+import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 
 class ViewDonationEffort extends Component {
@@ -26,11 +28,19 @@ class ViewDonationEffort extends Component {
       ctitle: '',
       description: '',
       cdescription: '',
+      cimageWebUrl: '',
+      imageWebUrl: '',
+      imageName: 'CHOOSE IMAGE',
     };
   }
   componentDidMount() {
     const {data} = this.props.route.params;
-    this.setState({title: data[1].title, description: data[1].description});
+    console.log(data[1].imageUrl);
+    this.setState({
+      title: data[1].title,
+      description: data[1].description,
+      imageWebUrl: data[1].imageUrl,
+    });
     this.formatDate();
   }
 
@@ -136,7 +146,7 @@ class ViewDonationEffort extends Component {
 
   async handleSave() {
     const {data} = this.props.route.params;
-    const {title, description, start, end} = this.state;
+    const {title, description, start, end, imageWebUrl} = this.state;
     await firestore()
       .collection('donation_efforts')
       .doc(data[0])
@@ -145,11 +155,72 @@ class ViewDonationEffort extends Component {
         description: description,
         startDateTime: start.date,
         endDateTime: end.date,
+        imageUrl: imageWebUrl,
       })
       .then(() => {
         console.log('update donation effort');
         this.setState({editMode: false});
       });
+  }
+
+  async pickFile() {
+    await this.requestPermissionStorage().catch(error => console.error(error));
+
+    let file = await DocumentPicker.pick({
+      allowMultiSelection: true,
+      type: [DocumentPicker.types.images],
+      copyTo: 'documentDirectory',
+    });
+    let url = [];
+    file.forEach(async images => {
+      let pathToFile = `${images.fileCopyUri}`;
+      let filenameSplitLength = images.name.split('.').length ?? 0;
+      let filetype = images.name.split('.')[filenameSplitLength - 1] ?? '';
+      let uploadFilename = this.generateRandomHex() + filetype;
+      let firebaseStorageRef = storage().ref(
+        `DonationEffort/${uploadFilename}`,
+      );
+      // Upload to Firebase Storage
+      await firebaseStorageRef
+        .putFile(pathToFile, {
+          cacheControl: 'no-store',
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+      url.push(
+        await storage()
+          .ref(`DonationEffort/${uploadFilename}`)
+          .getDownloadURL(),
+      );
+
+      this.setState({
+        imageName: `${
+          url.length != 0 ? `${file.length} Files Selected` : 'CHOOSE IMAGE'
+        }`,
+        imageWebUrl: url,
+      });
+    });
+  }
+
+  async requestPermissionStorage() {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('Permission Granted');
+      return true;
+    } else {
+      console.log('Permission Denied');
+      return false;
+    }
+  }
+
+  generateRandomHex(length = 16) {
+    return [...Array(length)]
+      .map(() => Math.floor(Math.random() * 16).toString(16))
+      .join('');
   }
 
   render() {
@@ -164,15 +235,24 @@ class ViewDonationEffort extends Component {
       ctitle,
       description,
       cdescription,
+      imageWebUrl,
+      cimageWebUrl,
+      imageName,
     } = this.state;
     return (
       <>
         {!editMode ? (
           <View>
-            <Image
-              source={{uri: data[1].imageUrl}}
-              style={{minWidth: 100, minHeight: 100}}
-            />
+            {imageWebUrl.map &&
+              imageWebUrl.map((value, index) => {
+                return (
+                  <Image
+                    key={index}
+                    source={{uri: value}}
+                    style={{minWidth: 100, minHeight: 100}}
+                  />
+                );
+              })}
             <Text style={{color: 'black'}}>{title}</Text>
             {!data[1].isDeleted && (
               <Button
@@ -184,6 +264,7 @@ class ViewDonationEffort extends Component {
                     cend: end,
                     ctitle: title,
                     cdescription: description,
+                    cimageWebUrl: imageWebUrl,
                   })
                 }>
                 Edit
@@ -208,10 +289,16 @@ class ViewDonationEffort extends Component {
           </View>
         ) : (
           <View>
-            <Image
-              source={{uri: data[1].imageUrl}}
-              style={{minWidth: 100, minHeight: 100}}
-            />
+            <Button
+              title={imageName}
+              onPress={() => {
+                this.pickFile().catch(error => {
+                  if (DocumentPicker.isCancel(error)) {
+                  } else {
+                    console.log('Error with file upload: ', error);
+                  }
+                });
+              }}></Button>
             <TextInput
               style={{color: 'black'}}
               value={title}
@@ -267,6 +354,7 @@ class ViewDonationEffort extends Component {
                   end: cend,
                   title: ctitle,
                   description: cdescription,
+                  imageWebUrl: cimageWebUrl,
                 })
               }
             />
