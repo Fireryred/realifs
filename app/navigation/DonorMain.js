@@ -30,6 +30,7 @@ const MyTheme = {
     colors: {
       ...DefaultTheme.colors,
       ...PaperDefaultTheme.colors,
+      background: "white",
     },
 };
 

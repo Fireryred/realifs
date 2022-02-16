@@ -36,12 +36,17 @@ export default class RequestFetch extends Component {
             pickupGeocodeAddress: null,
             vehicleType: "motorcycle", // motorcycle or car
             paymentMethod: "online", // online or cod
-            modalVisible: false
+            modalVisible: false,
+            title: "",
         }
     }
     componentDidMount() {
-        let {effortId, effortCoordinates, geocodeAddress, city} = this.props.route.params;
+        let {effortId, effortCoordinates, geocodeAddress, city, title} = this.props.route.params;
         console.log('Request Fetch EFFORT ID:', JSON.stringify(effortId, null, 2))
+        console.log('effortCoordinates', JSON.stringify(effortCoordinates, null, 2))
+        console.log('geocodeAddress', JSON.stringify(geocodeAddress, null, 2))
+        console.log('city', city)
+        console.log('Title:', title)
         
         // Initialize data from previous screen
         this.setState({
@@ -52,6 +57,7 @@ export default class RequestFetch extends Component {
             effortCity: city,
             pickupCoordinates: effortCoordinates, // Set initial location same as the effort location
             effortDataInitialized: true,
+            title: title,
         },)
     }
 
@@ -245,120 +251,129 @@ export default class RequestFetch extends Component {
         return (
             <>
             { this.state.effortDataInitialized && 
-            <ScrollView>
-                <Subheading>Donation Details</Subheading>
-                <TextInput
-                    placeholder="Enter details of your donation (e.g. contents, quantity)" 
-                    value={this.state.donationDetails}
-                    multiline={true}
-                    error={false}
-                    onChangeText={(text) => { 
-                        this.setState({
-                            ...this.state,
-                            donationDetails: text
-                        })
-                    }}
-                />
-                
-                <Subheading>Vehicle Type</Subheading>
-                <RadioButton.Group 
-                    onValueChange={
-                        value => {
+            <ScrollView style={{padding: 10}}>
+                <View style={{marginBottom: 15}}>
+                    <Text style={{fontWeight: "bold"}}>Donation Details</Text>
+                    <TextInput
+                        placeholder="Enter details of your donation (e.g. contents, quantity)" 
+                        value={this.state.donationDetails}
+                        multiline={true}
+                        error={false}
+                        onChangeText={(text) => { 
                             this.setState({
                                 ...this.state,
-                                vehicleType: value
+                                donationDetails: text
                             })
-                        }
-                    } 
-                    value={this.state.vehicleType}
-                >
-                    <RadioButton.Item label="Motorcycle" value="motorcycle" />
-                    <RadioButton.Item label="Car or Van" value="car" />
-                </RadioButton.Group>               
-                
-                <Subheading>Full Address</Subheading>
-                <TextInput
-                    placeholder="Enter your home address"
-                    value={this.state.fullAddress}
-                    multiline={true}
-                    error={false}
-                    onChangeText={(text) => { 
-                        this.setState({
-                            ...this.state,
-                            fullAddress: text
-                        })
-                    }}
-                />
-
-                <Subheading>Pick-up Location</Subheading>
-                <View
-                    style={styles.mapContainer}
-                >
-                    <MapView
-                        style={styles.map}
-                        onRegionChange={this.onRegionChange}
-                        initialRegion={{
-                            latitude: effortLatitude,
-                            longitude: effortLongitude,
-                            latitudeDelta: 0.002,
-                            longitudeDelta: 0.001,
                         }}
-                        onMapReady={() => {}}
-                    >
-
-                        <Marker
-                            key={'m1'}
-                            coordinate={{latitude: effortLatitude, longitude: effortLongitude}}
-                            title={`Donation Effort for Typhoon Victims`}
-                            description={`DETAILS....`}
-                        />
-
-                        { this.state.pathPolylines && 
-                            <Polyline
-                                coordinates={this.state.pathPolylines}
-                                strokeColor="#7b17ff" // fallback for when `strokeColors` is not supported by the map-provider
-                                strokeColors={[
-                                    '#7F0000',
-                                    '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
-                                    '#B24112',
-                                    '#E5845C',
-                                    '#238C23',
-                                    '#7F0000'
-                                ]}
-                                strokeWidth={6}
-                            />
-                        }
-                    </MapView>
-
-                    <View
-                        style={styles.pointerContainer}
-                    >
-                        <Image
-                            style={styles.pointer}
-                            resizeMode='contain'
-                            source={{uri: 'https://firebasestorage.googleapis.com/v0/b/realifs-prototype.appspot.com/o/assets%2Flocator-fit.png?alt=media&token=1cf279c2-81a0-44c7-9220-132271f3bf87'}}
-                        />
-                    </View>
-
+                    />
                 </View>
-                <Text>Selected Address: {`${this.state.pickupGeocodeAddress || 'No address selected'}`}</Text>
-                <Text>Distance: {`${Math.floor((this.state.distance / 1000) * 10) / 10} km`}</Text>
-
-                <Subheading>Payment Method</Subheading>
-                <RadioButton.Group 
-                    onValueChange={
-                        value => {
+                
+                <View style={{marginBottom: 15}}>
+                    <Text style={{fontWeight: "bold"}}>Vehicle Type</Text>
+                    <RadioButton.Group 
+                        onValueChange={
+                            value => {
+                                this.setState({
+                                    ...this.state,
+                                    vehicleType: value
+                                })
+                            }
+                        } 
+                        value={this.state.vehicleType}
+                    >
+                        <RadioButton.Item label="Motorcycle" value="motorcycle" />
+                        <RadioButton.Item label="Car or Van" value="car" />
+                    </RadioButton.Group>
+                </View>       
+                
+                <View style={{marginBottom: 15}}>
+                    <Text style={{fontWeight: "bold"}}>House Number/Address</Text>
+                    <TextInput
+                        placeholder="Enter your home address"
+                        value={this.state.fullAddress}
+                        multiline={true}
+                        error={false}
+                        onChangeText={(text) => { 
                             this.setState({
                                 ...this.state,
-                                paymentMethod: value
+                                fullAddress: text
                             })
-                        }
-                    } 
-                    value={this.state.paymentMethod}
-                >
-                    <RadioButton.Item label="Online Payment" value="online" />
-                    <RadioButton.Item label="Cash on Delivery" value="cod" />
-                </RadioButton.Group>   
+                        }}
+                    />
+                </View>
+
+                <View style={{marginBottom: 15}}>
+                    <Text style={{fontWeight: "bold"}}>Pick-up Location</Text>
+                    <View
+                        style={styles.mapContainer}
+                    >
+                        <MapView
+                            style={styles.map}
+                            onRegionChange={this.onRegionChange}
+                            initialRegion={{
+                                latitude: effortLatitude,
+                                longitude: effortLongitude,
+                                latitudeDelta: 0.002,
+                                longitudeDelta: 0.001,
+                            }}
+                            onMapReady={() => {}}
+                        >
+
+                            <Marker
+                                key={'m1'}
+                                coordinate={{latitude: effortLatitude, longitude: effortLongitude}}
+                                title={`${this.state.title && this.state.title}`}
+                            />
+
+                            { this.state.pathPolylines && 
+                                <Polyline
+                                    coordinates={this.state.pathPolylines}
+                                    strokeColor="#7b17ff" // fallback for when `strokeColors` is not supported by the map-provider
+                                    strokeColors={[
+                                        '#7F0000',
+                                        '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
+                                        '#B24112',
+                                        '#E5845C',
+                                        '#238C23',
+                                        '#7F0000'
+                                    ]}
+                                    strokeWidth={6}
+                                />
+                            }
+                        </MapView>
+
+                        <View
+                            style={styles.pointerContainer}
+                        >
+                            <Image
+                                style={styles.pointer}
+                                resizeMode='contain'
+                                source={{uri: 'https://firebasestorage.googleapis.com/v0/b/realifs-prototype.appspot.com/o/assets%2Flocator-fit.png?alt=media&token=1cf279c2-81a0-44c7-9220-132271f3bf87'}}
+                            />
+                        </View>
+
+                    </View>
+                    <Text>Selected Address: {`${this.state.pickupGeocodeAddress || 'No address selected'}`}</Text>
+                    <Text>Distance: {`${Math.floor((this.state.distance / 1000) * 10) / 10} km`}</Text>
+                </View>
+
+                <View style={{marginBottom: 15}}>
+                    <Text style={{fontWeight: "bold"}}>Payment Method</Text>
+                    <RadioButton.Group 
+                        onValueChange={
+                            value => {
+                                this.setState({
+                                    ...this.state,
+                                    paymentMethod: value
+                                })
+                            }
+                        } 
+                        value={this.state.paymentMethod}
+                    >
+                        <RadioButton.Item label="Online Payment" value="online" />
+                        <RadioButton.Item label="Cash on Delivery" value="cod" />
+                    </RadioButton.Group>
+                </View>
 
                 <Surface
                     style={styles.bottomContainer}
