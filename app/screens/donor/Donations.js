@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
-import { View, Modal, StyleSheet, ScrollView, RefreshControl } from 'react-native'
+import { View, Modal, StyleSheet, ScrollView, RefreshControl, TouchableOpacity } from 'react-native'
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 import { TextInput, Button, Text, Surface, Card, Title, ActivityIndicator, Colors, } from 'react-native-paper'
+
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import { DefaultTheme as PaperDefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
 
 export class Donations extends Component {
     constructor() {
@@ -139,6 +144,25 @@ class DonationItem extends Component {
                                     })
                                 }}
                             >CANCEL</Button>
+                            
+                            <TouchableOpacity 
+                                style={{
+                                    height: 40, 
+                                    width: 40, 
+                                    padding: 0, 
+                                    borderRadius: 40,
+                                    backgroundColor: PaperDefaultTheme.colors.primary,
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}
+                                onPress={() => {
+                                    this.props.parentProps.navigation.navigate("Chat", {fetchRequestId: donationId, fetcherId: donationData.fetcherId})
+                                }}
+                            >
+                                <MaterialIcons name="chat" size={25} color="gold"/>
+                            </TouchableOpacity>
+
                             
                         </Surface>
                         
