@@ -5,11 +5,10 @@ import {
   View,
   Text,
   Image,
-  Button,
   PermissionsAndroid,
   Alert,
 } from 'react-native';
-import {Subheading, Surface, TextInput} from 'react-native-paper';
+import {Subheading, Surface, TextInput, Button, Title} from 'react-native-paper';
 
 import MapView from 'react-native-maps';
 import DocumentPicker from 'react-native-document-picker';
@@ -203,10 +202,10 @@ export class CreateDonationEffort extends Component {
       city
     } = this.state;
     return (
-      <ScrollView>
+      <ScrollView style={{padding: 10}}>
         <View>
           <View>
-            <Subheading>TITLE</Subheading>
+            <Title>Title</Title>
             <TextInput
               placeholder="Title"
               value={title}
@@ -214,31 +213,10 @@ export class CreateDonationEffort extends Component {
                 this.setState({title: text.nativeEvent.text})
               }></TextInput>
           </View>
-          <View>
-            {start.show && (
-              <DateTimePicker
-                value={start.date}
-                mode={start.type}
-                onChange={this.handleStart}
-              />
-            )}
-            {end.show && (
-              <DateTimePicker
-                value={end.date}
-                mode={end.type}
-                onChange={this.handleEnd}
-              />
-            )}
-            <Subheading>START DATE</Subheading>
-            <Button
-              title={start.date.toDateString()}
-              onPress={() => this.show('startDate')}
-            />
-          </View>
         </View>
         <View>
           <View>
-            <Subheading>DESCRIPTION</Subheading>
+            <Title>Description</Title>
             <TextInput
               placeholder="Write Description..."
               multiline={true}
@@ -248,17 +226,10 @@ export class CreateDonationEffort extends Component {
               }
             />
           </View>
-          <View>
-            <Subheading>END DATE</Subheading>
-            <Button
-              title={end.date.toDateString()}
-              onPress={() => this.show('endDate')}
-            />
-          </View>
         </View>
         <View>
           <View>
-            <Subheading>FULL ADDRESS</Subheading>
+            <Title>Full Address</Title>
             <TextInput
               placeholder="House number, Street, Village, City, Region"
               value={address}
@@ -267,20 +238,77 @@ export class CreateDonationEffort extends Component {
               }></TextInput>
           </View>
           <View>
-            <Subheading>AVAILABILITY</Subheading>
-            <Button
-              title={start.date.toLocaleTimeString()}
-              onPress={() => this.show('startTime')}
-            />
+            
           </View>
         </View>
+        <View
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              {start.show && (
+                <DateTimePicker
+                  value={start.date}
+                  mode={start.type}
+                  onChange={this.handleStart}
+                />
+              )}
+              {end.show && (
+                <DateTimePicker
+                  value={end.date}
+                  mode={end.type}
+                  onChange={this.handleEnd}
+                />
+              )}
+              <Subheading>START DATE</Subheading>
+              <Button
+                mode="outlined"
+                title={start.date.toDateString()}
+                onPress={() => this.show('startDate')}
+              >{start.date.toDateString()}</Button>
+              <Subheading>END DATE</Subheading>
+              <Button
+                mode="outlined"
+                title={end.date.toDateString()}
+                onPress={() => this.show('endDate')}
+              >{end.date.toDateString()}</Button>
+            </View>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Subheading>AVAILABILITY</Subheading>
+              <Button
+                mode="outlined"
+                onPress={() => this.show('startTime')}
+              >{(((start.date.getHours() + 11) % 12 + 1) + `:${start.date.getMinutes()} ` + (start.date.getHours() <= 11 ? "AM" : "PM"))}</Button>
+              <Text>-TO-</Text>
+              <Button
+                mode="outlined"
+                onPress={() => this.show('endTime')}
+              >{(((end.date.getHours() + 11) % 12 + 1) + `:${start.date.getMinutes()} ` + (end.date.getHours() <= 11 ? "AM" : "PM"))}</Button>
+            </View>
+          </View>
         <View>
           <View>
-            <Subheading>ADDPHOTO</Subheading>
+            <Subheading>ADD PHOTO</Subheading>
             <Surface>
               <Button
                 mode="outlined"
-                title={imageName}
+                compact={true}
                 onPress={() => {
                   this.pickFile().catch(error => {
                     if (DocumentPicker.isCancel(error)) {
@@ -289,16 +317,12 @@ export class CreateDonationEffort extends Component {
                     }
                   });
                 }}
-              />
+              >{imageName}</Button>
             </Surface>
           </View>
         </View>
         <View>
-          <Text>-TO-</Text>
-          <Button
-            title={end.date.toLocaleTimeString()}
-            onPress={() => this.show('endTime')}
-          />
+          
         </View>
         <View style={styles.mapContainer}>
           <MapView
