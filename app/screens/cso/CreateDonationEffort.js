@@ -22,7 +22,6 @@ export class CreateDonationEffort extends Component {
   constructor() {
     super();
     this.state = {
-      test: [],
       imageName: 'CHOOSE FILE',
       imageWebURL: '',
       title: 'Test',
@@ -134,10 +133,12 @@ export class CreateDonationEffort extends Component {
           .ref(`DonationEffort/${uploadFilename}`)
           .getDownloadURL(),
       );
-    });
-    this.setState({
-      imageName: `${file.length} Files Selected`,
-      imageWebURL: url,
+      this.setState({
+        imageName: `${
+          url.length != 0 ? `${file.length} Files Selected` : 'CHOOSE FILE'
+        }`,
+        imageWebURL: url,
+      });
     });
   }
 
