@@ -19,9 +19,10 @@ import Fetch from '../screens/rider/Fetch';
 import History from '../screens/rider/History';
 import Wallet from '../screens/rider/Wallet';
 import MapScreen from '../screens/rider/MapScreen';
-import FetcherWalletProcess from '../screens/rider/FetcherWalletProcess';
 import FetcherProfile from '../screens/rider/FetcherProfile';
 import ContactSupport from '../screens/general/ContactSupport';
+import Chat from '../screens/general/Chat';
+import FetcherWalletProcess from '../screens/rider/FetcherWalletProcess';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -43,9 +44,18 @@ class RiderMain extends Component {
             options={{headerShown: true}}
           />
           <Stack.Screen
-            name="CashIn"
-            component={CashIn}
+            name="FetcherProfile"
+            component={FetcherProfile}
             options={{headerShown: true}}
+          />
+          <Stack.Screen name="ContactSupport" component={ContactSupport} 
+            options={{headerShown: true}}/>
+          <Stack.Screen name="Chat" component={Chat} 
+            options={{headerShown: true}}/>
+          <Stack.Screen
+              name="CashIn"
+              component={CashIn}
+              options={{headerShown: true}}
           />
           <Stack.Screen
             name="CashOut"

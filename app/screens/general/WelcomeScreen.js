@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, ScrollView, Alert, Image } from 'react-native'
 
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -12,11 +12,23 @@ import DonorRegistrationScreen from './DonorRegistrationScreen';
 import RiderRegistrationScreen from './RiderRegistrationScreen';
 import CSORegistrationScreen from './CSORegistrationScreen';
 import ForgotPassword from './ForgotPassword';
+import PrivacyPolicy from './PrivacyPolicy';
 
 import {realifsLogoText, welcomeBg} from '../../assets' 
 
 // UI Override
 import { TextInput, Button, Text } from 'react-native-paper'
+
+import { DefaultTheme as PaperDefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
+const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      ...PaperDefaultTheme.colors,
+      background: "white",
+    },
+};
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -24,7 +36,7 @@ const Tab = createMaterialBottomTabNavigator();
 export default class WelcomeScreen extends Component {
     render() {
         return (
-            <NavigationContainer>
+            <NavigationContainer theme={MyTheme}>
                 <Stack.Navigator initialRouteName="WelcomeScreenComponent">
                     <Stack.Screen
                         name="WelcomeScreenComponent"
@@ -62,6 +74,12 @@ export default class WelcomeScreen extends Component {
                         name="ForgotPassword"
                         component={ForgotPassword}
                         options={{ title: 'Forgot Password'}}
+                    ></Stack.Screen>
+
+                    <Stack.Screen
+                        name="PrivacyPolicy"
+                        component={PrivacyPolicy}
+                        options={{ title: 'Privacy Policy'}}
                     ></Stack.Screen>
                 </Stack.Navigator>
             </NavigationContainer>
