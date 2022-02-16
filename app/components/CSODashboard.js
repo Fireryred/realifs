@@ -10,7 +10,6 @@ class CSODashboard extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.getNoOfDeliveries().catch(error => {
       console.log(error);
     });
