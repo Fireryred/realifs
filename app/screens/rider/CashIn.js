@@ -10,8 +10,8 @@ class CashIn extends Component {
   }
 
   handleCashIn = () => {
-    const amount = this.state.amount * 100;
-    const balance = this.props.route.params.balance * 100;
+    const amount = parseInt(this.state.amount * 100);
+    const balance = parseInt(this.props.route.params.balance * 100);
     if (amount <= 0 || amount === '') {
       Alert.alert('Please enter a valid amount');
     } else {

@@ -14,9 +14,8 @@ export class CashOut extends Component {
   }
 
   handleCashOut = () => {
-    console.log(this.props);
-    let balance = this.props.route.params.balance;
-    const amount = this.state.amount * 100;
+    const amount = parseInt(this.state.amount * 100);
+    let balance = parseInt(this.props.route.params.balance * 100);
     if (this.state.amount === '' || amount <= 0) {
       Alert.alert('Please enter a valid amount');
     } else if (balance < amount) {
