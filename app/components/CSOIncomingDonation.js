@@ -62,10 +62,37 @@ class CSOIncomingDonation extends Component {
   }
   async updateStatus() {
     const {data} = this.props;
+    const {requestData} = data[1];
+    let cost = requestData.cost * 100;
+    let balance = 0;
+    await firestore()
+      .collection('users')
+      .doc(requestData.fetcherId)
+      .get()
+      .then(async doc => {
+        balance = doc.data().balance;
+        if (requestData.paymentMethod === 'online') {
+          cost = cost * 0.8;
+          balance = balance + cost;
+        } else if (requestData.paymentMethod === 'cod') {
+          cost = cost * 0.2;
+          balance = balance - cost;
+        }
+        await firestore().collection('users').doc(doc.id).update({balance});
+      });
     await firestore()
       .collection('fetch_requests')
-      .doc(data[1])
+      .doc(data[0])
       .update({status: 'delivered'});
+    await firestore()
+      .collection('transaction')
+      .add({
+        action: `${requestData.paymentMethod}CsoRecieved`,
+        amount: cost,
+        date: firestore.Timestamp.now(),
+        fetcherId: requestData.fetcherId,
+        status: 'success',
+      });
   }
   render() {
     const {toTrack, data} = this.props;
