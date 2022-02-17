@@ -10,9 +10,9 @@ class CashIn extends Component {
   }
 
   handleCashIn = () => {
-    const {amount} = this.state;
-    const {balance} = this.props.route.params;
-    if (amount <= 0) {
+    const amount = parseInt(this.state.amount * 100);
+    const balance = parseInt(this.props.route.params.balance);
+    if (amount <= 0 || amount === '') {
       Alert.alert('Please enter a valid amount');
     } else {
       this.props.navigation.reset({
@@ -37,7 +37,7 @@ class CashIn extends Component {
         <Text>CASH-IN AMOUNT</Text>
         <TextInput
           keyboardType="numeric"
-          onChange={text => this.setState({amount: text.nativeEvent.text})}
+          onChangeText={text => this.setState({amount: text})}
         />
         <View>
           <Button title="CANCEL" onPress={() => this.props.navigation.goBack()}>

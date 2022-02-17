@@ -33,7 +33,8 @@ class MapScreen extends React.Component {
       dimensions: {
         window: Dimensions.get("window"),
         screen: Dimensions.get("screen"),
-      }
+      },
+      transitButton: false,
     };
     this.mapRef = React.createRef();
   }
@@ -42,7 +43,9 @@ class MapScreen extends React.Component {
   }
   componentDidUpdate() {
     const {data} = this.props.route.params;
-    if (data[1].status === 'waiting' || data[1].status === 'delivered') {
+    const {transitButton} = this.state;
+    console.log(transitButton);
+    if (data[1].status === 'waiting' || transitButton) {
       this.props.navigation.goBack();
     }
   }
@@ -148,10 +151,8 @@ class MapScreen extends React.Component {
         cStatus = 'transit';
         break;
       case 'transit':
-        cStatus = 'delivered';
-        break;
-      default:
-        cStatus = status;
+        this.setState({transitButton: true});
+        cStatus = 'transit';
         break;
     }
     data[1].status = cStatus;
@@ -182,7 +183,7 @@ class MapScreen extends React.Component {
     console.log(status);
   }
 
-  handleConfirmButton() {
+  handleConfirmButton = () => {
     this.updateStatus();
     this.updateConfirmButtonText();
   }

@@ -43,7 +43,7 @@ export class CreateDonationEffort extends Component {
         longitudeDelta: 0.0121,
       },
       geocodeAddress: null,
-      city: ""
+      city: '',
     };
   }
 
@@ -102,36 +102,43 @@ export class CreateDonationEffort extends Component {
   };
 
   async pickFile() {
-    let granted = await this.requestPermissionStorage().catch(error =>
-      console.error(error),
-    );
+    await this.requestPermissionStorage().catch(error => console.error(error));
 
     let file = await DocumentPicker.pick({
+      allowMultiSelection: true,
       type: [DocumentPicker.types.images],
       copyTo: 'documentDirectory',
     });
+    let url = [];
+    file.forEach(async images => {
+      let pathToFile = `${images.fileCopyUri}`;
+      let filenameSplitLength = images.name.split('.').length ?? 0;
+      let filetype = images.name.split('.')[filenameSplitLength - 1] ?? '';
+      let uploadFilename = this.generateRandomHex() + filetype;
+      let firebaseStorageRef = storage().ref(
+        `DonationEffort/${uploadFilename}`,
+      );
+      // Upload to Firebase Storage
+      await firebaseStorageRef
+        .putFile(pathToFile, {
+          cacheControl: 'no-store',
+        })
+        .catch(error => {
+          console.log(error);
+        });
 
-    let pathToFile = `${file[0].fileCopyUri}`;
-    let filenameSplitLength = file[0].name.split('.').length ?? 0;
-    let filetype = file[0].name.split('.')[filenameSplitLength - 1] ?? '';
-    let uploadFilename = this.generateRandomHex() + filetype;
-    let firebaseStorageRef = storage().ref(`DonationEffort/${uploadFilename}`);
-
-    // Upload to Firebase Storage
-    let result = await firebaseStorageRef
-      .putFile(pathToFile, {
-        cacheControl: 'no-store',
-      })
-      .catch(error => {
-        console.log(error);
+      url.push(
+        await storage()
+          .ref(`DonationEffort/${uploadFilename}`)
+          .getDownloadURL(),
+      );
+      this.setState({
+        imageName: `${
+          url.length != 0 ? `${file.length} Files Selected` : 'CHOOSE FILE'
+        }`,
+        imageWebURL: url,
       });
-
-    const url = await storage()
-      .ref(`DonationEffort/${uploadFilename}`)
-      .getDownloadURL();
-    const imageUrl = url.valueOf();
-    this.setState({imageName: file[0].name, imageWebURL: imageUrl});
-    console.log(url.valueOf());
+    });
   }
 
   async requestPermissionStorage() {
@@ -162,31 +169,30 @@ export class CreateDonationEffort extends Component {
   getAddressWithLatlng(lat, lng) {
     let uri = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDAdKi6it1aJYQ9GUVDIPQAG4s6P_UyCjw`;
 
-    fetch(uri)
-        .then(res => {
-            res.json().then(json => {     
-                console.log(`${uri}\nResult: `, Object.entries(json).length);
+    fetch(uri).then(res => {
+      res.json().then(json => {
+        console.log(`${uri}\nResult: `, Object.entries(json).length);
 
-                for(let item of json.results) {
-                    this.setState({
-                        ...this.state,
-                        geocodeAddress: item['formatted_address']
-                    })
+        for (let item of json.results) {
+          this.setState({
+            ...this.state,
+            geocodeAddress: item['formatted_address'],
+          });
 
-                    for(let comp of item['address_components']) {
-                        if(comp.types.includes('locality')) {
-                            this.setState({
-                                ...this.state,
-                                city: comp.long_name
-                            })
-                        }
-                    }
-                    
-                    break;
-                }
-            }) 
-        })
-}
+          for (let comp of item['address_components']) {
+            if (comp.types.includes('locality')) {
+              this.setState({
+                ...this.state,
+                city: comp.long_name,
+              });
+            }
+          }
+
+          break;
+        }
+      });
+    });
+  }
 
   render() {
     const {
@@ -199,7 +205,7 @@ export class CreateDonationEffort extends Component {
       imageWebURL,
       loc,
       geocodeAddress,
-      city
+      city,
     } = this.state;
     return (
       <ScrollView style={{padding: 10}}>
@@ -209,9 +215,7 @@ export class CreateDonationEffort extends Component {
             <TextInput
               placeholder="Title"
               value={title}
-              onChange={text =>
-                this.setState({title: text.nativeEvent.text})
-              }></TextInput>
+              onChangeText={text => this.setState({title: text})}></TextInput>
           </View>
         </View>
         <View>
@@ -221,9 +225,7 @@ export class CreateDonationEffort extends Component {
               placeholder="Write Description..."
               multiline={true}
               value={description}
-              onChange={text =>
-                this.setState({description: text.nativeEvent.text})
-              }
+              onChangeText={text => this.setState({description: text})}
             />
           </View>
         </View>
@@ -233,9 +235,7 @@ export class CreateDonationEffort extends Component {
             <TextInput
               placeholder="House number, Street, Village, City, Region"
               value={address}
-              onChange={text =>
-                this.setState({address: text.nativeEvent.text})
-              }></TextInput>
+              onChangeText={text => this.setState({address: text})}></TextInput>
           </View>
           <View>
             
@@ -356,7 +356,8 @@ export class CreateDonationEffort extends Component {
                 location: new firestore.GeoPoint(loc.latitude, loc.longitude),
                 csoID: auth().currentUser.uid,
                 geocodeAddress: geocodeAddress,
-                city: city
+                city: city,
+                isDeleted: false,
               })
               .then(() => {
                 Alert.alert(
@@ -366,17 +367,17 @@ export class CreateDonationEffort extends Component {
                   {cancelable: true},
                 );
               })
-              .catch((err) => {
+              .catch(err => {
                 Alert.alert(
                   'There was an error processing your request',
-                  "Please try again",
+                  'Please try again',
                   undefined,
                   {cancelable: true},
                 );
-                console.log("error creating donation effort", err)
+                console.log('error creating donation effort', err);
               })
               .finally(() => {
-                this.props.navigation.replace("CSODrawer");
+                this.props.navigation.replace('CSODrawer');
               });
           }}
         />

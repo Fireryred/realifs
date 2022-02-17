@@ -79,12 +79,18 @@ class CustomDrawerContent extends React.Component {
     return (
       <DrawerContentScrollView {...this.props}>
         <DrawerItemList {...this.props} />
-        <DrawerItem label="My Profile" onPress={() => {
-            this.props.navigation.navigate("FetcherProfile")
-        }} />
-        <DrawerItem label="Contact Support" onPress={() => {
-            this.props.navigation.navigate("ContactSupport")
-        }} />
+        <DrawerItem
+          label="My Profile"
+          onPress={() => {
+            this.props.navigation.navigate('FetcherProfile');
+          }}
+        />
+        <DrawerItem
+          label="Contact Support"
+          onPress={() => {
+            this.props.navigation.navigate('ContactSupport');
+          }}
+        />
         <DrawerItem label="Logout" onPress={handleLogout} />
       </DrawerContentScrollView>
     );

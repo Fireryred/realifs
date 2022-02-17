@@ -43,7 +43,7 @@ export class Wallet extends Component {
       <View style={{flex: 1, display: "flex", justifyContent: "flex-end", padding: 20}}>
         <View>
           <View style={{marginBottom: 20, display: "flex", alignItems: "flex-end", textAlign: "right"}}>
-            <Text style={{color: 'black', fontWeight: "bold", fontSize: 30}}>₱{balance}</Text>
+            <Text style={{color: 'black', fontWeight: "bold", fontSize: 30}}>₱{balance / 100}</Text>
             <Text style={{color: 'black'}}>Current Balance</Text>
           </View>
           
@@ -57,7 +57,6 @@ export class Wallet extends Component {
           </View>
           
         </View>
-        
       </View>
     );
   }

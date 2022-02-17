@@ -6,6 +6,7 @@ import FetchRequest from '../../components/FetchRequest';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import {Button} from 'react-native-paper';
 
 export class Fetch extends Component {
   constructor() {
@@ -81,9 +82,11 @@ export class Fetch extends Component {
   }
 
   toMaps = (data, donorDetails) => {
-    console.log(this.state.balance);
-    this.updateStatus(data);
-    data[1].status = 'pickup';
+    const {exists} = this.state;
+    if (!exists) {
+      this.updateStatus(data);
+      data[1].status = 'pickup';
+    }
     console.log(data);
     this.props.navigation.navigate('Maps', {
       data: data,
@@ -94,8 +97,8 @@ export class Fetch extends Component {
     const {balance, exists} = this.state;
     if (
       !exists &&
-      data[1].cost * 0.2 > balance &&
-      data[1].paymentMethod === 'cod'
+      data[1].paymentMethod === 'cod' &&
+      data[1].cost * 0.2 > balance
     ) {
       Alert.alert("Doesn't have enough balance to accept this");
     } else {
@@ -122,14 +125,20 @@ export class Fetch extends Component {
   }
   render() {
     const {requests, data, donorDetails, exists} = this.state;
-    if (exists) {
-      this.toMaps(data, donorDetails);
-    }
+    console.log(exists);
     return (
       <ScrollView>
-        {Object.entries(requests).map((request, key) => (
-          <FetchRequest data={request} key={key} toMaps={this.checkBalance} />
-        ))}
+        {!exists ? (
+          Object.entries(requests).map((request, key) => (
+            <FetchRequest data={request} key={key} toMaps={this.checkBalance} />
+          ))
+        ) : (
+          <Button
+            title="Resume Delivery"
+            onPress={() => this.toMaps(data, donorDetails)}>
+            Resume Delivery
+          </Button>
+        )}
       </ScrollView>
     );
   }
