@@ -134,6 +134,8 @@ export class Fetch extends Component {
           ))
         ) : (
           <Button
+            style={{margin: 10}}
+            mode='contained'
             title="Resume Delivery"
             onPress={() => this.toMaps(data, donorDetails)}>
             Resume Delivery

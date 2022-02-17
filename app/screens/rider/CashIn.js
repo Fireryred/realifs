@@ -33,17 +33,18 @@ class CashIn extends Component {
   };
   render() {
     return (
-      <View>
-        <Text>CASH-IN AMOUNT</Text>
+      <View style={{flex: 1, display: "flex", justifyContent: "center", padding: 10}}>
+        <Text style={{fontWeight: "bold", fontSize: 18}}>Cash-in Amount</Text>
         <TextInput
+          mode='outlined'
           keyboardType="numeric"
           onChangeText={text => this.setState({amount: text})}
         />
-        <View>
-          <Button title="CANCEL" onPress={() => this.props.navigation.goBack()}>
+        <View style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+          <Button style={{margin: 10}} mode='contained' color='gray' dark={true} title="CANCEL" onPress={() => this.props.navigation.goBack()}>
             CANCEL
           </Button>
-          <Button title="CASH-IN" onPress={this.handleCashIn}>
+          <Button style={{margin: 10}} mode='contained' color='green' title="CASH-IN" onPress={this.handleCashIn}>
             CASH-IN
           </Button>
         </View>

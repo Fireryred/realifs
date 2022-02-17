@@ -49,16 +49,23 @@ export class Wallet extends Component {
   render() {
     const {balance} = this.state;
     return (
-      <View>
-        <Text style={{color: 'black'}}> REALIFS Fetcher Wallet </Text>
-        <Text style={{color: 'black'}}>₱{balance / 100}</Text>
-        <Text style={{color: 'black'}}>Current Balance</Text>
-        <Button title="CASH-IN" onPress={this.toCashIn}>
-          CASH-IN
-        </Button>
-        <Button title="CASH-OUT" onPress={this.toCashOut}>
-          CASH-OUT
-        </Button>
+      <View style={{flex: 1, display: "flex", justifyContent: "flex-end", padding: 20}}>
+        <View>
+          <View style={{marginBottom: 20, display: "flex", alignItems: "flex-end", textAlign: "right"}}>
+            <Text style={{color: 'black', fontWeight: "bold", fontSize: 30}}>₱{balance / 100}</Text>
+            <Text style={{color: 'black'}}>Current Balance</Text>
+          </View>
+          
+          <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
+            <Button mode="contained" title="CASH-IN" onPress={this.toCashIn} style={{marginRight: 10}} contentStyle={{height: 50, backgroundColor: "#1D9C08"}}>
+              CASH-IN
+            </Button>
+            <Button mode="contained" title="CASH-OUT" onPress={this.toCashOut} contentStyle={{height: 50, backgroundColor: "#EEAB00"}}>
+              CASH-OUT
+            </Button>
+          </View>
+          
+        </View>
       </View>
     );
   }
