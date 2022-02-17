@@ -50,11 +50,11 @@ export class History extends Component {
     const {completed, cancelled} = this.state;
     return (
       <ScrollView>
-        <Text>Completed</Text>
+        {/* <Text>Completed</Text> */}
         {Object.entries(completed).map((request, key) => (
           <FetcherHistory data={request} key={key} />
         ))}
-        <Text>Cancelled</Text>
+        {/* <Text>Cancelled</Text> */}
         {Object.entries(cancelled).map((request, key) => (
           <FetcherHistory data={request} key={key} />
         ))}

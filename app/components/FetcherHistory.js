@@ -48,14 +48,23 @@ class FetcherHistory extends Component {
   render() {
     const {data} = this.props;
     return (
-      <View>
+      <View style={{margin: 5}}>
         <Card>
           <Card.Content>
-            <Text>{data[1].donationDetails}</Text>
-            <Text>{data[1].pickupAddress}</Text>
-            <Text>{data[1].dropoffAddress}</Text>
-            <Text>{data[1].cost}</Text>
-            <Text>{this.formatDate(data[1].creationDate)}</Text>
+            <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: 10}}>
+              <Text style={{flex: 7, fontWeight: "bold", fontSize: 18}}>{data[1].donationDetails}</Text>
+              <Text style={{flex: 3, textAlign: "right", fontSize: 18}}>₱{data[1].cost}</Text>
+            </View>
+            
+            <Text style={{marginBottom: 10}}><Text style={{color: "gray"}}>Status: </Text> { data[1].status.charAt(0).toUpperCase() + data[1].status.slice(1)}</Text>
+
+            <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: 10}}>
+              <Text style={{flex: 1}}><Text style={{color: "gray"}}>From: </Text>{data[1].pickupAddress}</Text>
+              <Text style={{flex: 1}}><Text style={{color: "gray"}}>To: </Text>{data[1].dropoffAddress}</Text>
+            </View>
+            
+            
+            <Text style={{color: "gray"}}>{this.formatDate(data[1].creationDate)}</Text>
           </Card.Content>
         </Card>
       </View>
