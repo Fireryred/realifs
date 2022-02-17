@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, StatusBar, SafeAreaView, ScrollView, Image } from 'react-native'
+import { StyleSheet, View, StatusBar, SafeAreaView, ScrollView, Image, Dimensions } from 'react-native'
 
 import firestore from '@react-native-firebase/firestore';
 
@@ -31,6 +31,10 @@ export default class EffortDetails extends Component {
             },
             effortDataFetched: false,
             csoDataFetched: false,
+            dimensions: {
+                window: Dimensions.get("window"),
+                screen: Dimensions.get("screen"),
+            },
         }
     }
     componentDidMount() {
@@ -45,6 +49,16 @@ export default class EffortDetails extends Component {
                     this.props.navigation.replace("DonorDrawer")
                 })
         })
+
+        Dimensions.addEventListener("change", (({window, screen}) => {
+            this.setState({
+                ...this.state,
+                dimensions: {
+                    window,
+                    screen,
+                }
+            })
+        }))
     }
 
     loadEffortData = async () => {
@@ -110,7 +124,10 @@ export default class EffortDetails extends Component {
                 
                 <View style={{...styles.segment, }}>
                     <Text style={{color: "#666666", fontWeight: "bold"}}>MEDIA</Text>
-                    <Image resizeMode="contain" style={{ height: 400, width: null, backgroundColor: "rgba(0,0,0,.1)" }} source={{uri: imageUrl}} />
+                    {imageUrl.map && imageUrl.map((value, index) => {
+                        return (<Image key={index} resizeMode="cover" style={{ marginBottom: 15, height: this.state.dimensions?.window?.width / 2, width: null, backgroundColor: "rgba(0,0,0,.1)" }} source={{uri: value}} />)
+                    })}
+                    
                 </View>
 
                 <View style={{...styles.segment, display: "flex", flexDirection: "column", alignItems: "center"}}>
@@ -123,7 +140,7 @@ export default class EffortDetails extends Component {
                     <Button
                         mode="contained"
                         onPress={() => {
-                            this.props.navigation.navigate("RequestFetch", { effortId, effortCoordinates, geocodeAddress, city })
+                            this.props.navigation.navigate("RequestFetch", { effortId, effortCoordinates, geocodeAddress, city, title })
                         }}
                     >DONATE ITEMS ❤</Button>
                 </View>

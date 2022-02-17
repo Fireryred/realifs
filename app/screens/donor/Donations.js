@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Modal, StyleSheet, ScrollView, RefreshControl, TouchableOpacity } from 'react-native'
+import { View, Modal, StyleSheet, ScrollView, RefreshControl, TouchableOpacity, Alert } from 'react-native'
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -96,6 +96,36 @@ export class Donations extends Component {
 }
 
 class DonationItem extends Component {
+    constructor() {
+        super();
+        this.state = {
+            donationId: null,
+            donationData: null,
+            effortData: null,
+        }
+    }
+    componentDidMount() {
+        this.setState({
+            ...this.state,
+            donationId: this.props.donationData[0],
+            donationData: this.props.donationData[1],
+        }, () => {
+            console.log("effortid", this.state.donationData?.effortId);
+            firestore().collection("donation_efforts").doc(this.state.donationData?.effortId).get().then(doc => {
+                let effortData = doc.data();
+                if(effortData) {
+                    console.log("nice", effortData);
+                    this.setState({
+                        ...this.state,
+                        effortData: effortData,
+                    })
+                }
+                
+            })
+        })
+
+        
+    }
     render() {
         let donationId = this.props.donationData[0];
         let donationData = this.props.donationData[1];
@@ -104,17 +134,18 @@ class DonationItem extends Component {
                 <Card>
                     <Card.Title title={donationData.donationDetails || 'No description'}></Card.Title>
                     <Card.Content>
-                        <Text>Sent to: {'DONATION_EFFORT'}</Text>
+                        <Text>Sent to: {this.state.effortData?.title}</Text>
                         <Text>Status: { donationData.status.charAt(0).toUpperCase() + donationData.status.slice(1)}</Text>
                         <Surface
                             style={{
                                 display: "flex",
                                 flexDirection: "row",
                                 justifyContent: "flex-end",
-                                alignItems: "center"
+                                alignItems: "center",
                             }}
                         >
                             <Button
+                                style={{marginRight: 10}}
                                 color="orange"
                                 dark={true}
                                 compact={true}
@@ -125,6 +156,7 @@ class DonationItem extends Component {
                                 }}
                             >TRACK</Button>
                             <Button
+                                style={{marginRight: 10}}
                                 color="red"
                                 compact={true}
                                 mode="contained"
@@ -132,21 +164,51 @@ class DonationItem extends Component {
                                 onPress={() => {
                                     this.props.parentContext.setModalVisibility(true);
 
-                                    firestore().collection("fetch_requests").doc(donationId).update({
-                                        status: "cancelled"
-                                    }).then(() => {
-                                        console.log("Successfully cancelled request")
-                                    }).catch((err) => {
-                                        console.log("cancel error", err)
-                                    }).finally(() => {
-                                        this.props.parentContext.setModalVisibility(false);
-                                        this.props.parentContext.getDonations();
-                                    })
+                                    if(donationData?.paymentMethod == "online") {
+                                        firestore().collection("refund_requests").add({
+                                            amount: donationData.cost,
+                                            fetchRequestID: donationId,
+                                            donorID: donationData.donorID,
+                                            date: firestore.Timestamp.now(),
+                                            status: "pending",
+                                        }).then(() => {
+                                            firestore().collection("fetch_requests").doc(donationId).update({
+                                                status: "cancelled"
+                                            }).then(() => {
+                                                console.log("Successfully cancelled request")
+                                            }).catch((err) => {
+                                                console.log("cancel error update status", err)
+                                            })
+                                        }).catch((err) => {
+                                            console.log("cancel error refund request", err)
+                                        }).finally(() => {
+                                            this.props.parentContext.setModalVisibility(false);
+                                            this.props.parentContext.getDonations();
+                                        })
+                                        
+                                    }
+                                    else if(donationData?.paymentMethod == "cod") {
+                                        firestore().collection("fetch_requests").doc(donationId).update({
+                                            status: "cancelled"
+                                        }).then(() => {
+                                            console.log("Successfully cancelled request")
+                                        }).catch((err) => {
+                                            console.log("cancel error", err)
+                                        }).finally(() => {
+                                            this.props.parentContext.setModalVisibility(false);
+                                            this.props.parentContext.getDonations();
+                                        })
+                                    }
+                                    else {
+                                        Alert.alert("There is an error processing your request. Please try again");
+                                    }
                                 }}
                             >CANCEL</Button>
                             
                             <TouchableOpacity 
                                 style={{
+                                    opacity: (donationData.status == "waiting" || donationData.status == "delivered" ? .3 : 1),
+                                    marginRight: 10,
                                     height: 40, 
                                     width: 40, 
                                     padding: 0, 
@@ -156,6 +218,7 @@ class DonationItem extends Component {
                                     justifyContent: "center",
                                     alignItems: "center"
                                 }}
+                                disabled={donationData.status == "waiting" || donationData.status == "delivered" ? true : false}
                                 onPress={() => {
                                     this.props.parentProps.navigation.navigate("Chat", {fetchRequestId: donationId, fetcherId: donationData.fetcherId})
                                 }}

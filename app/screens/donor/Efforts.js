@@ -47,7 +47,7 @@ export class Efforts extends Component {
         let efforts = {}
 
         console.log('Getting donation efforts: ');
-        let loadedEfforts = await firestore().collection('donation_efforts').get();
+        let loadedEfforts = await firestore().collection('donation_efforts').where("isDeleted", "==", false).get();
 
         loadedEfforts.forEach( doc => {
             efforts[doc.id] = doc.data()
