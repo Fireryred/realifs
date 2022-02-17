@@ -138,6 +138,7 @@ class MapScreen extends React.Component {
 
   disableBackButton() {
     BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.navigation.replace("RiderDrawer");
       return true;
     });
   }

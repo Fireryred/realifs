@@ -41,7 +41,7 @@ class RiderMain extends Component {
           <Stack.Screen
             name="Maps"
             component={MapScreen}
-            options={{headerShown: true}}
+            options={{headerShown: false,  }}
           />
           <Stack.Screen
             name="FetcherProfile"
