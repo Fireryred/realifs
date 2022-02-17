@@ -10,6 +10,12 @@ export class Wallet extends Component {
     this.state = {balance: 0, mobileNumber: ''};
   }
   componentDidMount() {
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'focus',
+      () => {
+        this.getBalance();
+      },
+    );
     this.getBalance();
     this.props.navigation.getParent().setOptions({title: 'Wallet'});
 
@@ -18,6 +24,9 @@ export class Wallet extends Component {
       // e.preventDefault();
       this.props.navigation.getParent().setOptions({title: 'Wallet'});
     });
+  }
+  componentWillUnmount() {
+    this.willFocusSubscription();
   }
   async getBalance() {
     await firestore()
