@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import auth from '@react-native-firebase/auth';
 
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -24,6 +24,19 @@ import ContactSupport from '../screens/general/ContactSupport';
 import Chat from '../screens/general/Chat';
 import FetcherWalletProcess from '../screens/rider/FetcherWalletProcess';
 
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { DefaultTheme as PaperDefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
+const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      ...PaperDefaultTheme.colors,
+      background: "white",
+    },
+};
+
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -31,7 +44,7 @@ const Tab = createMaterialBottomTabNavigator();
 class RiderMain extends Component {
   render() {
     return (
-      <NavigationContainer>
+      <NavigationContainer theme={MyTheme}>
         <Stack.Navigator>
           <Stack.Screen
             name="RiderDrawer"
@@ -117,13 +130,31 @@ class RiderTabs extends React.Component {
         <Tab.Screen
           name="Fetch"
           component={Fetch}
-          options={{headerTitle: 'Fetch Request Pool'}}
+          options={{
+            headerTitle: 'Fetch Request Pool',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons  name="truck-fast" color={color} size={20} />
+            )
+          }}
         />
-        <Tab.Screen name="History" component={History} />
+        <Tab.Screen 
+          name="History" 
+          component={History}
+          options={ {
+            tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons  name="history" color={color} size={20} />
+            )
+          }}
+        />
         <Tab.Screen
           name="Wallet"
           component={Wallet}
-          options={{headerTitle: 'My Wallet'}}
+          options={{
+            headerTitle: 'My Wallet',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons  name="wallet" color={color} size={20} />
+            )
+          }}
         />
       </Tab.Navigator>
     );

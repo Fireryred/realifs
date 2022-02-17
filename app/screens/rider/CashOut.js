@@ -41,20 +41,19 @@ export class CashOut extends Component {
   }
   render() {
     return (
-      <View>
-        <Text>CASH-OUT AMOUNT</Text>
+      <View style={{flex: 1, display: "flex", justifyContent: "center", padding: 10}}>
+        <Text style={{fontWeight: "bold", fontSize: 18}}>Cash-out Amount</Text>
         <TextInput
           value={this.state.amount}
           keyboardType="numeric"
           onChangeText={text => this.setState({amount: text})}
         />
-
-        <View>
-          <Button title="CANCEL" onPress={() => this.props.navigation.goBack()}>
+        <View style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+          <Button style={{margin: 10}} mode='contained' color='gray' dark={true} title="CANCEL" onPress={() => this.props.navigation.goBack()}>
             CANCEL
           </Button>
-          <Button title="CASH-OUT" onPress={this.handleCashOut}>
-            CASH-OUT
+          <Button style={{margin: 10}} mode='contained' color='orange' dark={true} title="CASH-IN" onPress={this.handleCashOut}>
+          CASH-OUT
           </Button>
         </View>
       </View>
