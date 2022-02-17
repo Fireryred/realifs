@@ -6,7 +6,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
-import LoginScreen from './LoginScreen';
+import LoginPortal from './LoginPortal';
+import DonorLoginScreen from './DonorLoginScreen';
+import RiderLoginScreen from './RiderLoginScreen';
+import CSOLoginScreen from './CSOLoginScreen';
 import RegisterScreen from './RegisterScreen';
 import DonorRegistrationScreen from './DonorRegistrationScreen';
 import RiderRegistrationScreen from './RiderRegistrationScreen';
@@ -44,10 +47,30 @@ export default class WelcomeScreen extends Component {
                         options={{ title: 'Welcome'}}
                     ></Stack.Screen>
                     <Stack.Screen
+                        name="LoginPortal"
+                        component={LoginPortal}
+                        options={{ title: 'Login Portal'}}
+                    ></Stack.Screen>
+                    <Stack.Screen
+                        name="DonorLoginScreen"
+                        component={DonorLoginScreen}
+                        options={{ title: 'Donor Login'}}
+                    ></Stack.Screen>
+                    <Stack.Screen
+                        name="RiderLoginScreen"
+                        component={RiderLoginScreen}
+                        options={{ title: 'Fetcher Login'}}
+                    ></Stack.Screen>
+                    <Stack.Screen
+                        name="CSOLoginScreen"
+                        component={CSOLoginScreen}
+                        options={{ title: 'CSO Administrator Login'}}
+                    ></Stack.Screen>
+                    {/* <Stack.Screen
                         name="LoginScreen"
                         component={LoginScreen}
                         options={{ title: 'Login Portal'}}
-                    ></Stack.Screen>
+                    ></Stack.Screen> */}
                     <Stack.Screen
                         name="RegisterScreen"
                         component={RegisterScreen}
@@ -96,11 +119,11 @@ class WelcomeScreenComponent extends Component {
                 <Image
                     source={realifsLogoText}
                     resizeMode='contain'
-                    style={{width: "100%", height: 175, marginVertical: 100}}
+                    style={{width: "100%", height: 175, marginVertical: 50}}
                 />
                 <Button
                     title="Login"
-                    onPress={() => {this.props.navigation.navigate("LoginScreen")}}
+                    onPress={() => {this.props.navigation.navigate("LoginPortal")}}
                     mode="contained"
                     style={ {width: '100%', marginBottom: 20} }
                 >Login</Button>
@@ -110,11 +133,11 @@ class WelcomeScreenComponent extends Component {
                     mode="contained"
                     style={ {width: '100%'} }
                 >Register</Button>
-                {/* <Image
+                <Image
                     source={welcomeBg}
                     resizeMode='contain'
-                    style={{position: "absolute", bottom: 0, width: "100%", height: 200}}
-                /> */}
+                    style={{position: "absolute", bottom: -20, width: "100%", height: 200}}
+                />
             </View>
         )
     }
