@@ -38,6 +38,17 @@ class CSOLoginScreen extends Component {
     // Everytime state and props change, this executes.
   }
 
+  validInput() {
+    let result = true;
+
+    if(!this.state.CSOCredentials.inputEmail || this.state.CSOCredentials.inputEmail == ""  || !this.state.CSOCredentials.inputPassword || this.state.CSOCredentials.inputPassword == "") {
+      result = false;
+    }
+
+    console.log(this.state)
+    return result;
+  }
+
   render() {
     // This executes before componentDidMount and componenDidUpdate. Best not to put logic here
 
@@ -80,8 +91,10 @@ class CSOLoginScreen extends Component {
           mode="contained"
           title="Login as CSO Administrator"
           onPress={() => {
-            this.setModalVisibility(true);
-            this.handleLogin(this.state.CSOCredentials.inputEmail, this.state.CSOCredentials.inputPassword);
+            if(this.validInput()) {
+              this.setModalVisibility(true);
+              this.handleLogin(this.state.CSOCredentials.inputEmail, this.state.CSOCredentials.inputPassword);
+            }
           }}
         >Login as CSO Administrator</Button>
 

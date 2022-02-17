@@ -38,6 +38,16 @@ class RiderLoginScreen extends Component {
     // Everytime state and props change, this executes.
   }
 
+  validInput() {
+    let result = true;
+
+    if(!this.state.riderCredentials.inputEmail || this.state.riderCredentials.inputEmail == ""  || !this.state.riderCredentials.inputPassword || this.state.riderCredentials.inputPassword == "") {
+      result = false;
+    }
+
+    return result;
+  }
+
   render() {
     // This executes before componentDidMount and componenDidUpdate. Best not to put logic here
 
@@ -81,8 +91,10 @@ class RiderLoginScreen extends Component {
           mode="contained"
           title="Login as Rider"
           onPress={() => {
-            this.setModalVisibility(true);
-            this.handleLogin(this.state.riderCredentials.inputEmail, this.state.riderCredentials.inputPassword);
+            if(this.validInput()) {
+              this.setModalVisibility(true);
+              this.handleLogin(this.state.riderCredentials.inputEmail, this.state.riderCredentials.inputPassword);
+            }
           }}
         >Login as Rider</Button>
 

@@ -38,6 +38,16 @@ class DonorLoginScreen extends Component {
     // Everytime state and props change, this executes.
   }
 
+  validInput() {
+    let result = true;
+
+    if(!this.state.donorCredentials.inputEmail || this.state.donorCredentials.inputEmail == ""  || !this.state.donorCredentials.inputPassword || this.state.donorCredentials.inputPassword == "") {
+      result = false;
+    }
+
+    return result;
+  }
+
   render() {
     // This executes before componentDidMount and componenDidUpdate. Best not to put logic here
 
@@ -82,8 +92,10 @@ class DonorLoginScreen extends Component {
           mode="contained"
           title="Login as Donor"
           onPress={() => {
-            this.setModalVisibility(true);
-            this.handleLogin(this.state.donorCredentials.inputEmail, this.state.donorCredentials.inputPassword);
+            if(this.validInput()) {
+              this.setModalVisibility(true);
+              this.handleLogin(this.state.donorCredentials.inputEmail, this.state.donorCredentials.inputPassword);
+            }
           }}
         >Login as Donor</Button>
 
