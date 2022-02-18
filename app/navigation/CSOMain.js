@@ -52,26 +52,27 @@ class CSOMain extends Component {
           <Stack.Screen
             name="CreateDonationEffort"
             component={CreateDonationEffort}
+            options={{title: "Create a Donation Effort"}}
           />
           <Stack.Screen
             name="CSOProfile"
             component={CSOProfile}
-            options={{headerShown: true}}
+            options={{title: "Profile"}}
           />
           <Stack.Screen
             name="ContactSupport"
             component={ContactSupport}
-            options={{headerShown: true}}
+            options={{title: "Contact Support"}}
           />
           <Stack.Screen
             name="ViewDonationEffort"
             component={ViewDonationEffort}
-            options={{headerShown: true}}
+            options={{title: "View Effort Details"}}
           />
           <Stack.Screen
             name="TrackFetcher"
             component={TrackFetcher}
-            options={{headerShown: true}}
+            options={{title: "Track Fetcher"}}
           />
         </Stack.Navigator>
       </NavigationContainer>

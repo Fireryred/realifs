@@ -59,26 +59,26 @@ class RiderMain extends Component {
           <Stack.Screen
             name="FetcherProfile"
             component={FetcherProfile}
-            options={{headerShown: true}}
+            options={{title: "Profile"}}
           />
           <Stack.Screen name="ContactSupport" component={ContactSupport} 
-            options={{headerShown: true}}/>
+            options={{title: "Contact Support"}}/>
           <Stack.Screen name="Chat" component={Chat} 
-            options={{headerShown: true}}/>
+            options={{title: "Chatting with Customer"}}/>
           <Stack.Screen
               name="CashIn"
               component={CashIn}
-              options={{headerShown: true}}
+              options={{title: "Cash-in"}}
           />
           <Stack.Screen
             name="CashOut"
             component={CashOut}
-            options={{headerShown: true}}
+            options={{title: "Cash-out"}}
           />
           <Stack.Screen
             name="FetcherWalletProcess"
             component={FetcherWalletProcess}
-            options={{headerShown: true}}
+            options={{title: "Payment"}}
           />
         </Stack.Navigator>
       </NavigationContainer>

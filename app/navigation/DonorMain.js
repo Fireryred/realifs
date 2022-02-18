@@ -47,21 +47,21 @@ class DonorMain extends Component {
                     <Stack.Screen name="DonorDrawer" component={DonorDrawer} 
                         options={{headerShown: false}}/>
                     <Stack.Screen name="EffortDetails" component={EffortDetails} 
-                        options={{headerShown: true}}/>
+                        options={{title: "Effort Details"}}/>
                     <Stack.Screen name="RequestFetch" component={RequestFetch} 
-                        options={{headerShown: true}}/>
+                        options={{title: "Request to Fetch Donation"}}/>
                     <Stack.Screen name="ContactSupport" component={ContactSupport} 
-                        options={{headerShown: true}}/>
+                        options={{title: "Contact Support"}}/>
                     <Stack.Screen name="PayFetchRequest" component={PayFetchRequest} 
-                        options={{headerShown: true}}/>
+                        options={{title: "Payment"}}/>
                     <Stack.Screen name="DonorProfile" component={DonorProfile} 
-                        options={{headerShown: true}}/>
+                        options={{title: "Profile"}}/>
                     <Stack.Screen name="TrackFetcher" component={TrackFetcher} 
-                        options={{headerShown: true}}/>
+                        options={{title: "Track Fetcher"}}/>
                     <Stack.Screen name="CSOInfo" component={CSOInfo} 
-                        options={{headerShown: true}}/>
+                        options={{title: "CSO Information"}}/>
                     <Stack.Screen name="Chat" component={Chat} 
-                        options={{headerShown: true}}/>
+                        options={{title: "Chatting with Fetcher"}}/>
                 </Stack.Navigator>
             </NavigationContainer>
         )
