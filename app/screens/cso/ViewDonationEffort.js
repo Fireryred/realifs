@@ -321,10 +321,13 @@ class ViewDonationEffort extends Component {
             </Text>
             <Caption>End Date</Caption>
             <Text style={{color: 'black'}}>End Date:</Text>
-            <Button
-              title={this.formatDateString(end.date)}
-              onPress={() => this.show('endDate')}
-            />
+            <View style={{display: "flex", flexDirection: "row"}}>
+              <Button
+                mode="outlined"
+                title={this.formatDateString(end.date)}
+                onPress={() => this.show('endDate')}
+              >{this.formatDateString(end.date)}</Button>
+            </View>
 
             {start.show && (
               <DateTimePicker
