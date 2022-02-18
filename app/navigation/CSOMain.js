@@ -4,7 +4,7 @@ import {Text, View} from 'react-native';
 import {connect} from 'react-redux';
 import auth from '@react-native-firebase/auth';
 
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -26,10 +26,23 @@ const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { DefaultTheme as PaperDefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
+const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      ...PaperDefaultTheme.colors,
+      background: "white",
+    },
+};
+
 class CSOMain extends Component {
   render() {
     return (
-      <NavigationContainer>
+      <NavigationContainer theme={MyTheme}>
         <Stack.Navigator>
           <Stack.Screen
             name="CSODrawer"
@@ -106,8 +119,24 @@ class CSOTabs extends React.Component {
   render() {
     return (
       <Tab.Navigator>
-        <Tab.Screen name="Dashboard" component={Dashboard} />
-        <Tab.Screen name="IncomingDonations" component={IncomingDonations} />
+        <Tab.Screen 
+          name="Dashboard" 
+          component={Dashboard} 
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons  name="account-group" color={color} size={20} />
+            )
+          }}
+        />
+        <Tab.Screen 
+          name="IncomingDonations" 
+          component={IncomingDonations} 
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons  name="truck-fast" color={color} size={20} />
+            )
+          }}
+        />
       </Tab.Navigator>
     );
   }

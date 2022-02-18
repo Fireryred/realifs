@@ -71,21 +71,36 @@ class CSODashboard extends Component {
     const {noOfDeliveries, date} = this.state;
     let button = data[1].isDeleted ? 'View' : 'Edit';
     return (
-      <View>
-        <Card>
+      <View style={{marginBottom: 5}}>
+        <Card style={{margin: 3}}>
           <Card.Content>
-            <Text>{data[1].title}</Text>
-            <Text>STARTED {date}</Text>
-            <Text>Address: {data[1].geocodeAddress}</Text>
-            <Text>DELIVERIES RECIEVED: {noOfDeliveries}</Text>
-            {!data[1].isDeleted && (
-              <Button title="delete" onPress={() => this.updateDonoEff()}>
-                Delete
+            <View style={{marginBottom: 5}}>
+              <Text style={{fontWeight: "bold", fontSize: 18}}>{data[1].title}</Text>
+            </View>
+
+            <View style={{marginBottom: 15}}>
+              <Text style={{color: "gray"}}>STARTED {date}</Text>
+            </View>
+
+            <View style={{marginBottom: 15}}>
+              <Text>Address: {data[1].geocodeAddress}</Text>
+            </View>
+
+            <View style={{marginBottom: 15}}>
+              <Text style={{ color: "gray", textAlign: "right"}}>Deliveries Received: {noOfDeliveries}</Text>
+            </View>
+
+            <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
+              {!data[1].isDeleted && (
+                <Button mode="outlined" color="red" title="delete" onPress={() => this.updateDonoEff()}>
+                  Delete
+                </Button>
+              )}
+              <Button mode="outlined" style={{marginLeft: 10}} title={button} onPress={() => gotoDono(data)}>
+                {button}
               </Button>
-            )}
-            <Button title={button} onPress={() => gotoDono(data)}>
-              {button}
-            </Button>
+            </View>
+            
           </Card.Content>
         </Card>
       </View>

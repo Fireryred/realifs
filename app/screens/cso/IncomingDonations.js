@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {Text, View, Button} from 'react-native';
+import {View, ScrollView} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import CSOIncomingDonation from '../../components/CSOIncomingDonation';
 
+import { Caption, Text, Button } from 'react-native-paper';
 export class IncomingDonations extends Component {
   constructor() {
     super();
@@ -77,8 +78,8 @@ export class IncomingDonations extends Component {
   render() {
     const {pickup, transit, delivered} = this.state;
     return (
-      <View>
-        <Text> Incoming Donations </Text>
+      <ScrollView style={{padding: 10}}>
+        <Text style={{fontSize: 18, color: "black", fontWeight: "bold", marginVertical: 10}}>INCOMING DONATIONS</Text>
         {Object.entries(transit).map((efforts, key) => (
           <CSOIncomingDonation
             data={efforts}
@@ -93,7 +94,7 @@ export class IncomingDonations extends Component {
             toTrack={this.toTrack}
           />
         ))}
-        <Text>Recieved</Text>
+        <Text style={{fontSize: 18, color: "black", fontWeight: "bold", marginVertical: 10}}>RECEIVED</Text>
         {Object.entries(delivered).map((efforts, key) => (
           <CSOIncomingDonation
             data={efforts}
@@ -101,7 +102,8 @@ export class IncomingDonations extends Component {
             toTrack={this.toTrack}
           />
         ))}
-      </View>
+        
+      </ScrollView>
     );
   }
 }

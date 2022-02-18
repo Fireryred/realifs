@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {Text, View, Button, ScrollView} from 'react-native';
+import {View, ScrollView} from 'react-native';
+
+import {Text, Button} from 'react-native-paper';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -52,13 +54,18 @@ export class Dashboard extends Component {
   render() {
     const {efforts} = this.state;
     return (
-      <ScrollView>
-        <View>
-          <Text> Dashboard </Text>
-          <Button title="create" onPress={() => this.gotoCreateDono()}>
-            +CREATE
-          </Button>
-          <Text>Active Donation</Text>
+      <ScrollView style={{padding: 10}}>
+
+          <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+            <Text style={{flex: 7, fontWeight: "bold", fontSize: 24}}>Donation Efforts</Text>
+            <View style={{flex: 3, alignItems: "flex-end"}}>
+              <Button style={{borderRadius: 50}} mode="contained" title="create" onPress={() => this.gotoCreateDono()}>
+                + CREATE
+              </Button>
+            </View>
+          </View>
+          
+          <Text style={{color: "gray", fontWeight: "bold", marginVertical: 10}}>ACTIVE</Text>
           {Object.entries(efforts.active).map((efforts, key) => (
             <CSODashboard
               data={efforts}
@@ -66,7 +73,7 @@ export class Dashboard extends Component {
               gotoDono={this.gotoViewDono}
             />
           ))}
-          <Text>Finished Donation</Text>
+          <Text style={{color: "gray", fontWeight: "bold", marginVertical: 10}}>FINISHED</Text>
           {Object.entries(efforts.inactive).map((efforts, key) => (
             <CSODashboard
               data={efforts}
@@ -74,7 +81,7 @@ export class Dashboard extends Component {
               gotoDono={this.gotoViewDono}
             />
           ))}
-        </View>
+
       </ScrollView>
     );
   }

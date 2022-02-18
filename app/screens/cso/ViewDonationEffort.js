@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, Text, Image, Button, PermissionsAndroid} from 'react-native';
-import {TextInput} from 'react-native-paper';
+import {View, Image, PermissionsAndroid, ScrollView, Dimensions} from 'react-native';
+import { Caption, Text, Button, TextInput, } from 'react-native-paper';
 import DocumentPicker from 'react-native-document-picker';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -31,6 +31,10 @@ class ViewDonationEffort extends Component {
       cimageWebUrl: '',
       imageWebUrl: '',
       imageName: 'CHOOSE IMAGE',
+      dimensions: {
+        window: Dimensions.get("window"),
+        screen: Dimensions.get("screen"),
+    },
     };
   }
   componentDidMount() {
@@ -240,75 +244,86 @@ class ViewDonationEffort extends Component {
       imageName,
     } = this.state;
     return (
-      <>
+      <ScrollView style={{padding: 10}}>
         {!editMode ? (
           <View>
+            <View style={{display: "flex", alignItems: "flex-end"}}>
+              {!data[1].isDeleted && (
+                <Button
+                mode="outlined"
+                  title="edit"
+                  onPress={() =>
+                    this.setState({
+                      editMode: true,
+                      cstart: start,
+                      cend: end,
+                      ctitle: title,
+                      cdescription: description,
+                      cimageWebUrl: imageWebUrl,
+                    })
+                  }>
+                  Edit
+                </Button>
+              )}
+            </View>
+            <Caption>Title</Caption>
+            <Text style={{color: 'black'}}>{title}</Text>
+            
+            <Caption>Description</Caption>
+            <Text style={{color: 'black'}}>{description}</Text>
+
+            <Caption>Start Date</Caption>
+            <Text style={{color: 'black'}}>
+              {this.formatDateString(start.date)}
+            </Text>
+            <Caption>End Date</Caption>
+            <Text style={{color: 'black'}}>
+              {this.formatDateString(end.date)}
+            </Text>
+
+            <Caption>Availability</Caption>
+            <Text style={{color: 'black'}}>{`${this.formatTime(start.date)} - ${this.formatTime(end.date)}`}</Text>
+
+            <Caption>Media</Caption>
             {imageWebUrl.map &&
               imageWebUrl.map((value, index) => {
                 return (
                   <Image
                     key={index}
                     source={{uri: value}}
-                    style={{minWidth: 100, minHeight: 100}}
+                    resizeMode="cover" 
+                    style={{ marginBottom: 15, height: this.state.dimensions?.window?.width / 2, width: null, backgroundColor: "rgba(0,0,0,.1)" }}
                   />
                 );
               })}
-            <Text style={{color: 'black'}}>{title}</Text>
-            {!data[1].isDeleted && (
-              <Button
-                title="edit"
-                onPress={() =>
-                  this.setState({
-                    editMode: true,
-                    cstart: start,
-                    cend: end,
-                    ctitle: title,
-                    cdescription: description,
-                    cimageWebUrl: imageWebUrl,
-                  })
-                }>
-                Edit
-              </Button>
-            )}
-            <Text style={{color: 'black'}}>Descritpion:</Text>
-            <Text style={{color: 'black'}}>{description}</Text>
-
-            <Text style={{color: 'black'}}>Start Date:</Text>
-            <Text style={{color: 'black'}}>
-              {this.formatDateString(start.date)}
-            </Text>
-            <Text style={{color: 'black'}}>End Date:</Text>
-            <Text style={{color: 'black'}}>
-              {this.formatDateString(end.date)}
-            </Text>
-
-            <Text style={{color: 'black'}}>Availability:</Text>
-            <Text style={{color: 'black'}}>{this.formatTime(start.date)}</Text>
-            <Text style={{color: 'black'}}>To</Text>
-            <Text style={{color: 'black'}}>{this.formatTime(end.date)}</Text>
           </View>
         ) : (
           <View>
-            <Button
-              title={imageName}
-              onPress={() => {
-                this.pickFile().catch(error => {
-                  if (DocumentPicker.isCancel(error)) {
-                  } else {
-                    console.log('Error with file upload: ', error);
-                  }
-                });
-              }}></Button>
+            
+            <Caption>Title</Caption>
             <TextInput
               style={{color: 'black'}}
               value={title}
               onChangeText={text => this.setState({title: text})}
             />
-            <Text style={{color: 'black'}}>Descritpion:</Text>
+            <Caption>Description</Caption>
             <TextInput
+              multiline={true}
+              numberOfLines={6}
               style={{color: 'black'}}
               value={description}
               onChangeText={text => this.setState({description: text})}
+            />
+
+            <Caption>Start Date</Caption>
+            <Text style={{color: 'black'}}>
+              {this.formatDateString(start.date)}
+            </Text>
+            <Caption>End Date</Caption>
+            <Text style={{color: 'black'}}>End Date:</Text>
+            <Button
+              title={this.formatDateString(end.date)}
+              onPress={() => this.show('endDate')}
             />
 
             {start.show && (
@@ -325,26 +340,20 @@ class ViewDonationEffort extends Component {
                 onChange={this.handleEnd}
               />
             )}
-            <Text style={{color: 'black'}}>Start Date:</Text>
-            <Text style={{color: 'black'}}>
-              {this.formatDateString(start.date)}
-            </Text>
-            <Text style={{color: 'black'}}>End Date:</Text>
-            <Button
-              title={this.formatDateString(end.date)}
-              onPress={() => this.show('endDate')}
-            />
-
-            <Text style={{color: 'black'}}>Availability:</Text>
-            <Button
-              title={this.formatTime(start.date)}
-              onPress={() => this.show('startTime')}
-            />
-            <Text style={{color: 'black'}}>To</Text>
-            <Button
-              title={this.formatTime(end.date)}
-              onPress={() => this.show('endTime')}
-            />
+            <Caption>Availabilty</Caption>
+            <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+              <Button
+                mode="contained"
+                title={this.formatTime(start.date)}
+                onPress={() => this.show('startTime')}
+              >{this.formatTime(start.date)}</Button>
+              <Text style={{color: 'black'}}> to </Text>
+              <Button
+                mode="contained"
+                title={this.formatTime(end.date)}
+                onPress={() => this.show('endTime')}
+              >{this.formatTime(end.date)}</Button>
+            </View>
             <Button
               title="Cancel"
               onPress={() =>
@@ -358,10 +367,24 @@ class ViewDonationEffort extends Component {
                 })
               }
             />
-            <Button title="Save" onPress={() => this.handleSave()} />
+            <Caption>Media</Caption>
+            <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
+              <Button
+                mode="outlined"
+                title={imageName}
+                onPress={() => {
+                  this.pickFile().catch(error => {
+                    if (DocumentPicker.isCancel(error)) {
+                    } else {
+                      console.log('Error with file upload: ', error);
+                    }
+                  });
+                }}>{imageName}</Button>
+              </View>
+            <Button mode="contained" title="Save" color="green" onPress={() => this.handleSave()} style={{marginTop: 25}}>SAVE</Button>
           </View>
         )}
-      </>
+      </ScrollView>
     );
   }
 }
