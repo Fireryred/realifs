@@ -357,19 +357,6 @@ class ViewDonationEffort extends Component {
                 onPress={() => this.show('endTime')}
               >{this.formatTime(end.date)}</Button>
             </View>
-            <Button
-              title="Cancel"
-              onPress={() =>
-                this.setState({
-                  editMode: false,
-                  start: cstart,
-                  end: cend,
-                  title: ctitle,
-                  description: cdescription,
-                  imageWebUrl: cimageWebUrl,
-                })
-              }
-            />
             <Caption>Media</Caption>
             <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
               <Button
@@ -384,7 +371,26 @@ class ViewDonationEffort extends Component {
                   });
                 }}>{imageName}</Button>
               </View>
-            <Button mode="contained" title="Save" color="green" onPress={() => this.handleSave()} style={{marginTop: 25}}>SAVE</Button>
+
+            <View style={{display: "flex", flexDirection: "row", marginTop: 25, justifyContent: "space-evenly"}}>
+            <Button
+              mode="contained"
+              title="Cancel"
+              color="gray"
+              dark={true}
+              onPress={() =>
+                this.setState({
+                  editMode: false,
+                  start: cstart,
+                  end: cend,
+                  title: ctitle,
+                  description: cdescription,
+                  imageWebUrl: cimageWebUrl,
+                })
+              }
+            >Cancel</Button>
+            <Button mode="contained" title="Save" color="green" onPress={() => this.handleSave()}>SAVE</Button>
+            </View>
           </View>
         )}
       </ScrollView>
