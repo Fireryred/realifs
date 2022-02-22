@@ -16,7 +16,7 @@ class App extends React.Component {
         console.log(`Running on Android Version: ${Platform.Version}`)
         // console.log(JSON.stringify(this.props.auth.userSession, null, 2))
 
-        auth().onAuthStateChanged(async (user) => {
+        auth().onAuthStateChanged((user) => {
             if (user) {
                 // Signed in / Currently logged i
 
@@ -25,20 +25,19 @@ class App extends React.Component {
                     console.log("Logged in. Email not verified: ", user)
                 }
                 else {
-                    try {
-                        // Fetches custom user data. This includes account_type, that determines cso, donor, or rider
-                        let documentSnapshot = await firestore()
-                            .collection('users')
-                            .doc(user.uid)
-                            .get();
-                        let userData = documentSnapshot.data();
-
+                    // Fetches custom user data. This includes account_type, that determines cso, donor, or rider
+                    firestore()
+                    .collection('users')
+                    .doc(user.uid)
+                    .get()
+                    .then(doc => {
+                        let userData = doc.data();
                         this.props.dispatch(AuthAction.getActionLogin(user, userData));
                         console.log(`Logged in as: ${userData.account_type}`);
-                    }
-                    catch (error) {
+                    })
+                    .catch(error => {
                         console.log('User authenticated. But cannot get user data: ', error)
-                    }
+                    });
                 }
             }
             else {
