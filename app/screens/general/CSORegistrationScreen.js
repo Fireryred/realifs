@@ -17,7 +17,7 @@ export default class CSORegistrationScreen extends Component {
 
         this.state = {
             organizationName: 'Give Relief PH',
-            email: 'realifs.cso1@gmail.com',
+            email: 'realifs.cso2@gmail.com',
             username: 'givereliefph',
             password: 'password',
             confirmPassword: 'password',
@@ -403,7 +403,7 @@ export default class CSORegistrationScreen extends Component {
     }
  
     async handleRegister() {
-        let {organizationName, email, username, password, SECCertificateWebURL, PCNCCertificateWebURL, bankNumbers } = this.state;
+        let {organizationName, email, username, password, SECCertificateWebURL, PCNCCertificateWebURL, about, bankNumbers } = this.state;
 
         console.log(`ALL VALID ${this.allValid()}`);
 
