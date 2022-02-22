@@ -36,29 +36,29 @@ export default class CSORegistrationScreen extends Component {
                     empty: null,
                 },
                 email: {
-                    empty: true,
-                    invalidEmail: true
+                    empty: null,
+                    invalidEmail: null
                 },
                 username: {
-                    empty: true,
-                    invalidLength: true
+                    empty: null,
+                    invalidLength: null
                 },
                 password: {
-                    empty: true,
-                    invalidLength: true
+                    empty: null,
+                    invalidLength: null
                 },
                 confirmPassword: {
-                    empty: true,
-                    doesNotMatch: true
+                    empty: null,
+                    doesNotMatch: null
                 },
                 agreeToTerms: {
-                    disagree: true
+                    disagree: null
                 },
                 SECCertificateExists: {
-                    empty: true
+                    empty: null
                 },
                 PCNCCertificateExists: {
-                    empty: true
+                    empty: null
                 }
             }
         }

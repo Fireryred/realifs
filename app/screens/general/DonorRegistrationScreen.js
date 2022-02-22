@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { StyleSheet, View, ScrollView, Alert, Linking } from 'react-native'
 
 import { NavigationContainer } from '@react-navigation/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -14,14 +15,19 @@ export default class DonorRegistrationScreen extends Component {
     constructor() {
         super();
 
+        let testMode = false;
+
         this.state = {
-            firstname: 'Rem',
-            lastname: 'Irine',
-            email: 'remer.irineo@gmail.com',
-            username: 'rem',
-            password: 'password',
-            confirmPassword: 'password',
-            agreeToTerms: null,
+            firstname: testMode ? "Sarah" : "",
+            lastname: testMode ? "Baker" : "",
+            email: testMode ? "sbaker@realifs.com" : "",
+            username: testMode ? "sbaker" : "",
+            password: testMode ? "password" : "",
+            confirmPassword: testMode ? "password" : "",
+            agreeToTerms: testMode ? true : false,
+            mobileNumber: testMode ? "09998887777" : "",
+            birthdate: new Date("1995-01-01"),
+            datePickerShow: false,
             errors: {
                 firstname: {
                     empty: null,
@@ -30,24 +36,28 @@ export default class DonorRegistrationScreen extends Component {
                     empty: null,
                 },
                 email: {
-                    empty: true,
-                    invalidEmail: true
+                    empty: null,
+                    invalidEmail: null
                 },
                 username: {
-                    empty: true,
-                    invalidLength: true
+                    empty: null,
+                    invalidLength: null
                 },
                 password: {
-                    empty: true,
-                    invalidLength: true
+                    empty: null,
+                    invalidLength: null
                 },
                 confirmPassword: {
-                    empty: true,
-                    doesNotMatch: true
+                    empty: null,
+                    doesNotMatch: null
                 },
                 agreeToTerms: {
-                    disagree: true
+                    disagree: null
                 },
+                mobileNumber: {
+                    empty: null,
+                    invalidLength: null,
+                }
             }
         }
 
@@ -62,6 +72,7 @@ export default class DonorRegistrationScreen extends Component {
             <ScrollView
                 style={styles.container}
             >
+                <Text style={{fontWeight: "bold"}}>First Name</Text>
                 <TextInput 
                     placeholder="First Name" 
                     value={this.state.firstname}
@@ -75,7 +86,9 @@ export default class DonorRegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.firstname.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                {/* { this.state.errors.firstname.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
+
+                <Text style={{fontWeight: "bold"}}>Last Name</Text>
                 <TextInput 
                     placeholder="Last Name" 
                     value={this.state.lastname}
@@ -89,7 +102,9 @@ export default class DonorRegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.lastname.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                {/* { this.state.errors.lastname.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
+
+                <Text style={{fontWeight: "bold"}}>Email</Text>
                 <TextInput 
                     placeholder="Email" 
                     value={this.state.email}
@@ -103,8 +118,11 @@ export default class DonorRegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.email.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                
+                {/* { this.state.errors.email.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
                 { this.state.errors.email.invalidEmail && <Text style={styles.errorMessage}>Invalid email</Text> }
+
+                <Text style={{fontWeight: "bold"}}>Username</Text>
                 <TextInput 
                     placeholder="Username" 
                     value={this.state.username} 
@@ -118,7 +136,26 @@ export default class DonorRegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.username.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                {/* { this.state.errors.username.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
+
+                <Text style={{fontWeight: "bold"}}>Mobile Number</Text>
+                <TextInput 
+                    placeholder="Mobile Number" 
+                    keyboardType="numeric"
+                    value={this.state.mobileNumber} 
+                    error={this.state.errors.mobileNumber.empty || this.state.errors.mobileNumber.invalidLength}
+                    onChangeText={(text) => { 
+                        this.setState({
+                            ...this.state,
+                            mobileNumber: text
+                        }, () => {
+                            this.handleChange()
+                        })
+                    }}
+                />
+                { this.state.errors.mobileNumber.invalidLength && <Text style={styles.errorMessage}>Invalid Length</Text> }
+
+                <Text style={{fontWeight: "bold"}}>Password</Text>
                 <TextInput 
                     placeholder="Password" 
                     value={this.state.password} 
@@ -133,8 +170,10 @@ export default class DonorRegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.password.empty && <Text style={styles.errorMessage}>Must not empty</Text> }
+                {/* { this.state.errors.password.empty && <Text style={styles.errorMessage}>Must not empty</Text> } */}
                 { this.state.errors.password.invalidLength && <Text style={styles.errorMessage}>Password must be at least 8 characters</Text> }
+
+                <Text style={{fontWeight: "bold"}}>Confirm Password</Text>
                 <TextInput 
                     placeholder="Confirm Password" 
                     value={this.state.confirmPassword}
@@ -150,6 +189,22 @@ export default class DonorRegistrationScreen extends Component {
                     }}
                 />
                 { this.state.errors.confirmPassword.doesNotMatch && <Text style={styles.errorMessage}>Passwords do not match</Text> }
+
+                <Text style={{fontWeight: "bold"}}>Birthdate</Text>
+                <View style={{display: "flex", flexDirection: "row"}}>
+                    <Button 
+                        mode="outlined" 
+                        color="black" 
+                        style={{marginBottom: 20}}
+                        onPress={() => {
+                            this.setState({
+                                ...this.state,
+                                datePickerShow: true,
+                            })
+                        }}
+                    >{this.state.birthdate.toLocaleDateString()}</Button>
+                </View>
+                
                 <Surface
                     style={styles.termsGroup}>
                     <Checkbox
@@ -166,20 +221,32 @@ export default class DonorRegistrationScreen extends Component {
                     </Text>
                     
                 </Surface>
-                
                 { this.state.agreeToTerms === false && <Text style={styles.errorMessage}>You must agree to terms and conditions</Text> }
                 <Button
                     mode="contained"
-                    style={styles.registerButton}
+                    style={{marginBottom: 20}}
                     onPress={() => {this.handleRegister()}}
                 >Register</Button>
+
+                {this.state.datePickerShow &&
+                    <DateTimePicker value={this.state.birthdate} onChange={this.datePickerChange} maximumDate={new Date()}/>
+                }
             </ScrollView>
         )
     }
 
+    datePickerChange = (event, selectedDate) => {
+        const currentDate = selectedDate || this.state.birthdate;
+        this.setState({
+            ...this.state,
+            birthdate: currentDate,
+            datePickerShow: false,
+        });
+    }
+
     handleChange() {
         const { errors } = this.state;
-        const {firstname, lastname, email, username, password, confirmPassword, agreeToTerms} = this.state;
+        const {firstname, lastname, email, username, password, confirmPassword, agreeToTerms, mobileNumber} = this.state;
 
         this.setState({
             ...this.state,
@@ -207,6 +274,10 @@ export default class DonorRegistrationScreen extends Component {
                 agreeToTerms: {
                     disagree: !agreeToTerms
                 },
+                mobileNumber: {
+                    empty: !mobileNumber,
+                    invalidLength: !(mobileNumber.length == 11 || mobileNumber.length == 0)
+                }
             }
         }, () => {
             console.log(JSON.stringify(this.state, null, 2))
@@ -239,7 +310,7 @@ export default class DonorRegistrationScreen extends Component {
     }
 
     async handleRegister() {
-        let {firstname, lastname, email, username, password } = this.state;
+        let {firstname, lastname, email, username, password, mobileNumber, birthdate } = this.state;
 
         console.log(`ALL VALID ${this.allValid()}`);
 
@@ -255,6 +326,8 @@ export default class DonorRegistrationScreen extends Component {
                         lastname,
                         email,
                         username,
+                        mobileNumber,
+                        birthdate: firestore.Timestamp.fromDate(birthdate),
                     })
                         .then( () => {console.log('User data creation: success')} )
                         .catch( (error) => {console.log('User data creation: ', error)} )

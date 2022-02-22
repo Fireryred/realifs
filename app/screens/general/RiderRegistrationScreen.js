@@ -18,15 +18,18 @@ export default class FetcherRegistrationScreen extends Component {
         this.state = {
             firstname: 'John',
             lastname: 'Doe',
-            email: '201801360@iacademy.edu.ph',
+            email: 'jdoe2@realifs.com',
             username: 'johndoe',
             password: 'password',
             confirmPassword: 'password',
             driversLicenseExists: null,
             driversLicenseFilepath: null,
             driversLicenseWebURL: null,
-            agreeToTerms: null,
+            agreeToTerms: false,
             formValid: false,
+            mobileNumber: "09112223333",
+            birthdate: new Date("1995-01-01"),
+            datePickerShow: false,
             errors: {
                 firstname: {
                     empty: null,
@@ -35,26 +38,30 @@ export default class FetcherRegistrationScreen extends Component {
                     empty: null,
                 },
                 email: {
-                    empty: true,
-                    invalidEmail: true
+                    empty: null,
+                    invalidEmail: null
                 },
                 username: {
-                    empty: true,
-                    invalidLength: true
+                    empty: null,
+                    invalidLength: null
                 },
                 password: {
-                    empty: true,
-                    invalidLength: true
+                    empty: null,
+                    invalidLength: null
                 },
                 confirmPassword: {
-                    empty: true,
-                    doesNotMatch: true
+                    empty: null,
+                    doesNotMatch: null
                 },
                 agreeToTerms: {
-                    disagree: true
+                    disagree: null
                 },
                 driversLicenseExists: {
-                    empty: true
+                    empty: null
+                },
+                mobileNumber: {
+                    empty: null,
+                    invalidLength: null,
                 }
             }
         }
@@ -84,7 +91,7 @@ export default class FetcherRegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.firstname.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                {/* { this.state.errors.firstname.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
                 <Subheading>Last Name</Subheading>
                 <TextInput 
                     placeholder="Last Name" 
@@ -99,7 +106,7 @@ export default class FetcherRegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.lastname.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                {/* { this.state.errors.lastname.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
                 <Subheading>Email</Subheading>
                 <TextInput 
                     placeholder="Email" 
@@ -114,7 +121,7 @@ export default class FetcherRegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.email.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                {/* { this.state.errors.email.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
                 { this.state.errors.email.invalidEmail && <Text style={styles.errorMessage}>Invalid email</Text> }
                 <Subheading>Username</Subheading>
                 <TextInput 
@@ -130,7 +137,25 @@ export default class FetcherRegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.username.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                {/* { this.state.errors.username.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
+
+                <Subheading>Mobile Number</Subheading>
+                <TextInput 
+                    placeholder="Mobile Number" 
+                    keyboardType="numeric"
+                    value={this.state.mobileNumber} 
+                    error={this.state.errors.mobileNumber.empty || this.state.errors.mobileNumber.invalidLength}
+                    onChangeText={(text) => { 
+                        this.setState({
+                            ...this.state,
+                            mobileNumber: text
+                        }, () => {
+                            this.handleChange()
+                        })
+                    }}
+                />
+                { this.state.errors.mobileNumber.invalidLength && <Text style={styles.errorMessage}>Invalid Length</Text> }
+
                 <Subheading>Password</Subheading>
                 <TextInput 
                     placeholder="Password" 
@@ -146,7 +171,7 @@ export default class FetcherRegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.password.empty && <Text style={styles.errorMessage}>Must not empty</Text> }
+                {/* { this.state.errors.password.empty && <Text style={styles.errorMessage}>Must not empty</Text> } */}
                 { this.state.errors.password.invalidLength && <Text style={styles.errorMessage}>Password must be at least 8 characters</Text> }
                 <Subheading>Confirm Password</Subheading>
                 <TextInput
@@ -164,6 +189,22 @@ export default class FetcherRegistrationScreen extends Component {
                     }}
                 />
                 { this.state.errors.confirmPassword.doesNotMatch && <Text style={styles.errorMessage}>Passwords do not match</Text> }
+
+                <Subheading>Birthdate</Subheading>
+                <View style={{display: "flex", flexDirection: "row"}}>
+                    <Button 
+                        mode="outlined" 
+                        color="black" 
+                        style={{marginBottom: 20}}
+                        onPress={() => {
+                            this.setState({
+                                ...this.state,
+                                datePickerShow: true,
+                            })
+                        }}
+                    >{this.state.birthdate.toLocaleDateString()}</Button>
+                </View>
+
                 <Subheading>Driver's License</Subheading>
                 <Surface
                     style={styles.filePickerGroup}
@@ -209,15 +250,30 @@ export default class FetcherRegistrationScreen extends Component {
                         marginTop: 30,
                         marginBottom: 30
                     }}
-                    onPress={() => {this.handleRegister()}}
+                    onPress={() => {
+                        this.handleRegister()
+                    }}
                 >Register</Button>
+
+                {this.state.datePickerShow &&
+                    <DateTimePicker value={this.state.birthdate} onChange={this.datePickerChange} maximumDate={new Date()}/>
+                }
             </ScrollView>
         )
     }
 
+    datePickerChange = (event, selectedDate) => {
+        const currentDate = selectedDate || this.state.birthdate;
+        this.setState({
+            ...this.state,
+            birthdate: currentDate,
+            datePickerShow: false,
+        });
+    }
+
     handleChange() {
         const { errors } = this.state;
-        const {firstname, lastname, email, username, password, confirmPassword, agreeToTerms, driversLicenseExists} = this.state;
+        const {firstname, lastname, email, username, password, confirmPassword, agreeToTerms, driversLicenseExists, mobileNumber} = this.state;
 
         this.setState({
             ...this.state,
@@ -247,6 +303,10 @@ export default class FetcherRegistrationScreen extends Component {
                 },
                 driversLicenseExists: {
                     empty: !driversLicenseExists
+                },
+                mobileNumber: {
+                    empty: !mobileNumber,
+                    invalidLength: !(mobileNumber.length == 11 || mobileNumber.length == 0)
                 }
             }
         }, () => {
@@ -343,7 +403,7 @@ export default class FetcherRegistrationScreen extends Component {
     }
  
     async handleRegister() {
-        let {firstname, lastname, email, username, password, driversLicenseWebURL } = this.state;
+        let {firstname, lastname, email, username, password, driversLicenseWebURL, mobileNumber, birthdate } = this.state;
 
         console.log(`ALL VALID ${this.allValid()}`);
 
@@ -362,6 +422,8 @@ export default class FetcherRegistrationScreen extends Component {
                     driversLicenseWebURL,
                     verifiedByHR: false,
                     walletBalance: 0,
+                    mobileNumber,
+                    birthdate: firestore.Timestamp.fromDate(birthdate),
                 })
                     .then( () => {console.log('User data creation: success')} )
                     .catch( (error) => {console.log('User data creation: ', error)} )
