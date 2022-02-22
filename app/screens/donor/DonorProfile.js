@@ -17,6 +17,7 @@ class DonorProfile extends Component {
             username: "",
             firstname: "",
             lastname: "",
+            mobileNumber: "",
             editMode: false,
             userData: {},
             loading: false,
@@ -27,12 +28,15 @@ class DonorProfile extends Component {
                 lastname: {
                     empty: null,
                 },
+                mobileNumber: {
+                    empty: null,
+                },
             }
         }
     }
 
     handleChange() {
-        const {firstname, lastname} = this.state;
+        const {firstname, lastname, mobileNumber} = this.state;
 
         this.setState({
             ...this.state,
@@ -42,6 +46,9 @@ class DonorProfile extends Component {
                 },
                 lastname: {
                     empty: !lastname,
+                },
+                mobileNumber: {
+                    empty: !mobileNumber,
                 },
             }
         }, () => {
@@ -68,7 +75,7 @@ class DonorProfile extends Component {
 
     async handleSave() {
         this.setLoading(true);
-        let {firstname, lastname, loading } = this.state;
+        let {firstname, lastname, mobileNumber, loading } = this.state;
         
         console.log(`ALL VALID ${this.allValid()}`);
 
@@ -76,7 +83,8 @@ class DonorProfile extends Component {
             let uid = this.props.auth.userSession.uid;
             await firestore().collection('users').doc(uid).update({
                 firstname,
-                lastname
+                lastname,
+                mobileNumber,
             }).then(() => {
                 this.setEditMode(false);
                 Alert.alert(undefined, "Successfully updated profile information")
@@ -111,6 +119,7 @@ class DonorProfile extends Component {
                     username: fetchedData.username,
                     firstname: fetchedData.firstname,
                     lastname: fetchedData.lastname,
+                    mobileNumber: fetchedData.mobileNumber,
                 }, () => {
                     this.handleChange();
                 })
@@ -136,7 +145,7 @@ class DonorProfile extends Component {
         })
     }
     render() {
-        let {email, username, firstname, lastname, editMode, loading} = this.state;
+        let {email, username, firstname, lastname, editMode, mobileNumber, loading} = this.state;
 
         return (
             <>
@@ -155,6 +164,8 @@ class DonorProfile extends Component {
                 <Text style={styles.text}>{firstname}</Text>
                 <Caption>Lastname</Caption>
                 <Text style={styles.text}>{lastname}</Text>
+                <Caption>Mobile Number</Caption>
+                <Text style={styles.text}>{mobileNumber}</Text>
                 <Caption>Email</Caption>
                 <Text style={styles.text}>{email}</Text>
                 <Caption>Username</Caption>
@@ -176,7 +187,7 @@ class DonorProfile extends Component {
                         })
                     }}
                 />
-                { this.state.errors.firstname.empty && <Text style={styles.errorText}>Must not empty</Text> }
+                { this.state.errors.firstname.empty && <Text style={styles.errorText}>Must not be empty</Text> }
                 <Caption>Lastname</Caption>
                 <TextInput 
                     style={styles.text}
@@ -190,7 +201,21 @@ class DonorProfile extends Component {
                         })
                     }}
                 />
-                { this.state.errors.lastname.empty && <Text style={styles.errorText}>Must not empty</Text> }
+                { this.state.errors.lastname.empty && <Text style={styles.errorText}>Must not be empty</Text> }
+                <Caption>Mobile Number</Caption>
+                <TextInput 
+                    style={styles.text}
+                    value={mobileNumber}
+                    onChangeText={(text) => { 
+                        this.setState({
+                            ...this.state,
+                            mobileNumber: text
+                        }, () => {
+                            this.handleChange()
+                        })
+                    }}
+                />
+                { this.state.errors.mobileNumber.empty && <Text style={styles.errorText}>Must not be empty</Text> }
                 <Caption>Email</Caption>
                 <TextInput
                     disabled={true}
@@ -241,7 +266,7 @@ const styles = StyleSheet.create({
         display:'flex', 
         flexDirection: 'row', 
         justifyContent: 'center', 
-        backgroundColor: 'none'
+        backgroundColor: 'none',
     },
     editBtn: {
         backgroundColor: 'rgba(180,180,180,1)'
@@ -250,7 +275,8 @@ const styles = StyleSheet.create({
         display:'flex', 
         flexDirection: 'row', 
         justifyContent: 'space-evenly', 
-        backgroundColor: 'none'
+        backgroundColor: 'none',
+        marginBottom: 20,
     },
     cancelBtn: {
     },
