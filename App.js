@@ -20,7 +20,8 @@ class App extends React.Component {
         auth().onAuthStateChanged((user) => {
             if (user) {
                 // Signed in / Currently logged i
-
+                console.log("triggered");
+                this.props.dispatch(AuthAction.getActionLogin(user, {}));
                 if (!user.emailVerified) {
                     this.verifyAlert();
                     console.log("Logged in. Email not verified: ", user)
@@ -95,9 +96,15 @@ class App extends React.Component {
 
         }
         else {
-            return (
-                <WelcomeScreen></WelcomeScreen>
-            )
+            if(this.props.auth.userSession?.emailVerified == false) {
+                console.log("redirect")
+                return <WelcomeScreenProxy/>;
+            } else {
+                return (
+                    <WelcomeScreen></WelcomeScreen>
+                )
+            }
+            
         }
 
     }
