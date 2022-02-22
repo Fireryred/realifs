@@ -10,6 +10,7 @@ import DonorMain from './app/navigation/DonorMain';
 import WelcomeScreen from './app/screens/general/WelcomeScreen'
 import CSOMain from './app/navigation/CSOMain';
 import RiderMain from './app/navigation/RiderMain';
+import WelcomeScreenProxy from './app/screens/general/WelcomeScreenProxy';
 
 class App extends React.Component {
     componentDidMount() {
@@ -58,14 +59,38 @@ class App extends React.Component {
                 )
             }
             else if (this.props.auth.userData.account_type === 'rider') {
-                return (
-                    <RiderMain />
-                )
+                if(this.props.auth.userData.verifiedByHR == false) {
+                    Alert.alert(
+                        "Account under review",
+                        "Your fetcher account is still being verified by our team.",
+                        [
+                            { text: "OK", onPress: () => { } }
+                        ]
+                    );
+                    return <WelcomeScreenProxy/>;
+                } else {
+                    return (
+                        <RiderMain />
+                    )
+                }
+                
             }
             else if (this.props.auth.userData.account_type === 'cso') {
-                return (
-                    <CSOMain />
-                )
+                console.log(!this.props.auth.userData.verifiedByHR);
+                if(this.props.auth.userData.verifiedByHR == false) {
+                    Alert.alert(
+                        "Account under review",
+                        "Your CSO Administrator account is still being verified by our team.",
+                        [
+                            { text: "OK", onPress: () => { } }
+                        ]
+                    );
+                    return <WelcomeScreenProxy/>;
+                } else {
+                    return (
+                        <CSOMain />
+                    )
+                }
             }
 
         }
