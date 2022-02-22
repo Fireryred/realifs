@@ -3,12 +3,11 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  Text,
   Image,
   PermissionsAndroid,
   Alert,
 } from 'react-native';
-import {Subheading, Surface, TextInput, Button, Title} from 'react-native-paper';
+import {Subheading, Surface, TextInput, Button, Title, Text} from 'react-native-paper';
 
 import MapView from 'react-native-maps';
 import DocumentPicker from 'react-native-document-picker';
@@ -23,9 +22,9 @@ export class CreateDonationEffort extends Component {
     this.state = {
       imageName: 'CHOOSE FILE',
       imageWebURL: '',
-      title: 'Test',
-      description: 'Desc',
-      address: 'Address',
+      title: '',
+      description: '',
+      address: '',
       end: {
         show: false,
         date: new Date(),
@@ -211,7 +210,7 @@ export class CreateDonationEffort extends Component {
       <ScrollView style={{padding: 10}}>
         <View>
           <View>
-            <Title>Title</Title>
+            <Text style={{fontWeight: "bold", marginTop: 15,}}>Title</Text>
             <TextInput
               placeholder="Title"
               value={title}
@@ -220,7 +219,7 @@ export class CreateDonationEffort extends Component {
         </View>
         <View>
           <View>
-            <Title>Description</Title>
+          <Text style={{fontWeight: "bold", marginTop: 15,}}>Description</Text>
             <TextInput
               placeholder="Write Description..."
               multiline={true}
@@ -231,7 +230,7 @@ export class CreateDonationEffort extends Component {
         </View>
         <View>
           <View>
-            <Title>Full Address</Title>
+          <Text style={{fontWeight: "bold", marginTop: 15,}}>Full Address</Text>
             <TextInput
               placeholder="House number, Street, Village, City, Region"
               value={address}
@@ -247,6 +246,7 @@ export class CreateDonationEffort extends Component {
               justifyContent: "space-evenly",
               alignItems: "center",
               flexDirection: "row",
+              marginTop: 15,
             }}
           >
             <View
@@ -270,13 +270,13 @@ export class CreateDonationEffort extends Component {
                   onChange={this.handleEnd}
                 />
               )}
-              <Subheading>START DATE</Subheading>
+              <Text>Start Date</Text>
               <Button
                 mode="outlined"
                 title={start.date.toDateString()}
                 onPress={() => this.show('startDate')}
               >{start.date.toDateString()}</Button>
-              <Subheading>END DATE</Subheading>
+              <Text style={{marginTop: 15,}}>End Date</Text>
               <Button
                 mode="outlined"
                 title={end.date.toDateString()}
@@ -290,21 +290,21 @@ export class CreateDonationEffort extends Component {
                 alignItems: "center",
               }}
             >
-              <Subheading>AVAILABILITY</Subheading>
+              <Text>Availability</Text>
               <Button
                 mode="outlined"
                 onPress={() => this.show('startTime')}
-              >{(((start.date.getHours() + 11) % 12 + 1) + `:${start.date.getMinutes()} ` + (start.date.getHours() <= 11 ? "AM" : "PM"))}</Button>
+              >{(((start.date.getHours() + 11) % 12 + 1) + `:${(start.date.getMinutes() < 10 ? '0':'') + start.date.getMinutes()} ` + (start.date.getHours() <= 11 ? "AM" : "PM"))}</Button>
               <Text>-TO-</Text>
               <Button
                 mode="outlined"
                 onPress={() => this.show('endTime')}
-              >{(((end.date.getHours() + 11) % 12 + 1) + `:${start.date.getMinutes()} ` + (end.date.getHours() <= 11 ? "AM" : "PM"))}</Button>
+              >{(((end.date.getHours() + 11) % 12 + 1) + `:${(start.date.getMinutes() < 10 ? '0':'') + start.date.getMinutes()} ` + (end.date.getHours() <= 11 ? "AM" : "PM"))}</Button>
             </View>
           </View>
         <View>
           <View>
-            <Subheading>ADD PHOTO</Subheading>
+          <Text style={{fontWeight: "bold", marginTop: 15}}>Add Images</Text>
             <Surface>
               <Button
                 mode="outlined"
@@ -324,6 +324,8 @@ export class CreateDonationEffort extends Component {
         <View>
           
         </View>
+
+        <Text style={{fontWeight: "bold", marginTop: 15}}>Pick Location</Text>
         <View style={styles.mapContainer}>
           <MapView
             style={styles.map}
@@ -341,6 +343,8 @@ export class CreateDonationEffort extends Component {
         </View>
         <Text>Selected Location: {geocodeAddress}</Text>
         <Button
+          mode="contained"
+          style={{marginVertical: 25}}
           title="Create Donation Effort"
           onPress={() => {
             let collectionRef = firestore()
@@ -380,7 +384,7 @@ export class CreateDonationEffort extends Component {
                 this.props.navigation.replace('CSODrawer');
               });
           }}
-        />
+        >Create</Button>
       </ScrollView>
     );
   }
