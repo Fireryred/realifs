@@ -38,7 +38,8 @@ export default class TrackFetcher extends Component {
         let effort = doc.data();
 
         console.log(effort)
-        if(!effort.riderLocation) {
+        if(!effort.riderLocation.keys) {
+            Alert.alert(undefined, "Could not get fetcher location. Please try again later.")
             throw new Error("error getting riderLocation data");
         }
         this.setState({
