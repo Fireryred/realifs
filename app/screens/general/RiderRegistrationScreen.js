@@ -16,18 +16,18 @@ export default class FetcherRegistrationScreen extends Component {
         super();
 
         this.state = {
-            firstname: 'John',
-            lastname: 'Doe',
-            email: 'jdoe2@realifs.com',
-            username: 'johndoe',
-            password: 'password',
-            confirmPassword: 'password',
+            firstname: '',
+            lastname: '',
+            email: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
             driversLicenseExists: null,
             driversLicenseFilepath: null,
             driversLicenseWebURL: null,
             agreeToTerms: false,
             formValid: false,
-            mobileNumber: "09112223333",
+            mobileNumber: "",
             birthdate: new Date("1995-01-01"),
             datePickerShow: false,
             errors: {

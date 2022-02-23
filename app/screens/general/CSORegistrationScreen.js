@@ -16,11 +16,11 @@ export default class CSORegistrationScreen extends Component {
         super();
 
         this.state = {
-            organizationName: 'Give Relief PH',
-            email: 'realifs.cso2@gmail.com',
-            username: 'givereliefph',
-            password: 'password',
-            confirmPassword: 'password',
+            organizationName: '',
+            email: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
             SECCertificateExists: null,
             SECCertificateFilepath: null,
             SECCertificateWebURL: null,
@@ -88,7 +88,7 @@ export default class CSORegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.organizationName.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                {/* { this.state.errors.organizationName.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
                 <Subheading>Email</Subheading>
                 <TextInput 
                     placeholder="Email" 
@@ -103,7 +103,7 @@ export default class CSORegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.email.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                {/* { this.state.errors.email.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
                 { this.state.errors.email.invalidEmail && <Text style={styles.errorMessage}>Invalid email</Text> }
                 <Subheading>Username</Subheading>
                 <TextInput 
@@ -119,7 +119,7 @@ export default class CSORegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.username.empty && <Text style={styles.errorMessage}>Must not be empty</Text> }
+                {/* { this.state.errors.username.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
                 <Subheading>Password</Subheading>
                 <TextInput 
                     placeholder="Password" 
@@ -135,7 +135,7 @@ export default class CSORegistrationScreen extends Component {
                         })
                     }}
                 />
-                { this.state.errors.password.empty && <Text style={styles.errorMessage}>Must not empty</Text> }
+                {/* { this.state.errors.password.empty && <Text style={styles.errorMessage}>Must not empty</Text> } */}
                 { this.state.errors.password.invalidLength && <Text style={styles.errorMessage}>Password must be at least 8 characters</Text> }
                 <Subheading>Confirm Password</Subheading>
                 <TextInput
