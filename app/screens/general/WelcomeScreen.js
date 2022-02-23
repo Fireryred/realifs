@@ -16,11 +16,12 @@ import RiderRegistrationScreen from './RiderRegistrationScreen';
 import CSORegistrationScreen from './CSORegistrationScreen';
 import ForgotPassword from './ForgotPassword';
 import PrivacyPolicy from './PrivacyPolicy';
+import BrowseEfforts from './BrowseEfforts';
 
 import {realifsLogoText, welcomeBg} from '../../assets' 
 
 // UI Override
-import { TextInput, Button, Text } from 'react-native-paper'
+import { TextInput, Button, Text, IconButton } from 'react-native-paper'
 
 import { DefaultTheme as PaperDefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
@@ -104,6 +105,12 @@ export default class WelcomeScreen extends Component {
                         component={PrivacyPolicy}
                         options={{ title: 'Privacy Policy'}}
                     ></Stack.Screen>
+
+                    <Stack.Screen
+                        name="BrowseEfforts"
+                        component={BrowseEfforts}
+                        options={{ title: 'Browse Efforts'}}
+                    ></Stack.Screen>
                 </Stack.Navigator>
             </NavigationContainer>
             
@@ -116,6 +123,19 @@ class WelcomeScreenComponent extends Component {
     render() {
         return (
             <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingHorizontal: 10, backgroundColor: "white"}}>
+                <View
+                    style={ {position: "absolute", top: 0, right: 0, margin: 10} }
+                >
+                    <IconButton
+                        accessibilityLabel="Browse"
+                        icon="map-marker-radius"
+                        color={PaperDefaultTheme.colors.primary}
+                        style={{borderColor: PaperDefaultTheme.colors.primary, borderWidth: 1}}
+                        size={20}
+                        onPress={() => {this.props.navigation.navigate("BrowseEfforts")}}
+                    />
+                </View>
+                
                 <Image
                     source={realifsLogoText}
                     resizeMode='contain'
