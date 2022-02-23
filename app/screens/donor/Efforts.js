@@ -202,11 +202,12 @@ class EffortItem extends Component {
         let effortData = this.props.effortData[1];
         return (
             <Surface>
-                <Card>
+                <Card style={{margin: 3}}>
                     <Card.Title title={effortData.title || 'cannot get'}></Card.Title>
                     <Card.Content>
                         <Text>{effortData.description}</Text>
                         <Button
+                            style={{marginTop: 15}}
                             mode={'contained'}
                             onPress={() => {
                                 this.props.parentProps.navigation.navigate("EffortDetails", {effortId: effortId})
