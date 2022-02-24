@@ -38,19 +38,21 @@ export default class TrackFetcher extends Component {
         let effort = doc.data();
 
         console.log(effort)
-        if(!effort.riderLocation.keys) {
+        if(effort?.riderLocation?.longitude && effort?.riderLocation?.latitude) {
+            this.setState({
+                ...this.state,
+                pickup: effort.pickup,
+                dropoff: effort.dropoff,
+                riderLocation: effort.riderLocation,
+                dataFetched: true,
+            }, () => {
+                this.getDistance(`${this.state.pickup.latitude},${this.state.pickup.longitude}`, `${this.state.dropoff.latitude},${this.state.dropoff.longitude}`)
+            })
+        } else {
             Alert.alert(undefined, "Could not get fetcher location. Please try again later.")
             throw new Error("error getting riderLocation data");
         }
-        this.setState({
-            ...this.state,
-            pickup: effort.pickup,
-            dropoff: effort.dropoff,
-            riderLocation: effort.riderLocation,
-            dataFetched: true,
-        }, () => {
-            this.getDistance(`${this.state.pickup.latitude},${this.state.pickup.longitude}`, `${this.state.dropoff.latitude},${this.state.dropoff.longitude}`)
-        })
+        
     }
 
     getDistance(origin, destination) {
