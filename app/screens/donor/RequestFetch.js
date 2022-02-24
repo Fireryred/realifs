@@ -67,8 +67,8 @@ export default class RequestFetch extends Component {
             ...this.state,
             pickupCoordinates: {...region}
         }, () => {
-            this.getDistance(`${this.state.pickupCoordinates.latitude},${this.state.pickupCoordinates.longitude}`, `${this.state.effortCoordinates.latitude},${this.state.effortCoordinates.longitude}`);
             this.getAddressWithLatlng(this.state.pickupCoordinates.latitude, this.state.pickupCoordinates.longitude);
+            this.getDistance(`${this.state.pickupCoordinates.latitude},${this.state.pickupCoordinates.longitude}`, `${this.state.effortCoordinates.latitude},${this.state.effortCoordinates.longitude}`);
         })
     }, 500)
 
@@ -148,6 +148,11 @@ export default class RequestFetch extends Component {
         fetch(uri).then( (res) => {
             res.json().then( json => {
                 if(!json.routes[0]) {
+                    this.setState({
+                        ...this.state,
+                        canSubmit: false,
+                    });
+                    
                     Alert.alert('Invalid Location.', 'Please retry.')
                     return;
                 }
