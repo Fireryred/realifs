@@ -15,8 +15,8 @@ export default class RequestFetch extends Component {
 
         this.state = {
             effortDataInitialized: false,
-            donationDetails: null,
-            fullAddress: null,
+            donationDetails: "",
+            fullAddress: "",
             pickupCoordinates: {
                 latitude: null,
                 longitude: null,
@@ -31,13 +31,14 @@ export default class RequestFetch extends Component {
             effortCity: null,
             marker: null,
             cost: 100,
-            distance: null,
+            distance: 0,
             pathPolylines: null,
             pickupGeocodeAddress: null,
             vehicleType: "motorcycle", // motorcycle or car
             paymentMethod: "online", // online or cod
             modalVisible: false,
             title: "",
+            canSubmit: false,
         }
     }
     componentDidMount() {
@@ -86,6 +87,11 @@ export default class RequestFetch extends Component {
     }
 
     getAddressWithLatlng(lat, lng) {
+        this.setState({
+            ...this.state,
+            canSubmit: false,
+        });
+
         let uri = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyDAdKi6it1aJYQ9GUVDIPQAG4s6P_UyCjw`;
 
         fetch(uri)
@@ -96,7 +102,8 @@ export default class RequestFetch extends Component {
                     for(let item of json.results) {
                         this.setState({
                             ...this.state,
-                            pickupGeocodeAddress: item['formatted_address']
+                            pickupGeocodeAddress: item['formatted_address'],
+                            canSubmit: true,
                         })
 
                         for(let comp of item['address_components']) {
@@ -131,6 +138,11 @@ export default class RequestFetch extends Component {
     }
 
     getDistance(origin, destination) {
+        this.setState({
+            ...this.state,
+            canSubmit: false,
+        });
+
         let uri = encodeURI(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=AIzaSyDAdKi6it1aJYQ9GUVDIPQAG4s6P_UyCjw`);
 
         fetch(uri).then( (res) => {
@@ -165,7 +177,8 @@ export default class RequestFetch extends Component {
                     ...this.state,
                     pathPolylines: paths,
                     distance: distance,
-                    cost: cost
+                    cost: cost,
+                    canSubmit: true,
                 })
             } )
         })
@@ -384,6 +397,7 @@ export default class RequestFetch extends Component {
                         style={styles.nextButton}
                         mode="contained"
                         compact={true}
+                        disabled={!this.state.canSubmit}
                         onPress={() => {
                             this.storeFetchRequest();
                         }}
