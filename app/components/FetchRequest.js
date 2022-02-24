@@ -73,14 +73,19 @@ class FetchRequest extends React.Component {
         <Card>
           <Card.Content>
             <Text style={{color: 'black', fontWeight: 'bold'}}>
-              FETCH REQUEST BY
+              FETCH REQUEST BY: <Text style={{color: 'black'}}>
+                {donorData.firstname} {donorData.lastname}
+              </Text>
             </Text>
             <View>
               <Image></Image>
-              <Text style={{color: 'black'}}>
-                {donorData.firstname} {donorData.lastname}
-              </Text>
               <Text style={{color: 'black'}}>{date}</Text>
+            </View>
+            <View>
+              <Text
+                style={{color: "gray"}}
+              >{"Details: "}{data[1].donationDetails == "" || !data[1].donationDetails ? "No description" : data[1].donationDetails}
+              </Text>
             </View>
             <View
               style={{

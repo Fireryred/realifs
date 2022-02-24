@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   Alert,
+  ScrollView,
 } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import MapViewDirection from 'react-native-maps-directions';
@@ -241,7 +242,7 @@ class MapScreen extends React.Component {
 
   render() {
     const {location, pickup, dropoff, status} = this.state;
-    const {pickupAddress, dropoffAddress} = this.props.route.params.data[1];
+    const {pickupAddress, dropoffAddress, donationDetails} = this.props.route.params.data[1];
 
     console.log('height', this.state?.dimensions?.screen?.height);
     const toPickup = `https://www.google.com/maps/dir/?api=1&origin=Your Location&destination=${pickup.latitude},${pickup.longitude}`;
@@ -254,7 +255,7 @@ class MapScreen extends React.Component {
         }}>
         <MapView
           ref={this.mapRef}
-          onRegionChangeComplete={() => this.autoZoom()}
+          onMapLoaded={() => { this.autoZoom()}}
           style={{
             height: this.state?.dimensions?.window?.height / 2,
             width: this.state?.dimensions?.window?.width,
@@ -271,7 +272,7 @@ class MapScreen extends React.Component {
             strokeWidth={4}
             strokeColor="royalblue"></MapViewDirection>
         </MapView>
-        <View
+        <ScrollView
           style={{
             height: this.state?.dimensions?.window?.height / 2,
             width: this.state?.dimensions?.window?.width,
@@ -367,7 +368,7 @@ class MapScreen extends React.Component {
             </View>
 
             <View
-              style={{display: 'flex', flexDirection: 'row', marginTop: 15}}>
+              style={{display: 'flex', flexDirection: 'row', marginTop: 15, marginBottom: 75}}>
               <View
                 style={{
                   flex: 7,
@@ -380,7 +381,12 @@ class MapScreen extends React.Component {
                   this.state?.donorData?.firstname || ''
                 } ${this.state?.donorData?.lastname || ''}`}</Text>
                 <Text>{`${this.state?.donorData?.mobileNumber || ''}`}</Text>
+                <Text
+                  style={{color: "gray"}}
+                >{"Delivery Details: "}{donationDetails == "" || donationDetails ? "No description" : donationDetails}
+                </Text>
               </View>
+              
               <View
                 style={{
                   flex: 3,
@@ -409,7 +415,7 @@ class MapScreen extends React.Component {
               </View>
             </View>
           </View>
-        </View>
+        </ScrollView>
 
         <View
           style={{
