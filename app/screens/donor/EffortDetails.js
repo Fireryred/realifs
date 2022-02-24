@@ -3,7 +3,7 @@ import { StyleSheet, View, StatusBar, SafeAreaView, ScrollView, Image, Dimension
 
 import firestore from '@react-native-firebase/firestore';
 
-import { TextInput, Button, Text, Checkbox, Surface, Subheading, RadioButton, Portal, Provider, Title, Headline} from 'react-native-paper'
+import { TextInput, Button, Text, Checkbox, Surface, Subheading, RadioButton, Portal, Provider, Title, Headline, FAB, DefaultTheme} from 'react-native-paper'
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -165,6 +165,7 @@ export default class EffortDetails extends Component {
         let {organizationName} = this.state.csoData;
 
         return ( effortDataFetched && csoDataFetched &&
+            <>
             <ScrollView style={styles.container}>
                 <View style={styles.segment}>
                     <Text style={{ color: '#fff' }}>Effort Details</Text>
@@ -187,12 +188,12 @@ export default class EffortDetails extends Component {
                     
                 </View>
 
-                <View style={{...styles.segment, display: "flex", flexDirection: "column", alignItems: "center"}}>
+                <View style={{...styles.segment, display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 100}}>
                     <Text style={{color: "#666666", fontWeight: "bold"}}>FOR ONLINE CASH DONATIONS</Text>
                     <Text style={{textDecorationLine: "underline", color: "blue"}} onPress={() => { this.props.navigation.navigate("CSOInfo", { csoID }) }}>View CSO Information Page</Text>
                 </View>
-                {/* {Object.entries(this.state).map((value, index) => { return <><Text>{value.toString()}</Text></> })} */}
-                <View style={{...styles.segment, display: "flex", flexDirection: "column", alignItems: "center"}}>
+
+                {/* <View style={{...styles.segment, display: "flex", flexDirection: "column", alignItems: "center"}}>
                     <Text style={{color: "#666666", fontWeight: "bold", textAlign: "center"}}>FOR IN-KIND DONATIONS</Text>
                     <Button
                         mode="contained"
@@ -204,8 +205,28 @@ export default class EffortDetails extends Component {
                         }}
                     >DONATE ITEMS ❤</Button>
                 </View>
+                 */}
+                
             </ScrollView>
-
+            <FAB
+                    small
+                    label="DONATE ❤"
+                    style={{
+                        color: "white",
+                        position: 'absolute',
+                        margin: 16,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: DefaultTheme.colors.primary,
+                    }}
+                    onPress={() => {
+                        if(!this.checkAvailability()) {
+                            return;
+                        }
+                        this.props.navigation.navigate("RequestFetch", { effortId, effortCoordinates, geocodeAddress, city, title })
+                    }}
+                />
+            </>
         )
     }
 }
