@@ -383,7 +383,7 @@ class MapScreen extends React.Component {
                 <Text>{`${this.state?.donorData?.mobileNumber || ''}`}</Text>
                 <Text
                   style={{color: "gray"}}
-                >{"Delivery Details: "}{donationDetails == "" || donationDetails ? "No description" : donationDetails}
+                >{"Delivery Details: "}{donationDetails == "" || !donationDetails ? "No description" : donationDetails}
                 </Text>
               </View>
               
