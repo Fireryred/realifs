@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import MapViewDirection from 'react-native-maps-directions';
@@ -69,7 +70,8 @@ class MapScreen extends React.Component {
     const {transitButton} = this.state;
     console.log(transitButton);
     if (data[1].status === 'waiting' || transitButton) {
-      this.props.navigation.goBack();
+      Alert.alert("Delivery done", `Please make sure to tell the receiver to press the "receive" button on their app.`)
+      this.props.navigation.replace('RiderDrawer');
     }
   }
   componentDidMount() {
@@ -178,6 +180,14 @@ class MapScreen extends React.Component {
     switch (status) {
       case 'pickup':
         cStatus = 'transit';
+
+        data[1].status = cStatus;
+        await firestore()
+          .collection('fetch_requests')
+          .doc(data[0])
+          .update({status: cStatus})
+          .then(() => console.log('Status Updated'));
+
         break;
       case 'transit':
         this.setState({transitButton: true});
@@ -185,11 +195,11 @@ class MapScreen extends React.Component {
         break;
     }
     data[1].status = cStatus;
-    await firestore()
-      .collection('fetch_requests')
-      .doc(data[0])
-      .update({status: cStatus})
-      .then(() => console.log('Status Updated'));
+    // await firestore()
+    //   .collection('fetch_requests')
+    //   .doc(data[0])
+    //   .update({status: cStatus})
+    //   .then(() => console.log('Status Updated'));
   }
 
   updateConfirmButtonText() {
