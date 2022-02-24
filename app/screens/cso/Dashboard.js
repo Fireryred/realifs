@@ -13,6 +13,12 @@ export class Dashboard extends Component {
     this.state = {efforts: {active: {}, inactive: {}}};
   }
   componentDidMount() {
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'focus',
+      () => {
+        this.getDonationEfforts();
+      },
+    );
     this.props.navigation.getParent().setOptions({title: 'Dashboard'});
 
     let unsubscribe = this.props.navigation.addListener('tabPress', e => {
@@ -24,6 +30,10 @@ export class Dashboard extends Component {
     this.getDonationEfforts().catch(error => {
       console.error(error);
     });
+  }
+
+  componentWillUnmount() {
+    this.willFocusSubscription();
   }
 
   gotoCreateDono() {
@@ -50,38 +60,40 @@ export class Dashboard extends Component {
       }
     });
     this.setState({efforts: {active: {...active}, inactive: {...inactive}}});
+    console.log('Donation Efforts Get');
   }
   render() {
     const {efforts} = this.state;
     return (
       <ScrollView style={{padding: 10}}>
-
-          <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-            <Text style={{flex: 7, fontWeight: "bold", fontSize: 24}}>Donation Efforts</Text>
-            <View style={{flex: 3, alignItems: "flex-end"}}>
-              <Button style={{borderRadius: 50}} mode="contained" title="create" onPress={() => this.gotoCreateDono()}>
-                + CREATE
-              </Button>
-            </View>
+        <View
+          style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{flex: 7, fontWeight: 'bold', fontSize: 24}}>
+            Donation Efforts
+          </Text>
+          <View style={{flex: 3, alignItems: 'flex-end'}}>
+            <Button
+              style={{borderRadius: 50}}
+              mode="contained"
+              title="create"
+              onPress={() => this.gotoCreateDono()}>
+              + CREATE
+            </Button>
           </View>
-          
-          <Text style={{color: "gray", fontWeight: "bold", marginVertical: 10}}>ACTIVE</Text>
-          {Object.entries(efforts.active).map((efforts, key) => (
-            <CSODashboard
-              data={efforts}
-              key={key}
-              gotoDono={this.gotoViewDono}
-            />
-          ))}
-          <Text style={{color: "gray", fontWeight: "bold", marginVertical: 10}}>FINISHED</Text>
-          {Object.entries(efforts.inactive).map((efforts, key) => (
-            <CSODashboard
-              data={efforts}
-              key={key}
-              gotoDono={this.gotoViewDono}
-            />
-          ))}
+        </View>
 
+        <Text style={{color: 'gray', fontWeight: 'bold', marginVertical: 10}}>
+          ACTIVE
+        </Text>
+        {Object.entries(efforts.active).map((efforts, key) => (
+          <CSODashboard data={efforts} key={key} gotoDono={this.gotoViewDono} />
+        ))}
+        <Text style={{color: 'gray', fontWeight: 'bold', marginVertical: 10}}>
+          FINISHED
+        </Text>
+        {Object.entries(efforts.inactive).map((efforts, key) => (
+          <CSODashboard data={efforts} key={key} gotoDono={this.gotoViewDono} />
+        ))}
       </ScrollView>
     );
   }
