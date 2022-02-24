@@ -150,7 +150,7 @@ class DonationItem extends Component {
                                 dark={true}
                                 compact={true}
                                 mode="contained"
-                                disabled={donationData.status == "waiting" || donationData.status == "delivered" ? true : false}
+                                disabled={donationData.status == "waiting" || donationData.status == "delivered" || donationData.status == "cancelled" ? true : false}
                                 onPress={() => {
                                     this.props.parentProps.navigation.navigate("TrackFetcher", {effortId: donationId})
                                 }}
@@ -207,7 +207,7 @@ class DonationItem extends Component {
                             
                             <TouchableOpacity 
                                 style={{
-                                    opacity: (donationData.status == "waiting" || donationData.status == "delivered" ? .3 : 1),
+                                    opacity: (donationData.status == "waiting" || donationData.status == "delivered" || donationData.status == "cancelled" ? .3 : 1),
                                     marginRight: 10,
                                     height: 40, 
                                     width: 40, 
@@ -218,7 +218,7 @@ class DonationItem extends Component {
                                     justifyContent: "center",
                                     alignItems: "center"
                                 }}
-                                disabled={donationData.status == "waiting" || donationData.status == "delivered" ? true : false}
+                                disabled={donationData.status == "waiting" || donationData.status == "delivered" || donationData.status == "cancelled" ? true : false}
                                 onPress={() => {
                                     this.props.parentProps.navigation.navigate("Chat", {fetchRequestId: donationId, fetcherId: donationData.fetcherId})
                                 }}
