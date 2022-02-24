@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, StatusBar, SafeAreaView, ScrollView, Image, Dimensions } from 'react-native'
+import { StyleSheet, View, StatusBar, SafeAreaView, ScrollView, Image, Dimensions, Alert } from 'react-native'
 
 import firestore from '@react-native-firebase/firestore';
 
@@ -102,9 +102,66 @@ export default class EffortDetails extends Component {
         }, () => console.log(csoData))
     }
 
+    checkAvailability() {
+        let { startDateTime, endDateTime } = this.state;
+        let result = true;
+
+        let start = new firestore.Timestamp(
+            startDateTime.seconds,
+            startDateTime.nanoseconds,
+          ).toDate()
+        let end = new firestore.Timestamp(
+            endDateTime.seconds,
+            endDateTime.nanoseconds,
+          ).toDate()
+        
+        let startHour = start.getHours();
+        let startMins = end.getMinutes();
+        
+        let endHour = new firestore.Timestamp(
+            endDateTime.seconds,
+            endDateTime.nanoseconds,
+          ).toDate().getHours();
+        let endMins = new firestore.Timestamp(
+            endDateTime.seconds,
+            endDateTime.nanoseconds,
+          ).toDate().getMinutes();
+
+        let nowHour = new Date().getHours();
+        let nowMins = new Date().getMinutes();
+
+        let startInMins = ((startHour + 1) * 60 + startMins) - 60;
+        let endInMins = ((endHour + 1) * 60 + endMins) - 60;
+        let nowInMins = ((nowHour + 1) * 60 + nowMins) - 60;
+
+        if(startInMins <= endInMins) {
+            // For times that is within the 24-hour clock
+            if(nowInMins >= startInMins && nowInMins <= endInMins) {
+                console.log("Available")
+            } else {
+                let formattedStart = (((start.date.getHours() + 11) % 12 + 1) + `:${(start.date.getMinutes() < 10 ? '0':'') + start.date.getMinutes()} ` + (start.date.getHours() <= 11 ? "AM" : "PM"));
+                let formattedEnd = (((end.date.getHours() + 11) % 12 + 1) + `:${(start.date.getMinutes() < 10 ? '0':'') + start.date.getMinutes()} ` + (end.date.getHours() <= 11 ? "AM" : "PM"));
+                Alert.alert(undefined, `CSO Administrator is not available to recieve at this time. \n\nAvailability: ${formattedStart} - ${formattedEnd}`);
+                result = false;
+            }
+        } else {
+            // For times that goes over the 24-hour clock
+            if((nowInMins >= startInMins) && (nowInMins <= 24 * 60) && (nowInMins >= 0) && (nowInMins <= endInMins)) {
+                console.log("Available")
+            } else {
+                let formattedStart = (((start.getHours() + 11) % 12 + 1) + `:${(start.getMinutes() < 10 ? '0':'') + start.getMinutes()} ` + (start.getHours() <= 11 ? "AM" : "PM"));
+                let formattedEnd = (((end.getHours() + 11) % 12 + 1) + `:${(start.getMinutes() < 10 ? '0':'') + start.getMinutes()} ` + (end.getHours() <= 11 ? "AM" : "PM"));
+                Alert.alert(undefined, `CSO Administrator is not available to recieve at this time. \n\nAvailability: ${formattedStart} - ${formattedEnd}`);
+                result = false;
+            }
+        }
+
+        return result;
+    }
+
     render() {
         let { effortId, effortCoordinates, geocodeAddress, city, csoID, effortDataFetched, csoDataFetched } = this.state;
-        let { title, description, creationDate, startDateTime, imageUrl } = this.state;
+        let { title, description, creationDate, startDateTime, endDateTime, imageUrl } = this.state;
         let {organizationName} = this.state.csoData;
 
         return ( effortDataFetched && csoDataFetched &&
@@ -140,6 +197,9 @@ export default class EffortDetails extends Component {
                     <Button
                         mode="contained"
                         onPress={() => {
+                            if(!this.checkAvailability()) {
+                                return;
+                            }
                             this.props.navigation.navigate("RequestFetch", { effortId, effortCoordinates, geocodeAddress, city, title })
                         }}
                     >DONATE ITEMS ❤</Button>
