@@ -215,7 +215,7 @@ export default class RequestFetch extends Component {
             distance: this.state.distance,
             donorID: auth().currentUser.uid,
             cost: this.state.cost,
-            status: this.state.paymentMethod == "cod" ? "waiting" : "unpaid",
+            status: this.state.paymentMethod == "cod" ? "waiting" : "cancelled",
             vehicleType: this.state.vehicleType,
             paymentMethod: this.state.paymentMethod,
             pickupHouseAddress: this.state.fullAddress,
