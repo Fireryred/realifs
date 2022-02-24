@@ -28,7 +28,7 @@ export default class TrackFetcher extends Component {
         this.loadEffortData()
             .catch((err) => {
                 console.log("error getting effort data", err);
-                this.props.navigation.replace("DonorDrawer")
+                this.props.navigation.goBack();
             })
     }
 
