@@ -166,7 +166,7 @@ class DonationItem extends Component {
 
                                     if(donationData?.paymentMethod == "online") {
                                         firestore().collection("refund_requests").add({
-                                            amount: donationData.cost,
+                                            amount: parseInt(donationData.cost) * 100,
                                             fetchRequestID: donationId,
                                             donorID: donationData.donorID,
                                             date: firestore.Timestamp.now(),
