@@ -213,15 +213,16 @@ export default class DonorRegistrationScreen extends Component {
                             this.termsCheckboxToggle();
                         }}
                     />
-                    <Text>Agree to 
+                    <Text>{"Agree to "} 
                         <Text style={styles.termsUrl}
-                            onPress={() => Linking.openURL('http://google.com')}>
-                            Terms and Conditions & Privacy Policy
+                            onPress={() => this.props.navigation.navigate("PrivacyPolicy")}>
+                            {"Privacy Policy"}
                         </Text>
                     </Text>
                     
                 </Surface>
-                { this.state.agreeToTerms === false && <Text style={styles.errorMessage}>You must agree to terms and conditions</Text> }
+                
+                { this.state.agreeToTerms === false && <Text style={styles.errorMessage}>You must agree to our privacy policy</Text> }
                 <Button
                     mode="contained"
                     style={{marginBottom: 20}}
