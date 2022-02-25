@@ -74,7 +74,7 @@ export default class CSORegistrationScreen extends Component {
             <ScrollView
                 style={styles.container}
             >
-                <Subheading>Full Organization Name</Subheading>
+                <Text style={{fontWeight: "bold"}}>Full Organization Name</Text>
                 <TextInput 
                     placeholder="Full Organization Name" 
                     value={this.state.organizationName}
@@ -89,7 +89,7 @@ export default class CSORegistrationScreen extends Component {
                     }}
                 />
                 {/* { this.state.errors.organizationName.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
-                <Subheading>Email</Subheading>
+                <Text style={{fontWeight: "bold"}}>Email</Text>
                 <TextInput 
                     placeholder="Email" 
                     value={this.state.email}
@@ -105,7 +105,8 @@ export default class CSORegistrationScreen extends Component {
                 />
                 {/* { this.state.errors.email.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
                 { this.state.errors.email.invalidEmail && <Text style={styles.errorMessage}>Invalid email</Text> }
-                <Subheading>Username</Subheading>
+
+                <Text style={{fontWeight: "bold"}}>Username</Text>
                 <TextInput 
                     placeholder="Username" 
                     value={this.state.username} 
@@ -120,7 +121,8 @@ export default class CSORegistrationScreen extends Component {
                     }}
                 />
                 {/* { this.state.errors.username.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
-                <Subheading>Password</Subheading>
+
+                <Text style={{fontWeight: "bold"}}>Password</Text>
                 <TextInput 
                     placeholder="Password" 
                     value={this.state.password} 
@@ -137,7 +139,8 @@ export default class CSORegistrationScreen extends Component {
                 />
                 {/* { this.state.errors.password.empty && <Text style={styles.errorMessage}>Must not empty</Text> } */}
                 { this.state.errors.password.invalidLength && <Text style={styles.errorMessage}>Password must be at least 8 characters</Text> }
-                <Subheading>Confirm Password</Subheading>
+
+                <Text style={{fontWeight: "bold"}}>Confirm Password</Text>
                 <TextInput
                     placeholder="Confirm Password" 
                     value={this.state.confirmPassword}
@@ -153,7 +156,8 @@ export default class CSORegistrationScreen extends Component {
                     }}
                 />
                 { this.state.errors.confirmPassword.doesNotMatch && <Text style={styles.errorMessage}>Passwords do not match</Text> }
-                <Subheading>SEC Certificate</Subheading>
+
+                <Text style={{fontWeight: "bold"}}>SEC Certificate</Text>
                 <Surface
                     style={styles.filePickerGroup}
                 >
@@ -173,7 +177,8 @@ export default class CSORegistrationScreen extends Component {
                     >CHOOSE FILE</Button>
                 </Surface>
                 { this.state.SECCertificateExists === false && <Text style={styles.errorMessage}>Please upload a photo/document of your Organization's SEC Certificate</Text> }
-                <Subheading>PCNC Certificate</Subheading>
+
+                <Text style={{fontWeight: "bold"}}>PCNC Certificate</Text>
                 <Surface
                     style={styles.filePickerGroup}
                 >

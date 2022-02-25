@@ -77,7 +77,7 @@ export default class FetcherRegistrationScreen extends Component {
             <ScrollView
                 style={styles.container}
             >
-                <Subheading>First Name</Subheading>
+                <Text style={{fontWeight: "bold"}}>First Name</Text>
                 <TextInput 
                     placeholder="First Name" 
                     value={this.state.firstname}
@@ -92,7 +92,7 @@ export default class FetcherRegistrationScreen extends Component {
                     }}
                 />
                 {/* { this.state.errors.firstname.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
-                <Subheading>Last Name</Subheading>
+                <Text style={{fontWeight: "bold"}}>Last Name</Text>
                 <TextInput 
                     placeholder="Last Name" 
                     value={this.state.lastname}
@@ -107,7 +107,7 @@ export default class FetcherRegistrationScreen extends Component {
                     }}
                 />
                 {/* { this.state.errors.lastname.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
-                <Subheading>Email</Subheading>
+                <Text style={{fontWeight: "bold"}}>Email</Text>
                 <TextInput 
                     placeholder="Email" 
                     value={this.state.email}
@@ -123,7 +123,7 @@ export default class FetcherRegistrationScreen extends Component {
                 />
                 {/* { this.state.errors.email.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
                 { this.state.errors.email.invalidEmail && <Text style={styles.errorMessage}>Invalid email</Text> }
-                <Subheading>Username</Subheading>
+                <Text style={{fontWeight: "bold"}}>Username</Text>
                 <TextInput 
                     placeholder="Username" 
                     value={this.state.username} 
@@ -138,8 +138,7 @@ export default class FetcherRegistrationScreen extends Component {
                     }}
                 />
                 {/* { this.state.errors.username.empty && <Text style={styles.errorMessage}>Must not be empty</Text> } */}
-
-                <Subheading>Mobile Number</Subheading>
+                <Text style={{fontWeight: "bold"}}>Mobile Number</Text>
                 <TextInput 
                     placeholder="Mobile Number" 
                     keyboardType="numeric"
@@ -155,8 +154,8 @@ export default class FetcherRegistrationScreen extends Component {
                     }}
                 />
                 { this.state.errors.mobileNumber.invalidLength && <Text style={styles.errorMessage}>Invalid Length</Text> }
-
-                <Subheading>Password</Subheading>
+                
+                <Text style={{fontWeight: "bold"}}>Password</Text>
                 <TextInput 
                     placeholder="Password" 
                     value={this.state.password} 
@@ -173,7 +172,7 @@ export default class FetcherRegistrationScreen extends Component {
                 />
                 {/* { this.state.errors.password.empty && <Text style={styles.errorMessage}>Must not empty</Text> } */}
                 { this.state.errors.password.invalidLength && <Text style={styles.errorMessage}>Password must be at least 8 characters</Text> }
-                <Subheading>Confirm Password</Subheading>
+                <Text style={{fontWeight: "bold"}}>Confirm Password</Text>
                 <TextInput
                     placeholder="Confirm Password" 
                     value={this.state.confirmPassword}
@@ -189,8 +188,7 @@ export default class FetcherRegistrationScreen extends Component {
                     }}
                 />
                 { this.state.errors.confirmPassword.doesNotMatch && <Text style={styles.errorMessage}>Passwords do not match</Text> }
-
-                <Subheading>Birthdate</Subheading>
+                <Text style={{fontWeight: "bold"}}>Birthdate</Text>
                 <View style={{display: "flex", flexDirection: "row"}}>
                     <Button 
                         mode="outlined" 
@@ -204,8 +202,7 @@ export default class FetcherRegistrationScreen extends Component {
                         }}
                     >{this.state.birthdate.toLocaleDateString()}</Button>
                 </View>
-
-                <Subheading>Driver's License</Subheading>
+                <Text style={{fontWeight: "bold"}}>Driver's License</Text>
                 <Surface
                     style={styles.filePickerGroup}
                 >
