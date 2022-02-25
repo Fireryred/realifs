@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, RefreshControl} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -9,7 +9,7 @@ import { Caption, Text, Button } from 'react-native-paper';
 export class IncomingDonations extends Component {
   constructor() {
     super();
-    this.state = {pickup: {}, transit: {}, delivered: {}};
+    this.state = {pickup: {}, transit: {}, delivered: {}, refreshing: false};
   }
   componentDidMount() {
     this.getDonationEffortId().catch(error => console.error(error));
@@ -24,6 +24,12 @@ export class IncomingDonations extends Component {
     });
   }
   async getDonationEffortId() {
+    this.setState({
+      ...this.state,
+      pickup: {},
+      transit: {},
+      delivered: {},
+    })
     await firestore()
       .collection('donation_efforts')
       .where('csoID', '==', auth().currentUser.uid)
@@ -39,46 +45,67 @@ export class IncomingDonations extends Component {
     let pickup = {},
       transit = {},
       delivered = {};
-    await firestore()
+    let query = await firestore()
       .collection('fetch_requests')
       .where('effortId', '==', effortId)
       .where('status', '!=', 'waiting')
       .get()
-      .then(query => {
-        query.forEach(doc => {
-          switch (doc.data().status) {
-            case 'pickup':
-              pickup[doc.id] = {
-                effortName: effortName,
-                requestData: doc.data(),
-              };
-              break;
 
-            case 'transit':
-              transit[doc.id] = {
-                effortName: effortName,
-                requestData: doc.data(),
-              };
-              break;
+    query.forEach(doc => {
+      switch (doc.data().status) {
+        case 'pickup':
+          pickup[doc.id] = {
+            effortName: effortName,
+            requestData: doc.data(),
+          };
+          break;
 
-            case 'delivered':
-              delivered[doc.id] = {
-                effortName: effortName,
-                requestData: doc.data(),
-              };
-              break;
-          }
-        });
-      });
-    this.setState({pickup, transit, delivered});
+        case 'transit':
+          transit[doc.id] = {
+            effortName: effortName,
+            requestData: doc.data(),
+          };
+          break;
+
+        case 'delivered':
+          delivered[doc.id] = {
+            effortName: effortName,
+            requestData: doc.data(),
+          };
+          break;
+      }
+    });
+      
+    this.setState({ 
+      pickup: {...this.state.pickup, ...pickup}, 
+      transit: {...this.state.transit, ...transit}, 
+      delivered: {...this.state.delivered, ...delivered}
+    });
   }
   toTrack = effortId => {
     this.props.navigation.navigate('TrackFetcher', {effortId: effortId});
   };
+
+  setRefreshing = (isRefreshing) => {
+    this.setState({
+      ...this.setState,
+      refreshing: isRefreshing,
+    })
+  }
+
   render() {
     const {pickup, transit, delivered} = this.state;
+    console.log("transit object", transit)
     return (
-      <ScrollView style={{padding: 10}}>
+      <ScrollView style={{padding: 10}} refreshControl={
+        <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={() => {
+              console.log(this.state.refreshing); 
+              this.getDonationEffortId().catch(error => console.error(error)); 
+              this.setRefreshing(false)}
+            }
+        />}>
         <Text style={{fontSize: 18, color: "black", fontWeight: "bold", marginVertical: 10}}>INCOMING DONATIONS</Text>
         {Object.entries(transit).map((efforts, key) => (
           <CSOIncomingDonation
