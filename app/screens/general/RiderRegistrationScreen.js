@@ -369,23 +369,24 @@ export default class FetcherRegistrationScreen extends Component {
         })
         console.log('result', result)
 
-        this.setState({
-            ...this.state,
-            driversLicenseExists: true,
-            driversLicenseFilepath: file[0].name
-        }, () => {
-            this.handleChange();
-        })
-
         // Get Web URL of the uploaded Image
         const url = await storage().ref(`driverslicense/${uploadFilename}`).getDownloadURL();
         console.log('imageURL: ', url)
 
         this.setState({
             ...this.state,
+            driversLicenseFilepath: file[0].name
+        }, () => {
+            this.handleChange();
+        })
+
+        this.setState({
+            ...this.state,
+            driversLicenseExists: true,
             driversLicenseWebURL: url
         }, () => {
             console.log(JSON.stringify(this.state, null, 2))
+            this.handleChange();
         })
     }
 

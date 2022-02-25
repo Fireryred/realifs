@@ -29,7 +29,7 @@ export default class CSORegistrationScreen extends Component {
             PCNCCertificateWebURL: null,
             about: "",
             bankNumbers: "",
-            agreeToTerms: null,
+            agreeToTerms: false,
             formValid: false,
             errors: {
                 organizationName: {
@@ -318,23 +318,24 @@ export default class CSORegistrationScreen extends Component {
         })
         console.log('result', result)
 
-        this.setState({
-            ...this.state,
-            SECCertificateExists: true,
-            SECCertificateFilepath: file[0].name
-        }, () => {
-            this.handleChange();
-        })
-
         // Get Web URL of the uploaded Image
         const url = await storage().ref(`SECCertificate/${uploadFilename}`).getDownloadURL();
         console.log('imageURL: ', url)
 
         this.setState({
             ...this.state,
+            SECCertificateFilepath: file[0].name
+        }, () => {
+            this.handleChange();
+        })
+
+        this.setState({
+            ...this.state,
+            SECCertificateExists: true,
             SECCertificateWebURL: url
         }, () => {
             console.log(JSON.stringify(this.state, null, 2))
+            this.handleChange();
         })
     }
 
@@ -369,23 +370,24 @@ export default class CSORegistrationScreen extends Component {
         })
         console.log('result', result)
 
-        this.setState({
-            ...this.state,
-            PCNCCertificateExists: true,
-            PCNCCertificateFilepath: file[0].name
-        }, () => {
-            this.handleChange();
-        })
-
         // Get Web URL of the uploaded Image
         const url = await storage().ref(`PCNCCertificate/${uploadFilename}`).getDownloadURL();
         console.log('imageURL: ', url)
 
         this.setState({
             ...this.state,
+            PCNCCertificateFilepath: file[0].name
+        }, () => {
+            this.handleChange();
+        })
+
+        this.setState({
+            ...this.state,
+            PCNCCertificateExists: true,
             PCNCCertificateWebURL: url
         }, () => {
             console.log(JSON.stringify(this.state, null, 2))
+            this.handleChange();
         })
     }
 
