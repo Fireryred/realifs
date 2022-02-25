@@ -71,7 +71,10 @@ class MapScreen extends React.Component {
     const {transitButton} = this.state;
     console.log(transitButton);
     if (data[1].status === 'waiting' || transitButton) {
-      Alert.alert("Delivery done", `Please make sure to tell the receiver to press the "receive" button on their app.`)
+      Alert.alert(
+        'Delivery done',
+        `Please make sure to tell the receiver to press the "receive" button on their app.`,
+      );
       this.props.navigation.replace('RiderDrawer');
     }
   }
@@ -241,12 +244,19 @@ class MapScreen extends React.Component {
   };
 
   render() {
+    const {data} = this.props.route.params;
     const {location, pickup, dropoff, status} = this.state;
-    const {pickupAddress, dropoffAddress, donationDetails} = this.props.route.params.data[1];
+    const {pickupAddress, dropoffAddress, donationDetails} = data[1];
 
     console.log('height', this.state?.dimensions?.screen?.height);
     const toPickup = `https://www.google.com/maps/dir/?api=1&origin=Your Location&destination=${pickup.latitude},${pickup.longitude}`;
-    const toDropoff = `https://www.google.com/maps/dir/?api=1&origin=${pickup.latitude},${pickup.longitude}&destination=${dropoff.latitude},${dropoff.longitude}`;
+    const toDropoff = `https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${dropoff.latitude},${dropoff.longitude}`;
+    let origin = pickup;
+    let destination = dropoff;
+    if (data[1].status === 'pickup') {
+      origin = location;
+      destination = pickup;
+    }
     return (
       <View
         style={{
@@ -255,7 +265,9 @@ class MapScreen extends React.Component {
         }}>
         <MapView
           ref={this.mapRef}
-          onMapLoaded={() => { this.autoZoom()}}
+          onMapLoaded={() => {
+            this.autoZoom();
+          }}
           style={{
             height: this.state?.dimensions?.window?.height / 2,
             width: this.state?.dimensions?.window?.width,
@@ -263,11 +275,11 @@ class MapScreen extends React.Component {
           }}
           provider={PROVIDER_GOOGLE}
           initialRegion={pickup}>
-          <Marker coordinate={pickup}></Marker>
-          <Marker coordinate={dropoff}></Marker>
+          <Marker coordinate={origin}></Marker>
+          <Marker coordinate={destination}></Marker>
           <MapViewDirection
-            origin={pickup}
-            destination={dropoff}
+            origin={origin}
+            destination={destination}
             apikey={'AIzaSyDIbDFd-QJ0MicKOvggJ6kmpHaDXMXuOfA'} //hide this
             strokeWidth={4}
             strokeColor="royalblue"></MapViewDirection>
@@ -368,7 +380,12 @@ class MapScreen extends React.Component {
             </View>
 
             <View
-              style={{display: 'flex', flexDirection: 'row', marginTop: 15, marginBottom: 75}}>
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                marginTop: 15,
+                marginBottom: 75,
+              }}>
               <View
                 style={{
                   flex: 7,
@@ -381,12 +398,14 @@ class MapScreen extends React.Component {
                   this.state?.donorData?.firstname || ''
                 } ${this.state?.donorData?.lastname || ''}`}</Text>
                 <Text>{`${this.state?.donorData?.mobileNumber || ''}`}</Text>
-                <Text
-                  style={{color: "gray"}}
-                >{"Delivery Details: "}{donationDetails == "" || !donationDetails ? "No description" : donationDetails}
+                <Text style={{color: 'gray'}}>
+                  {'Delivery Details: '}
+                  {donationDetails == '' || !donationDetails
+                    ? 'No description'
+                    : donationDetails}
                 </Text>
               </View>
-              
+
               <View
                 style={{
                   flex: 3,
