@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { PermissionsAndroid, StyleSheet, View, ScrollView, Alert, Linking } from 'react-native'
 
 import { NavigationContainer } from '@react-navigation/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
