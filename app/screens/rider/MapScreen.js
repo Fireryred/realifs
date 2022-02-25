@@ -247,14 +247,16 @@ class MapScreen extends React.Component {
     const {data} = this.props.route.params;
     const {location, pickup, dropoff, status} = this.state;
     const {pickupAddress, dropoffAddress, donationDetails} = data[1];
-    let origin = location;
-    let destination = pickup;
-    if (data[1].status === 'transit') {
-      origin = pickup;
-      destination = dropoff;
-    }
+
+    console.log('height', this.state?.dimensions?.screen?.height);
     const toPickup = `https://www.google.com/maps/dir/?api=1&origin=Your Location&destination=${pickup.latitude},${pickup.longitude}`;
-    const toDropoff = `https://www.google.com/maps/dir/?api=1&origin=${pickup.latitude},${pickup.longitude}&destination=${dropoff.latitude},${dropoff.longitude}`;
+    const toDropoff = `https://www.google.com/maps/dir/?api=1&origin=${location.latitude},${location.longitude}&destination=${dropoff.latitude},${dropoff.longitude}`;
+    let origin = pickup;
+    let destination = dropoff;
+    if (data[1].status === 'pickup') {
+      origin = location;
+      destination = pickup;
+    }
     return (
       <View
         style={{
