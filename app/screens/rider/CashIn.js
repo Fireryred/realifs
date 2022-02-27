@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 import {Button, Text, TextInput} from 'react-native-paper';
 class CashIn extends Component {
   constructor() {
