@@ -64,12 +64,14 @@ class ContactSupport extends Component {
                     mode="contained"
                     disabled={loading}
                     onPress={() => {
-                        this.setLoading(true)
-                        console.log(this.state)
+                        
                         if(!message || message === "") {
                             Alert.alert(undefined, "Please fill up the necessary fields.");
                             return;
                         }
+
+                        this.setLoading(true)
+                        console.log(this.state)
 
                         firestore().collection('user_support_logs').add({
                             email,
