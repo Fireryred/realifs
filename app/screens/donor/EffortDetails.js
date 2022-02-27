@@ -134,7 +134,12 @@ export default class EffortDetails extends Component {
         let endInMins = ((endHour + 1) * 60 + endMins) - 60;
         let nowInMins = ((nowHour + 1) * 60 + nowMins) - 60;
 
-        if(startInMins <= endInMins) {
+        if(startInMins < endInMins) {
+            console.log("startInMins", startInMins);
+            console.log("1440", (24*60));
+            console.log("nowInMins", nowInMins);
+            console.log("0", "0");
+            console.log("endInMins", endInMins);
             // For times that is within the 24-hour clock
             if(nowInMins >= startInMins && nowInMins <= endInMins) {
                 console.log("Available")
@@ -145,8 +150,13 @@ export default class EffortDetails extends Component {
                 result = false;
             }
         } else {
+            console.log("startInMins", startInMins);
+            console.log("1440", (24*60));
+            console.log("nowInMins", nowInMins);
+            console.log("0", "0");
+            console.log("endInMins", endInMins);
             // For times that goes over the 24-hour clock
-            if((nowInMins >= startInMins) && (nowInMins <= 24 * 60) && (nowInMins >= 0) && (nowInMins <= endInMins)) {
+            if(((nowInMins >= startInMins) && (nowInMins <= 24 * 60)) || ((nowInMins >= 0) && (nowInMins <= endInMins))) {
                 console.log("Available")
             } else {
                 let formattedStart = (((start.getHours() + 11) % 12 + 1) + `:${(start.getMinutes() < 10 ? '0':'') + start.getMinutes()} ` + (start.getHours() <= 11 ? "AM" : "PM"));
