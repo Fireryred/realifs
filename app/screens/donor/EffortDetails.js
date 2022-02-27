@@ -139,8 +139,8 @@ export default class EffortDetails extends Component {
             if(nowInMins >= startInMins && nowInMins <= endInMins) {
                 console.log("Available")
             } else {
-                let formattedStart = (((start.date.getHours() + 11) % 12 + 1) + `:${(start.date.getMinutes() < 10 ? '0':'') + start.date.getMinutes()} ` + (start.date.getHours() <= 11 ? "AM" : "PM"));
-                let formattedEnd = (((end.date.getHours() + 11) % 12 + 1) + `:${(start.date.getMinutes() < 10 ? '0':'') + start.date.getMinutes()} ` + (end.date.getHours() <= 11 ? "AM" : "PM"));
+                let formattedStart = (((start.getHours() + 11) % 12 + 1) + `:${(start.getMinutes() < 10 ? '0':'') + start.getMinutes()} ` + (start.getHours() <= 11 ? "AM" : "PM"));
+                let formattedEnd = (((end.getHours() + 11) % 12 + 1) + `:${(start.getMinutes() < 10 ? '0':'') + start.getMinutes()} ` + (end.getHours() <= 11 ? "AM" : "PM"));
                 Alert.alert(undefined, `CSO Administrator is not available to recieve at this time. \n\nAvailability: ${formattedStart} - ${formattedEnd}`);
                 result = false;
             }
