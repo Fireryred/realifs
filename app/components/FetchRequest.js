@@ -61,6 +61,13 @@ class FetchRequest extends React.Component {
     } ${date.getDate()},${date.getFullYear()} | ${this.formatTime(date)}`;
     this.setState({date: cdate});
   }
+  formatPaymentMethod(paymentMethod) {
+    let result = paymentMethod;
+
+    result = paymentMethod == "online" ? "Online Payment" : "COD";
+
+    return result;
+  }
   render() {
     const {data, toMaps} = this.props;
     const {donorData, date} = this.state;
@@ -84,7 +91,7 @@ class FetchRequest extends React.Component {
             <View>
               <Text
                 style={{color: "gray"}}
-              >{"Details: "}{data[1].donationDetails == "" || !data[1].donationDetails ? "No description" : data[1].donationDetails}
+              >{"Details: "}{data[1].donationDetails == "" || !data[1].donationDetails ? `No description (${this.formatPaymentMethod(data[1].paymentMethod)})` : data[1].donationDetails + ` (${this.formatPaymentMethod(data[1].paymentMethod)})`}
               </Text>
             </View>
             <View
