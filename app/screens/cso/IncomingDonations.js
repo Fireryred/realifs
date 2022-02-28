@@ -111,6 +111,7 @@ export class IncomingDonations extends Component {
           <CSOIncomingDonation
             data={efforts}
             key={key}
+            getDonationEffortId={this.getDonationEffortId.bind(this)}
             toTrack={this.toTrack}
           />
         ))}
@@ -118,6 +119,7 @@ export class IncomingDonations extends Component {
           <CSOIncomingDonation
             data={efforts}
             key={key}
+            getDonationEffortId={this.getDonationEffortId.bind(this)}
             toTrack={this.toTrack}
           />
         ))}

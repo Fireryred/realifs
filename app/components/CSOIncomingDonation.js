@@ -93,6 +93,8 @@ class CSOIncomingDonation extends Component {
         fetcherId: requestData.fetcherId,
         status: 'success',
       });
+    console.log("reloading")
+    this.props.getDonationEffortId();
   }
   render() {
     const {toTrack, data} = this.props;
