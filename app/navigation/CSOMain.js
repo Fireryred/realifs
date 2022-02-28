@@ -133,6 +133,7 @@ class CSOTabs extends React.Component {
           name="IncomingDonations" 
           component={IncomingDonations} 
           options={{
+            title: "Incoming Donations",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons  name="truck-fast" color={color} size={20} />
             )
