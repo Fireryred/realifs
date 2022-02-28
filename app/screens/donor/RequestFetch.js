@@ -286,7 +286,7 @@ export default class RequestFetch extends Component {
                     />
                 </View>
                 
-                <View style={{marginBottom: 15}}>
+                {/* <View style={{marginBottom: 15}}>
                     <Text style={{fontWeight: "bold"}}>Vehicle Type</Text>
                     <RadioButton.Group 
                         onValueChange={
@@ -302,7 +302,7 @@ export default class RequestFetch extends Component {
                         <RadioButton.Item label="Motorcycle" value="motorcycle" />
                         <RadioButton.Item label="Car or Van" value="car" />
                     </RadioButton.Group>
-                </View>       
+                </View>        */}
                 
                 <View style={{marginBottom: 15}}>
                     <Text style={{fontWeight: "bold"}}>House Number/Address</Text>
