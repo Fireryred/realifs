@@ -251,12 +251,6 @@ class MapScreen extends React.Component {
     console.log('height', this.state?.dimensions?.screen?.height);
     const toPickup = `https://www.google.com/maps/dir/?api=1&origin=Your Location&destination=${pickup.latitude},${pickup.longitude}`;
     const toDropoff = `https://www.google.com/maps/dir/?api=1&origin=Your Location&destination=${dropoff.latitude},${dropoff.longitude}`;
-    let origin = pickup;
-    let destination = dropoff;
-    if (data[1].status === 'pickup') {
-      origin = location;
-      destination = pickup;
-    }
     return (
       <View
         style={{
@@ -275,11 +269,11 @@ class MapScreen extends React.Component {
           }}
           provider={PROVIDER_GOOGLE}
           initialRegion={pickup}>
-          <Marker coordinate={origin}></Marker>
-          <Marker coordinate={destination}></Marker>
+          <Marker coordinate={pickup}></Marker>
+          <Marker coordinate={dropoff}></Marker>
           <MapViewDirection
-            origin={origin}
-            destination={destination}
+            origin={pickup}
+            destination={dropoff}
             apikey={'AIzaSyDIbDFd-QJ0MicKOvggJ6kmpHaDXMXuOfA'} //hide this
             strokeWidth={4}
             strokeColor="royalblue"></MapViewDirection>
