@@ -72,6 +72,7 @@ export class CreateDonationEffort extends Component {
       case 'startDate':
         console.log(start);
         date = {...start};
+        date.type = 'date';
         date.show = true;
         this.setState({start: {...date}});
         console.log(start);
@@ -86,6 +87,7 @@ export class CreateDonationEffort extends Component {
 
       case 'endDate':
         date = {...end};
+        date.type = 'date';
         date.show = true;
         this.setState({end: {...date}});
         console.log(end);
@@ -347,6 +349,10 @@ export class CreateDonationEffort extends Component {
           style={{marginVertical: 25}}
           title="Create Donation Effort"
           onPress={() => {
+            if(!title || title == "" || !description || description == "" || !address || address == "") {
+              Alert.alert(undefined, "Please fill up the necessary fields.");
+              return;
+            }
             let collectionRef = firestore()
               .collection('donation_efforts')
               .add({
