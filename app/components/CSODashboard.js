@@ -61,10 +61,19 @@ class CSODashboard extends Component {
 
   async updateDonoEff() {
     const {data} = this.props;
+    const endDate = data[1].endDateTime.toDate();
+
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    //retain hours and minutes of endDate
+    yesterday.setHours(endDate.getHours());
+    yesterday.setMinutes(endDate.getMinutes());
+
+    const fyesterday = firestore.Timestamp.fromDate(yesterday);
     await firestore()
       .collection('donation_efforts')
       .doc(data[0])
-      .update({isDeleted: true});
+      .update({isDeleted: true, endDateTime: fyesterday});
   }
   render() {
     const {data, gotoDono} = this.props;
@@ -75,11 +84,13 @@ class CSODashboard extends Component {
         <Card style={{margin: 3}}>
           <Card.Content>
             <View style={{marginBottom: 5}}>
-              <Text style={{fontWeight: "bold", fontSize: 18}}>{data[1].title}</Text>
+              <Text style={{fontWeight: 'bold', fontSize: 18}}>
+                {data[1].title}
+              </Text>
             </View>
 
             <View style={{marginBottom: 15}}>
-              <Text style={{color: "gray"}}>STARTED {date}</Text>
+              <Text style={{color: 'gray'}}>STARTED {date}</Text>
             </View>
 
             <View style={{marginBottom: 15}}>
@@ -87,20 +98,34 @@ class CSODashboard extends Component {
             </View>
 
             <View style={{marginBottom: 15}}>
-              <Text style={{ color: "gray", textAlign: "right"}}>Deliveries Received: {noOfDeliveries}</Text>
+              <Text style={{color: 'gray', textAlign: 'right'}}>
+                Deliveries Received: {noOfDeliveries}
+              </Text>
             </View>
 
-            <View style={{display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}>
               {!data[1].isDeleted && (
-                <Button mode="outlined" color="red" title="delete" onPress={() => this.updateDonoEff()}>
+                <Button
+                  mode="outlined"
+                  color="red"
+                  title="delete"
+                  onPress={() => this.updateDonoEff()}>
                   Delete
                 </Button>
               )}
-              <Button mode="outlined" style={{marginLeft: 10}} title={button} onPress={() => gotoDono(data)}>
+              <Button
+                mode="outlined"
+                style={{marginLeft: 10}}
+                title={button}
+                onPress={() => gotoDono(data)}>
                 {button}
               </Button>
             </View>
-            
           </Card.Content>
         </Card>
       </View>
