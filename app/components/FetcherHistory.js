@@ -52,7 +52,7 @@ class FetcherHistory extends Component {
         <Card>
           <Card.Content>
             <View style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: 10}}>
-              <Text style={{flex: 7, fontWeight: "bold", fontSize: 18}}>{data[1].donationDetails}</Text>
+              <Text style={{flex: 7, fontWeight: "bold", fontSize: 18}}>{data[1].donationDetails || "No description"}</Text>
               <Text style={{flex: 3, textAlign: "right", fontSize: 18}}>₱{data[1].cost}</Text>
             </View>
             
