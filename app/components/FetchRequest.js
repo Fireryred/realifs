@@ -84,7 +84,7 @@ class FetchRequest extends React.Component {
             <View>
               <Text
                 style={{color: "gray"}}
-              >{"Details: "}{data[1].donationDetails == "" || !data[1].donationDetails ? "No description" : data[1].donationDetails}
+              >{"Details: "}{data[1].donationDetails == "" || !data[1].donationDetails ? `No description (${data[1].paymentMethod.toUpperCase()})` : data[1].donationDetails + ` (${data[1].paymentMethod.toUpperCase()})`}
               </Text>
             </View>
             <View
