@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, RefreshControl} from 'react-native';
 
 import {Text, Button} from 'react-native-paper';
 
@@ -10,7 +10,7 @@ import CSODashboard from '../../components/CSODashboard';
 export class Dashboard extends Component {
   constructor() {
     super();
-    this.state = {efforts: {active: {}, inactive: {}}};
+    this.state = {efforts: {active: {}, inactive: {}}, refreshing: false};
   }
   componentDidMount() {
     this.willFocusSubscription = this.props.navigation.addListener(
@@ -62,10 +62,24 @@ export class Dashboard extends Component {
     this.setState({efforts: {active: {...active}, inactive: {...inactive}}});
     console.log('Donation Efforts Get');
   }
+  setRefreshing = (isRefreshing) => {
+    this.setState({
+      ...this.setState,
+      refreshing: isRefreshing,
+    })
+  }
   render() {
     const {efforts} = this.state;
     return (
-      <ScrollView style={{padding: 10}}>
+      <ScrollView style={{padding: 10}} refreshControl={
+        <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={() => {
+              console.log(this.state.refreshing); 
+              this.getDonationEfforts().catch(error => console.error(error)); 
+              this.setRefreshing(false)}
+            }
+        />}>
         <View
           style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{flex: 7, fontWeight: 'bold', fontSize: 24}}>
