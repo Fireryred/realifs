@@ -53,7 +53,7 @@ export class Dashboard extends Component {
       .orderBy('isDeleted', 'asc')
       .get();
     donationEfforts.forEach(doc => {
-      if (doc.data().isDisabled) {
+      if (doc.data().isDeleted) {
         inactive[doc.id] = doc.data();
       } else {
         active[doc.id] = doc.data();
