@@ -243,10 +243,18 @@ class MapScreen extends React.Component {
     });
   };
 
+  formatPaymentMethod(paymentMethod) {
+    let result = paymentMethod;
+
+    result = paymentMethod == "online" ? "Online Payment" : "COD";
+
+    return result;
+}
+
   render() {
     const {data} = this.props.route.params;
     const {location, pickup, dropoff, status} = this.state;
-    const {pickupAddress, dropoffAddress, donationDetails} = data[1];
+    const {pickupAddress, dropoffAddress, donationDetails, paymentMethod, cost} = data[1];
 
     console.log('height', this.state?.dimensions?.screen?.height);
     const toPickup = `https://www.google.com/maps/dir/?api=1&origin=Your Location&destination=${pickup.latitude},${pickup.longitude}`;
@@ -398,6 +406,7 @@ class MapScreen extends React.Component {
                     ? 'No description'
                     : donationDetails}
                 </Text>
+                <Text style={{color: "gray"}}>{`Fee: ₱${cost} (${this.formatPaymentMethod(paymentMethod)})`}</Text>
               </View>
 
               <View
