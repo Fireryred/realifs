@@ -126,6 +126,13 @@ class DonationItem extends Component {
 
         
     }
+    formatPaymentMethod(paymentMethod) {
+        let result = paymentMethod;
+
+        result = paymentMethod == "online" ? "Online Payment" : "COD";
+
+        return result;
+    }
     render() {
         let donationId = this.props.donationData[0];
         let donationData = this.props.donationData[1];
@@ -136,6 +143,7 @@ class DonationItem extends Component {
                     <Card.Content>
                         <Text>Sent to: {this.state.effortData?.title}</Text>
                         <Text>Status: { donationData.status.charAt(0).toUpperCase() + donationData.status.slice(1)}</Text>
+                        <Text style={{color: "gray"}}>{`Fee: ₱${donationData.cost} (${this.formatPaymentMethod(donationData.paymentMethod)})`}</Text>
                         <Surface
                             style={{
                                 display: "flex",
