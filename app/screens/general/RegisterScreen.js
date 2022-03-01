@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { TextInput, Button, Text } from 'react-native-paper'
+import { TextInput, Button, Text, DefaultTheme } from 'react-native-paper'
 
 export default class RegisterScreen extends Component {
     render() {
@@ -10,23 +10,35 @@ export default class RegisterScreen extends Component {
                 style={styles.container}
             >
                 <Button
+                    labelStyle={{fontSize: 30}}
+                    icon="hand-heart"
                     title="Register as Donor"
                     mode="outlined"
                     contentStyle={styles.portalButton}
                     onPress={() => {this.props.navigation.navigate("DonorRegistrationScreen")}}
-                >Register as Donor</Button>
+                >
+                    <Text style={{fontSize: 16, fontWeight: "bold", color: DefaultTheme.colors.primary}}>Register as Donor</Text>
+                </Button>
                 <Button
+                    labelStyle={{fontSize: 30}}
+                    icon="truck-delivery"
                     title="Register as Fetcher"
                     mode="outlined"
                     contentStyle={styles.portalButton}
                     onPress={() => {this.props.navigation.navigate("RiderRegistrationScreen")}}
-                >Register as Fetcher</Button>
+                >
+                    <Text style={{fontSize: 16, fontWeight: "bold", color: DefaultTheme.colors.primary}}>Register as Fetcher</Text>
+                </Button>
                 <Button
+                    labelStyle={{fontSize: 30}}
+                    icon="account-group"
                     title="Register as CSO Administrator"
                     mode="outlined"
                     contentStyle={styles.portalButton}
                     onPress={() => {this.props.navigation.navigate("CSORegistrationScreen")}}
-                >Register as CSO Administrator</Button>
+                >
+                    <Text style={{fontSize: 16, fontWeight: "bold", color: DefaultTheme.colors.primary}}>Register as CSO Administrator</Text>
+                </Button>
             </View>
         )
     }
@@ -43,6 +55,7 @@ const styles = StyleSheet.create({
     portalButton: {
         height: 80,
         flexDirection: 'column',
+        justifyContent: "center",
         alignItems: 'center' 
     }
 })
