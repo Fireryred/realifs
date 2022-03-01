@@ -110,21 +110,23 @@ class DonationItem extends Component {
             donationId: this.props.donationData[0],
             donationData: this.props.donationData[1],
         }, () => {
-            console.log("effortid", this.state.donationData?.effortId);
-            firestore().collection("donation_efforts").doc(this.state.donationData?.effortId).get().then(doc => {
-                let effortData = doc.data();
-                if(effortData) {
-                    console.log("nice", effortData);
-                    this.setState({
-                        ...this.state,
-                        effortData: effortData,
-                    })
-                }
-                
-            })
+            this.getDonationEfforts()
         })
 
         
+    }
+    getDonationEfforts() {
+        firestore().collection("donation_efforts").doc(this.state.donationData?.effortId).get().then(doc => {
+            let effortData = doc.data();
+            if(effortData) {
+                console.log("nice", effortData);
+                this.setState({
+                    ...this.state,
+                    effortData: effortData,
+                })
+            }
+            
+        })
     }
     formatPaymentMethod(paymentMethod) {
         let result = paymentMethod;
@@ -179,10 +181,12 @@ class DonationItem extends Component {
                                             donorID: donationData.donorID,
                                             date: firestore.Timestamp.now(),
                                             status: "pending",
-                                        }).then(() => {
+                                        }).then((doc) => {
                                             firestore().collection("fetch_requests").doc(donationId).update({
                                                 status: "cancelled"
                                             }).then(() => {
+                                                Alert.alert(undefined, `Successfully sent a refund request. Refund ID#${doc.id}`);
+                                                this.getDonationEfforts();
                                                 console.log("Successfully cancelled request")
                                             }).catch((err) => {
                                                 console.log("cancel error update status", err)
@@ -199,6 +203,8 @@ class DonationItem extends Component {
                                         firestore().collection("fetch_requests").doc(donationId).update({
                                             status: "cancelled"
                                         }).then(() => {
+                                            Alert.alert(undefined, `Successfully cancelled fetch request.`);
+                                            this.getDonationEfforts();
                                             console.log("Successfully cancelled request")
                                         }).catch((err) => {
                                             console.log("cancel error", err)
