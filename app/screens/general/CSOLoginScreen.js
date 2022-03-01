@@ -15,8 +15,8 @@ class CSOLoginScreen extends Component {
 
     this.state = {
       CSOCredentials: {
-        inputEmail: 'realifs.cso1@gmail.com',
-        inputPassword: 'password'
+        inputEmail: '',
+        inputPassword: ''
       },
       modalVisible: false,
     }

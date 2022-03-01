@@ -15,8 +15,8 @@ class RiderLoginScreen extends Component {
 
     this.state = {
       riderCredentials: {
-        inputEmail: '201801360@iacademy.edu.ph',
-        inputPassword: 'password'
+        inputEmail: '',
+        inputPassword: ''
       },
       modalVisible: false,
     }

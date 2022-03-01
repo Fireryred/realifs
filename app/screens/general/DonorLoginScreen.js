@@ -15,8 +15,8 @@ class DonorLoginScreen extends Component {
 
     this.state = {
       donorCredentials: {
-        inputEmail: 'remer.irineo@gmail.com',
-        inputPassword: 'password'
+        inputEmail: '',
+        inputPassword: ''
       },
       modalVisible: false,
     }
