@@ -86,7 +86,7 @@ export default class WelcomeScreen extends Component {
                     <Stack.Screen
                         name="RiderRegistrationScreen"
                         component={RiderRegistrationScreen}
-                        options={{ title: 'Register as Rider'}}
+                        options={{ title: 'Register as Fetcher'}}
                     ></Stack.Screen>
                     <Stack.Screen
                         name="CSORegistrationScreen"
