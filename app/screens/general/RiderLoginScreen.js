@@ -96,7 +96,7 @@ class RiderLoginScreen extends Component {
               this.handleLogin(this.state.riderCredentials.inputEmail, this.state.riderCredentials.inputPassword);
             }
           }}
-        >Login as Rider</Button>
+        >Login as Fetcher</Button>
 
         <Text 
           style={styles.forgotPassword}
