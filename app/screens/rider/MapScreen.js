@@ -73,7 +73,7 @@ class MapScreen extends React.Component {
     if (data[1].status === 'waiting' || transitButton) {
       Alert.alert(
         'Delivery done',
-        `Please make sure to tell the receiver to press the "receive" button on their app.`,
+        `Please make sure to tell the receiver to press the "receive" button on their app to complete the delivery process.`,
       );
       this.props.navigation.replace('RiderDrawer');
     }
