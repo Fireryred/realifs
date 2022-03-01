@@ -56,7 +56,8 @@ class CSOLoginScreen extends Component {
       <View style={{flex: 1, padding:10, marginTop: 25}}>
         <Text style={{fontWeight: "bold"}}>Email</Text>
         <View style={{marginBottom: 15}}>
-          <TextInput 
+          <TextInput
+            placeholder="Email"
             mode="outlined"
             value={this.state.CSOCredentials.inputEmail} 
             onChangeText={(text) => { 
