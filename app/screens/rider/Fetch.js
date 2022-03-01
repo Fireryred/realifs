@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, ScrollView} from 'react-native';
+import {Alert, ScrollView, RefreshControl} from 'react-native';
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 
 import FetchRequest from '../../components/FetchRequest';
@@ -17,6 +17,7 @@ export class Fetch extends Component {
       donorDetails: {},
       exists: false,
       requests: {},
+      refreshing: false,
     };
   }
   componentDidMount() {
@@ -123,11 +124,25 @@ export class Fetch extends Component {
         this.setState({balance: doc.data().balance});
       });
   }
+  setRefreshing = (isRefreshing) => {
+    this.setState({
+      ...this.setState,
+      refreshing: isRefreshing,
+    })
+  }
   render() {
     const {requests, data, donorDetails, exists} = this.state;
     console.log(exists);
     return (
-      <ScrollView>
+      <ScrollView refreshControl={
+        <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={() => {
+              this.getRequests();
+              this.getBalance();
+              this.setRefreshing(false)}
+            }
+        />}>
         {!exists ? (
           Object.entries(requests).map((request, key) => (
             <FetchRequest data={request} key={key} toMaps={this.checkBalance} />
