@@ -420,7 +420,7 @@ export default class FetcherRegistrationScreen extends Component {
                     username,
                     driversLicenseWebURL,
                     verifiedByHR: false,
-                    walletBalance: 0,
+                    balance: 0,
                     mobileNumber,
                     birthdate: firestore.Timestamp.fromDate(birthdate),
                 })
