@@ -204,6 +204,7 @@ export default class FetcherRegistrationScreen extends Component {
                     >{this.state.birthdate.toLocaleDateString()}</Button>
                 </View>
                 <Text style={{fontWeight: "bold"}}>Driver's License</Text>
+                <Text style={{fontStyle: "italic", color: "gray"}}>Upload a photo of your non-professional or professional driver's license.</Text>
                 <Surface
                     style={styles.filePickerGroup}
                 >
