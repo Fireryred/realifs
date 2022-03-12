@@ -203,8 +203,8 @@ export default class FetcherRegistrationScreen extends Component {
                         }}
                     >{this.state.birthdate.toLocaleDateString()}</Button>
                 </View>
-                <Text style={{fontWeight: "bold"}}>Driver's License</Text>
-                <Text style={{fontStyle: "italic", color: "gray"}}>Upload a photo of your non-professional or professional driver's license.</Text>
+                <Text style={{fontWeight: "bold"}}>Driver's License (Non-professional or Professional only)</Text>
+                <Text style={{fontStyle: "italic", color: "gray", }}>Please select .jpeg .jpg .png image up to 5mb in file size.</Text>
                 <Surface
                     style={styles.filePickerGroup}
                 >
@@ -348,6 +348,11 @@ export default class FetcherRegistrationScreen extends Component {
             type: [DocumentPicker.types.images],
             copyTo: 'documentDirectory'
         })
+
+        if(file[0].size > 5242880) {
+            Alert.alert(undefined, "Invalid file size, please select image up to 5mb in file size.");
+            return;
+        }
 
         this.setState({
             ...this.state,

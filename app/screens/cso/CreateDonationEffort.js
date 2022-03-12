@@ -111,6 +111,14 @@ export class CreateDonationEffort extends Component {
       copyTo: 'documentDirectory',
     });
     let url = [];
+
+    for(let image of file) {
+      if(image.size > 5242880) {
+        Alert.alert(undefined, "Invalid file size, please select images up to 5mb in file size.");
+        return;
+      }
+    }
+
     file.forEach(async images => {
       let pathToFile = `${images.fileCopyUri}`;
       let filenameSplitLength = images.name.split('.').length ?? 0;
@@ -307,6 +315,7 @@ export class CreateDonationEffort extends Component {
         <View>
           <View>
           <Text style={{fontWeight: "bold", marginTop: 15}}>Add Images</Text>
+          <Text style={{fontStyle: "italic", color: "gray", }}>Please select .jpeg .jpg .png images up to 5mb in file size.</Text>
             <Surface>
               <Button
                 mode="outlined"

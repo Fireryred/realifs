@@ -157,64 +157,69 @@ export default class CSORegistrationScreen extends Component {
                 />
                 { this.state.errors.confirmPassword.doesNotMatch && <Text style={styles.errorMessage}>Passwords do not match</Text> }
 
-                <Text style={{fontWeight: "bold"}}>SEC Certificate</Text>
-                <Surface
-                    style={styles.filePickerGroup}
-                >
-                    <Text>{this.state.SECCertificateFilepath ?? 'No file chosen' }</Text>
-                    <Button
-                        mode={'outlined'}
-                        onPress={() => {
-                            this.pickFileSEC().catch((error) => {
-                                if (DocumentPicker.isCancel(error)) {
-                                    // User cancelled the picker, exit any dialogs or menus and move on
-                                } else {
-                                    console.log('Error with file upload: ', error)
+                <View style={{marginVertical: 5}}>
+                    <Text style={{fontWeight: "bold"}}>Organization Certificates</Text>
+                    <Text style={{fontStyle: "italic", color: "gray", }}>Please select .jpeg .jpg .png images up to 5mb in file size.</Text>
+                </View>
+                <View style={{marginLeft: 10}}>
+                    <Text style={{fontWeight: "bold",}}>SEC Certificate</Text>
+                    <Surface
+                        style={styles.filePickerGroup}
+                    >
+                        <Text>{this.state.SECCertificateFilepath ?? 'No file chosen' }</Text>
+                        <Button
+                            mode={'outlined'}
+                            onPress={() => {
+                                this.pickFileSEC().catch((error) => {
+                                    if (DocumentPicker.isCancel(error)) {
+                                        // User cancelled the picker, exit any dialogs or menus and move on
+                                    } else {
+                                        console.log('Error with file upload: ', error)
+                                    }
+                                })
                                 }
-                            })
                             }
-                        }
-                    >CHOOSE FILE</Button>
-                </Surface>
-                { this.state.SECCertificateExists === false && <Text style={styles.errorMessage}>Please upload a photo/document of your Organization's SEC Certificate</Text> }
+                        >CHOOSE FILE</Button>
+                    </Surface>
+                    { this.state.SECCertificateExists === false && <Text style={styles.errorMessage}>Please upload a photo/document of your Organization's SEC Certificate</Text> }
 
-                <Text style={{fontWeight: "bold"}}>PCNC Certificate</Text>
-                <Surface
-                    style={styles.filePickerGroup}
-                >
-                    <Text>{this.state.PCNCCertificateFilepath ?? 'No file chosen' }</Text>
-                    <Button
-                        mode={'outlined'}
-                        onPress={() => {
-                            this.pickFilePCNC().catch((error) => {
-                                if (DocumentPicker.isCancel(error)) {
-                                    // User cancelled the picker, exit any dialogs or menus and move on
-                                } else {
-                                    console.log('Error with file upload: ', error)
+                    <Text style={{fontWeight: "bold"}}>PCNC Certificate</Text>
+                    <Surface
+                        style={styles.filePickerGroup}
+                    >
+                        <Text>{this.state.PCNCCertificateFilepath ?? 'No file chosen' }</Text>
+                        <Button
+                            mode={'outlined'}
+                            onPress={() => {
+                                this.pickFilePCNC().catch((error) => {
+                                    if (DocumentPicker.isCancel(error)) {
+                                        // User cancelled the picker, exit any dialogs or menus and move on
+                                    } else {
+                                        console.log('Error with file upload: ', error)
+                                    }
+                                })
                                 }
-                            })
                             }
-                        }
-                    >CHOOSE FILE</Button>
-                </Surface>
-                { this.state.PCNCCertificateExists === false && <Text style={styles.errorMessage}>Please upload a photo/document of your Organization's PCNC Certificate</Text> }
-                <Surface
-                    style={styles.termsGroup}>
-                    <Checkbox
-                        status={this.state.agreeToTerms ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            this.termsCheckboxToggle();
-                        }}
-                    />
-                    <Text>{"Agree to "} 
-                        <Text style={styles.termsUrl}
-                            onPress={() => this.props.navigation.navigate("PrivacyPolicy")}>
-                            {"Privacy Policy"}
+                        >CHOOSE FILE</Button>
+                    </Surface>
+                    { this.state.PCNCCertificateExists === false && <Text style={styles.errorMessage}>Please upload a photo/document of your Organization's PCNC Certificate</Text> }
+                    <Surface
+                        style={styles.termsGroup}>
+                        <Checkbox
+                            status={this.state.agreeToTerms ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                                this.termsCheckboxToggle();
+                            }}
+                        />
+                        <Text>{"Agree to "} 
+                            <Text style={styles.termsUrl}
+                                onPress={() => this.props.navigation.navigate("PrivacyPolicy")}>
+                                {"Privacy Policy"}
+                            </Text>
                         </Text>
-                    </Text>
-                    
-                </Surface>
-                
+                        
+                    </Surface>
+                </View>
                 { this.state.agreeToTerms === false && <Text style={styles.errorMessage}>You must agree to our privacy policy</Text> }
                 <Button
                 
@@ -304,6 +309,11 @@ export default class CSORegistrationScreen extends Component {
             copyTo: 'documentDirectory'
         })
 
+        if(file[0].size > 5242880) {
+            Alert.alert(undefined, "Invalid file size, please select images up to 5mb in file size.");
+            return;
+        }
+        
         this.setState({
             ...this.state,
             SECCertificateFilepath: 'Uploading...'
@@ -355,6 +365,11 @@ export default class CSORegistrationScreen extends Component {
             type: [DocumentPicker.types.images],
             copyTo: 'documentDirectory'
         })
+
+        if(file[0].size > 5242880) {
+            Alert.alert(undefined, "Invalid file size, please select images up to 5mb in file size.");
+            return;
+        }
 
         this.setState({
             ...this.state,
