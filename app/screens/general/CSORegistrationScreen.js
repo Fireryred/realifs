@@ -66,7 +66,7 @@ export default class CSORegistrationScreen extends Component {
         console.log(JSON.stringify(this.state, null, 2))
     }
     componentDidMount() {
-        this.handleChange();        
+        // this.handleChange();        
     }
 
     render() {
@@ -84,7 +84,7 @@ export default class CSORegistrationScreen extends Component {
                             ...this.state,
                             organizationName: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("organizationName")
                         })
                     }}
                 />
@@ -99,7 +99,7 @@ export default class CSORegistrationScreen extends Component {
                             ...this.state,
                             email: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("email")
                         })
                     }}
                 />
@@ -116,7 +116,7 @@ export default class CSORegistrationScreen extends Component {
                             ...this.state,
                             username: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("username")
                         })
                     }}
                 />
@@ -133,7 +133,7 @@ export default class CSORegistrationScreen extends Component {
                             ...this.state,
                             password: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("password")
                         })
                     }}
                 />
@@ -151,7 +151,7 @@ export default class CSORegistrationScreen extends Component {
                             ...this.state,
                             confirmPassword: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("confirmPassword")
                         })
                     }}
                 />
@@ -203,24 +203,25 @@ export default class CSORegistrationScreen extends Component {
                         >CHOOSE FILE</Button>
                     </Surface>
                     { this.state.PCNCCertificateExists === false && <Text style={styles.errorMessage}>Please upload a photo/document of your Organization's PCNC Certificate</Text> }
-                    <Surface
-                        style={styles.termsGroup}>
-                        <Checkbox
-                            status={this.state.agreeToTerms ? 'checked' : 'unchecked'}
-                            onPress={() => {
-                                this.termsCheckboxToggle();
-                            }}
-                        />
-                        <Text>{"Agree to "} 
-                            <Text style={styles.termsUrl}
-                                onPress={() => this.props.navigation.navigate("PrivacyPolicy")}>
-                                {"Privacy Policy"}
-                            </Text>
-                        </Text>
-                        
-                    </Surface>
+
                 </View>
-                { this.state.agreeToTerms === false && <Text style={styles.errorMessage}>You must agree to our privacy policy</Text> }
+                <Surface
+                    style={styles.termsGroup}>
+                    <Checkbox
+                        status={this.state.agreeToTerms ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            this.termsCheckboxToggle();
+                        }}
+                    />
+                    <Text>{"Agree to "} 
+                        <Text style={styles.termsUrl}
+                            onPress={() => this.props.navigation.navigate("PrivacyPolicy")}>
+                            {"Privacy Policy"}
+                        </Text>
+                    </Text>
+                    
+                </Surface>
+                { this.state.errors.agreeToTerms.disagree && <Text style={styles.errorMessage}>You must agree to our privacy policy</Text> }
                 <Button
                 
                     mode="contained"
@@ -234,43 +235,143 @@ export default class CSORegistrationScreen extends Component {
         )
     }
 
-    handleChange() {
+    handleChange(property) {
         const { errors } = this.state;
         const {organizationName, email, username, password, confirmPassword, agreeToTerms, SECCertificateExists, PCNCCertificateExists} = this.state;
 
-        this.setState({
-            ...this.state,
-            errors: {
-                organizationName: {
-                    empty: !organizationName,
-                },
-                email: {
-                    empty: !email,
-                    invalidEmail: !(new RegExp(/^\S+@\S+\.\S+$/).test(email))
-                },
-                username: {
-                    empty: !username,
-                },
-                password: {
-                    empty: !password,
-                    invalidLength: !(password.length >= 8)
-                },
-                confirmPassword: {
-                    doesNotMatch: confirmPassword !== password
-                },
-                agreeToTerms: {
-                    disagree: !agreeToTerms
-                },
-                SECCertificateExists: {
-                    empty: !SECCertificateExists
-                },
-                PCNCCertificateExists: {
-                    empty: !PCNCCertificateExists
+        if(property == "organizationName") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    organizationName: {
+                        empty: !organizationName,
+                    },
                 }
-            }
-        }, () => {
-            console.log(JSON.stringify(this.state, null, 2))
-        })   
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "email") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    email: {
+                        empty: !email,
+                        invalidEmail: !(new RegExp(/^\S+@\S+\.\S+$/).test(email))
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "username") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    username: {
+                        empty: !username,
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "password") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    password: {
+                        empty: !password,
+                        invalidLength: !(password.length >= 8)
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "confirmPassword") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    confirmPassword: {
+                        doesNotMatch: confirmPassword !== password
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "agreeToTerms") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    agreeToTerms: {
+                        disagree: !agreeToTerms
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "SECCertificateExists") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    SECCertificateExists: {
+                        empty: !SECCertificateExists
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "PCNCCertificateExists") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    PCNCCertificateExists: {
+                        empty: !PCNCCertificateExists
+                    }
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        }
+
+        // this.setState({
+        //     ...this.state,
+        //     errors: {
+        //         organizationName: {
+        //             empty: !organizationName,
+        //         },
+        //         email: {
+        //             empty: !email,
+        //             invalidEmail: !(new RegExp(/^\S+@\S+\.\S+$/).test(email))
+        //         },
+        //         username: {
+        //             empty: !username,
+        //         },
+        //         password: {
+        //             empty: !password,
+        //             invalidLength: !(password.length >= 8)
+        //         },
+        //         confirmPassword: {
+        //             doesNotMatch: confirmPassword !== password
+        //         },
+        //         agreeToTerms: {
+        //             disagree: !agreeToTerms
+        //         },
+        //         SECCertificateExists: {
+        //             empty: !SECCertificateExists
+        //         },
+        //         PCNCCertificateExists: {
+        //             empty: !PCNCCertificateExists
+        //         }
+        //     }
+        // }, () => {
+        //     console.log(JSON.stringify(this.state, null, 2))
+        // })   
     }
     
     allValid() {
@@ -290,11 +391,28 @@ export default class CSORegistrationScreen extends Component {
         return result;
     }
 
+    allInputMade() {
+        const {errors} = this.state;
+        let result = true;
+
+        for(let i of Object.values(errors)) {
+            if(typeof i === 'object') {
+                for(let ii of Object.values(i)) {
+                    if(ii == null) result = false;
+                }
+            } else {
+                if(i == null) result = false;
+            }
+        }
+
+        return result;
+    }
+
     termsCheckboxToggle() {
         this.setState({
             ...this.state,
             agreeToTerms: !this.state.agreeToTerms
-        }, this.handleChange)
+        }, () => this.handleChange("agreeToTerms"))
     }
 
     async pickFileSEC() {
@@ -350,7 +468,7 @@ export default class CSORegistrationScreen extends Component {
             SECCertificateWebURL: url
         }, () => {
             console.log(JSON.stringify(this.state, null, 2))
-            this.handleChange();
+            this.handleChange("SECCertificateExists");
         })
     }
 
@@ -407,7 +525,7 @@ export default class CSORegistrationScreen extends Component {
             PCNCCertificateWebURL: url
         }, () => {
             console.log(JSON.stringify(this.state, null, 2))
-            this.handleChange();
+            this.handleChange("PCNCCertificateExists");
         })
     }
 
@@ -429,7 +547,7 @@ export default class CSORegistrationScreen extends Component {
 
         console.log(`ALL VALID ${this.allValid()}`);
 
-        if(this.allValid()) {
+        if(this.allInputMade() && this.allValid()) {
             
             let successCredential = await auth().createUserWithEmailAndPassword(email, password)
             .then( credential => {

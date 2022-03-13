@@ -64,7 +64,7 @@ export default class DonorRegistrationScreen extends Component {
         console.log(JSON.stringify(this.state, null, 2))
     }
     componentDidMount() {
-        this.handleChange();
+        // this.handleChange();
     }
 
     render() {
@@ -82,7 +82,7 @@ export default class DonorRegistrationScreen extends Component {
                             ...this.state,
                             firstname: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("firstname")
                         })
                     }}
                 />
@@ -98,7 +98,7 @@ export default class DonorRegistrationScreen extends Component {
                             ...this.state,
                             lastname: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("lastname")
                         })
                     }}
                 />
@@ -114,7 +114,7 @@ export default class DonorRegistrationScreen extends Component {
                             ...this.state,
                             email: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("email")
                         })
                     }}
                 />
@@ -132,7 +132,7 @@ export default class DonorRegistrationScreen extends Component {
                             ...this.state,
                             username: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("username")
                         })
                     }}
                 />
@@ -149,7 +149,7 @@ export default class DonorRegistrationScreen extends Component {
                             ...this.state,
                             mobileNumber: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("mobileNumber")
                         })
                     }}
                 />
@@ -166,7 +166,7 @@ export default class DonorRegistrationScreen extends Component {
                             ...this.state,
                             password: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("password")
                         })
                     }}
                 />
@@ -184,7 +184,7 @@ export default class DonorRegistrationScreen extends Component {
                             ...this.state,
                             confirmPassword: text
                         }, () => {
-                            this.handleChange()
+                            this.handleChange("confirmPassword")
                         })
                     }}
                 />
@@ -222,10 +222,13 @@ export default class DonorRegistrationScreen extends Component {
                     
                 </Surface>
                 
-                { this.state.agreeToTerms === false && <Text style={styles.errorMessage}>You must agree to our privacy policy</Text> }
+                { this.state.errors.agreeToTerms.disagree && <Text style={styles.errorMessage}>You must agree to our privacy policy</Text> }
                 <Button
                     mode="contained"
-                    style={{marginBottom: 20}}
+                    style={{
+                        marginTop: 30,
+                        marginBottom: 30
+                    }}
                     onPress={() => {this.handleRegister()}}
                 >Register</Button>
 
@@ -245,44 +248,145 @@ export default class DonorRegistrationScreen extends Component {
         });
     }
 
-    handleChange() {
+    handleChange(property) {
         const { errors } = this.state;
         const {firstname, lastname, email, username, password, confirmPassword, agreeToTerms, mobileNumber} = this.state;
 
-        this.setState({
-            ...this.state,
-            errors: {
-                firstname: {
-                    empty: !firstname,
-                },
-                lastname: {
-                    empty: !lastname,
-                },
-                email: {
-                    empty: !email,
-                    invalidEmail: !(new RegExp(/^\S+@\S+\.\S+$/).test(email))
-                },
-                username: {
-                    empty: !username,
-                },
-                password: {
-                    empty: !password,
-                    invalidLength: !(password.length >= 8)
-                },
-                confirmPassword: {
-                    doesNotMatch: confirmPassword !== password
-                },
-                agreeToTerms: {
-                    disagree: !agreeToTerms
-                },
-                mobileNumber: {
-                    empty: !mobileNumber,
-                    invalidLength: !(mobileNumber.length == 11 || mobileNumber.length == 0)
+        if(property == "firstname") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    firstname: {
+                        empty: !firstname,
+                    },
                 }
-            }
-        }, () => {
-            console.log(JSON.stringify(this.state, null, 2))
-        })   
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "lastname") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    lastname: {
+                        empty: !lastname,
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "email") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    email: {
+                        empty: !email,
+                        invalidEmail: !(new RegExp(/^\S+@\S+\.\S+$/).test(email))
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "username") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    username: {
+                        empty: !username,
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "password") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    password: {
+                        empty: !password,
+                        invalidLength: !(password.length >= 8)
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "confirmPassword") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    confirmPassword: {
+                        doesNotMatch: confirmPassword !== password
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "agreeToTerms") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    agreeToTerms: {
+                        disagree: !agreeToTerms
+                    },
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        } else if(property == "mobileNumber") {
+            this.setState({
+                ...this.state,
+                errors: {
+                    ...this.state.errors,
+                    mobileNumber: {
+                        empty: !mobileNumber,
+                        invalidLength: !(mobileNumber.length == 11 || mobileNumber.length == 0)
+                    }
+                }
+            }, () => {
+                console.log(JSON.stringify(this.state, null, 2))
+            })   
+        }
+
+        // this.setState({
+        //     ...this.state,
+        //     errors: {
+        //         firstname: {
+        //             empty: !firstname,
+        //         },
+        //         lastname: {
+        //             empty: !lastname,
+        //         },
+        //         email: {
+        //             empty: !email,
+        //             invalidEmail: !(new RegExp(/^\S+@\S+\.\S+$/).test(email))
+        //         },
+        //         username: {
+        //             empty: !username,
+        //         },
+        //         password: {
+        //             empty: !password,
+        //             invalidLength: !(password.length >= 8)
+        //         },
+        //         confirmPassword: {
+        //             doesNotMatch: confirmPassword !== password
+        //         },
+        //         agreeToTerms: {
+        //             disagree: !agreeToTerms
+        //         },
+        //         mobileNumber: {
+        //             empty: !mobileNumber,
+        //             invalidLength: !(mobileNumber.length == 11 || mobileNumber.length == 0)
+        //         }
+        //     }
+        // }, () => {
+        //     console.log(JSON.stringify(this.state, null, 2))
+        // })   
     }
     
     allValid() {
@@ -303,11 +407,28 @@ export default class DonorRegistrationScreen extends Component {
         return result;
     }
 
+    allInputMade() {
+        const {errors} = this.state;
+        let result = true;
+
+        for(let i of Object.values(errors)) {
+            if(typeof i === 'object') {
+                for(let ii of Object.values(i)) {
+                    if(ii == null) result = false;
+                }
+            } else {
+                if(i == null) result = false;
+            }
+        }
+
+        return result;
+    }
+
     termsCheckboxToggle() {
         this.setState({
             ...this.state,
             agreeToTerms: !this.state.agreeToTerms
-        }, this.handleChange)
+        }, () => this.handleChange("agreeToTerms"))
     }
 
     async handleRegister() {
@@ -315,7 +436,7 @@ export default class DonorRegistrationScreen extends Component {
 
         console.log(`ALL VALID ${this.allValid()}`);
 
-        if(this.allValid()) {
+        if(this.allInputMade() && this.allValid()) {
             
             let successCredential = await auth().createUserWithEmailAndPassword(email, password)
                 .then( credential => {
