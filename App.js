@@ -19,6 +19,7 @@ import WelcomeScreen from './app/screens/general/WelcomeScreen';
 import CSOMain from './app/navigation/CSOMain';
 import RiderMain from './app/navigation/RiderMain';
 import WelcomeScreenProxy from './app/screens/general/WelcomeScreenProxy';
+import messaging from '@react-native-firebase/messaging';
 
 class App extends React.Component {
   componentDidMount() {
@@ -50,12 +51,31 @@ class App extends React.Component {
                 error,
               );
             });
+
+          messaging().getToken()
+            .then(token => {
+              console.log(`FCM Token for ${user.uid} is updated: ${token}`)
+              firestore()
+                .collection('users')
+                .doc(user.uid)
+                .update({
+                  fcmTokens: token,
+                })
+            })
+          
         }
       } else {
         // Signed out / Not logged in
 
         this.props.dispatch(AuthAction.getActionLogout());
         console.log('onAuthStateChanged: No user logged in');
+
+        firestore()
+            .collection('users')
+            .doc(user.uid)
+            .update({
+              fcmTokens: "",
+          })
       }
     });
   }
