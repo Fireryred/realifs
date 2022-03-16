@@ -21,6 +21,7 @@ import CSOProfile from '../screens/cso/CSOProfile';
 import ContactSupport from '../screens/general/ContactSupport';
 import ViewDonationEffort from '../screens/cso/ViewDonationEffort';
 import TrackFetcher from '../screens/donor/TrackFetcher';
+import ViewDonation from '../screens/cso/ViewDonation';
 
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -28,15 +29,18 @@ const Stack = createNativeStackNavigator();
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { DefaultTheme as PaperDefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import {
+  DefaultTheme as PaperDefaultTheme,
+  Provider as PaperProvider,
+} from 'react-native-paper';
 
 const MyTheme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      ...PaperDefaultTheme.colors,
-      background: "white",
-    },
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    ...PaperDefaultTheme.colors,
+    background: 'white',
+  },
 };
 
 class CSOMain extends Component {
@@ -52,27 +56,32 @@ class CSOMain extends Component {
           <Stack.Screen
             name="CreateDonationEffort"
             component={CreateDonationEffort}
-            options={{title: "Create a Donation Effort"}}
+            options={{title: 'Create a Donation Effort'}}
           />
           <Stack.Screen
             name="CSOProfile"
             component={CSOProfile}
-            options={{title: "Profile"}}
+            options={{title: 'Profile'}}
           />
           <Stack.Screen
             name="ContactSupport"
             component={ContactSupport}
-            options={{title: "Contact Support"}}
+            options={{title: 'Contact Support'}}
           />
           <Stack.Screen
             name="ViewDonationEffort"
             component={ViewDonationEffort}
-            options={{title: "View Effort Details"}}
+            options={{title: 'View Effort Details'}}
           />
           <Stack.Screen
             name="TrackFetcher"
             component={TrackFetcher}
-            options={{title: "Track Fetcher"}}
+            options={{title: 'Track Fetcher'}}
+          />
+          <Stack.Screen
+            name="ViewDonation"
+            component={ViewDonation}
+            options={{title: 'View Donation'}}
           />
         </Stack.Navigator>
       </NavigationContainer>
@@ -120,23 +129,31 @@ class CSOTabs extends React.Component {
   render() {
     return (
       <Tab.Navigator>
-        <Tab.Screen 
-          name="Dashboard" 
-          component={Dashboard} 
+        <Tab.Screen
+          name="Dashboard"
+          component={Dashboard}
           options={{
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons  name="account-group" color={color} size={20} />
-            )
+            tabBarIcon: ({color}) => (
+              <MaterialCommunityIcons
+                name="account-group"
+                color={color}
+                size={20}
+              />
+            ),
           }}
         />
-        <Tab.Screen 
-          name="IncomingDonations" 
-          component={IncomingDonations} 
+        <Tab.Screen
+          name="IncomingDonations"
+          component={IncomingDonations}
           options={{
-            title: "Incoming Donations",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons  name="truck-fast" color={color} size={20} />
-            )
+            title: 'Incoming Donations',
+            tabBarIcon: ({color}) => (
+              <MaterialCommunityIcons
+                name="truck-fast"
+                color={color}
+                size={20}
+              />
+            ),
           }}
         />
       </Tab.Navigator>

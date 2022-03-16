@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import CSOIncomingDonation from '../../components/CSOIncomingDonation';
 
-import { Caption, Text, Button } from 'react-native-paper';
+import {Caption, Text, Button} from 'react-native-paper';
 export class IncomingDonations extends Component {
   constructor() {
     super();
@@ -24,12 +24,6 @@ export class IncomingDonations extends Component {
     });
   }
   async getDonationEffortId() {
-    this.setState({
-      ...this.state,
-      pickup: {},
-      transit: {},
-      delivered: {},
-    })
     await firestore()
       .collection('donation_efforts')
       .where('csoID', '==', auth().currentUser.uid)
@@ -48,8 +42,9 @@ export class IncomingDonations extends Component {
     let query = await firestore()
       .collection('fetch_requests')
       .where('effortId', '==', effortId)
-      .where('status', '!=', 'waiting')
-      .get()
+      .where('status', 'in', ['pickup', 'transit', 'delivered'])
+      .orderBy('creationDate')
+      .get();
 
     query.forEach(doc => {
       switch (doc.data().status) {
@@ -75,38 +70,49 @@ export class IncomingDonations extends Component {
           break;
       }
     });
-      
-    this.setState({ 
-      pickup: {...this.state.pickup, ...pickup}, 
-      transit: {...this.state.transit, ...transit}, 
-      delivered: {...this.state.delivered, ...delivered}
+
+    this.setState({
+      pickup: {...this.state.pickup, ...pickup},
+      transit: {...this.state.transit, ...transit},
+      delivered: {...this.state.delivered, ...delivered},
     });
   }
   toTrack = effortId => {
     this.props.navigation.navigate('TrackFetcher', {effortId: effortId});
   };
 
-  setRefreshing = (isRefreshing) => {
+  setRefreshing = isRefreshing => {
     this.setState({
       ...this.setState,
       refreshing: isRefreshing,
-    })
-  }
+    });
+  };
 
   render() {
     const {pickup, transit, delivered} = this.state;
-    console.log("transit object", transit)
+    console.log('transit object', transit);
     return (
-      <ScrollView style={{padding: 10}} refreshControl={
-        <RefreshControl
+      <ScrollView
+        style={{padding: 10}}
+        refreshControl={
+          <RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={() => {
-              console.log(this.state.refreshing); 
-              this.getDonationEffortId().catch(error => console.error(error)); 
-              this.setRefreshing(false)}
-            }
-        />}>
-        <Text style={{fontSize: 18, color: "black", fontWeight: "bold", marginVertical: 10}}>INCOMING DONATIONS</Text>
+              console.log(this.state.refreshing);
+              this.getDonationEffortId().catch(error => console.error(error));
+              this.setRefreshing(false);
+            }}
+          />
+        }>
+        <Text
+          style={{
+            fontSize: 18,
+            color: 'black',
+            fontWeight: 'bold',
+            marginVertical: 10,
+          }}>
+          INCOMING DONATIONS
+        </Text>
         {Object.entries(transit).map((efforts, key) => (
           <CSOIncomingDonation
             data={efforts}
@@ -123,7 +129,15 @@ export class IncomingDonations extends Component {
             toTrack={this.toTrack}
           />
         ))}
-        <Text style={{fontSize: 18, color: "black", fontWeight: "bold", marginVertical: 10}}>RECEIVED</Text>
+        <Text
+          style={{
+            fontSize: 18,
+            color: 'black',
+            fontWeight: 'bold',
+            marginVertical: 10,
+          }}>
+          RECEIVED
+        </Text>
         {Object.entries(delivered).map((efforts, key) => (
           <CSOIncomingDonation
             data={efforts}
@@ -131,7 +145,6 @@ export class IncomingDonations extends Component {
             toTrack={this.toTrack}
           />
         ))}
-        
       </ScrollView>
     );
   }

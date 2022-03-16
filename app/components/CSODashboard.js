@@ -76,7 +76,7 @@ class CSODashboard extends Component {
       .update({isDeleted: true, endDateTime: fyesterday});
   }
   render() {
-    const {data, gotoDono} = this.props;
+    const {data, gotoDono, gotoViewDonos} = this.props;
     const {noOfDeliveries, date} = this.state;
     let button = data[1].isDeleted ? 'View' : 'Edit';
     return (
@@ -124,6 +124,9 @@ class CSODashboard extends Component {
                 title={button}
                 onPress={() => gotoDono(data)}>
                 {button}
+              </Button>
+              <Button onPress={() => gotoViewDonos(data[0], data[1].title)}>
+                View Donations
               </Button>
             </View>
           </Card.Content>
