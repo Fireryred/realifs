@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
 import CSOIncomingDonation from '../../components/CSOIncomingDonation';
@@ -55,13 +55,13 @@ class ViewDonation extends Component {
   render() {
     const {request} = this.state;
     return (
-      <View>
+      <ScrollView>
         <Text>View Donation</Text>
         {Object.entries(request).map((efforts, key) => (
           <CSOIncomingDonation data={efforts} key={key} />
         ))}
         <Button onPress={() => this.handleLazyLoading()}>Load More</Button>
-      </View>
+      </ScrollView>
     );
   }
 }
