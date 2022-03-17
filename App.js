@@ -70,12 +70,6 @@ class App extends React.Component {
         this.props.dispatch(AuthAction.getActionLogout());
         console.log('onAuthStateChanged: No user logged in');
 
-        firestore()
-            .collection('users')
-            .doc(user.uid)
-            .update({
-              fcmTokens: "",
-          })
       }
     });
   }

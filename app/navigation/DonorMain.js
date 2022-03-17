@@ -3,6 +3,7 @@ import { Text, View } from 'react-native'
 
 import {connect} from 'react-redux';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
@@ -149,6 +150,18 @@ class DonorDrawer extends React.Component {
 
 async function handleLogout() {
     try {
+        let uid = auth().currentUser.uid;
+        
+        firestore()
+            .collection('users')
+            .doc(uid)
+            .update({
+                fcmTokens: "",
+        }).then(() => {
+            console.log("fcmToken removed")
+        }).catch((err) => {
+            console.log(err);
+        })
         auth().signOut();
 
     } catch(error) {

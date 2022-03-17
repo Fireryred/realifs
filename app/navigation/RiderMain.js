@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import {connect} from 'react-redux';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {
@@ -163,6 +164,13 @@ class RiderTabs extends React.Component {
 
 async function handleLogout() {
   try {
+    let uid = auth().currentUser.uid;
+    firestore()
+      .collection('users')
+      .doc(uid)
+      .update({
+        fcmTokens: "",
+      })
     auth().signOut();
   } catch (error) {
     console.log(error);
