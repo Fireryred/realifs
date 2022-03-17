@@ -11,6 +11,7 @@ export class Dashboard extends Component {
   constructor() {
     super();
     this.state = {
+      hasMore: true,
       isDeleted: false,
       lastEffort: {},
       efforts: {},
@@ -36,9 +37,6 @@ export class Dashboard extends Component {
       console.error(error);
     });
   }
-  componentDidUpdate() {
-    this.getDonationEfforts();
-  }
   componentWillUnmount() {
     this.willFocusSubscription();
   }
@@ -57,10 +55,10 @@ export class Dashboard extends Component {
       effortName: effortName,
     });
   };
-
   async getDonationEfforts() {
     let effort = {};
     let last = {};
+    let hasMore = true;
     const {isDeleted} = this.state;
     const donationEfforts = await firestore()
       .collection('donation_efforts')
@@ -73,7 +71,14 @@ export class Dashboard extends Component {
       effort[doc.id] = doc.data();
       last = doc.data().startDateTime;
     });
-    this.setState({efforts: {...effort}, lastEffort: last});
+
+    if (Object.keys(last).length === 0 && last.constructor === Object) {
+      hasMore = false;
+    }
+
+    this.setState({efforts: {...effort}, lastEffort: last, hasMore}, () =>
+      this.checkHasMore(),
+    );
   }
 
   async handleLazyLoading() {
@@ -93,7 +98,37 @@ export class Dashboard extends Component {
       last = doc.data().startDateTime;
     });
 
-    this.setState({efforts: {...effort}, lastEffort: last});
+    this.setState(
+      {
+        efforts: {...effort},
+        lastEffort: last,
+      },
+      () => this.checkHasMore(),
+    );
+  }
+
+  async checkHasMore() {
+    let hasMore = true;
+    let last = {};
+    const {isDeleted, lastEffort} = this.state;
+    const donationEfforts = await firestore()
+      .collection('donation_efforts')
+      .where('csoID', '==', auth().currentUser.uid)
+      .where('isDeleted', '==', isDeleted)
+      .orderBy('startDateTime', 'asc')
+      .startAfter(lastEffort)
+      .limit(1)
+      .get();
+    donationEfforts.forEach(doc => {
+      last = doc.data().startDateTime;
+    });
+
+    if (Object.keys(last).length === 0 && last.constructor === Object) {
+      console.log(last);
+      hasMore = false;
+    }
+
+    this.setState({hasMore});
   }
 
   setRefreshing = isRefreshing => {
@@ -104,7 +139,7 @@ export class Dashboard extends Component {
   };
 
   render() {
-    const {efforts, isDeleted} = this.state;
+    const {efforts, isDeleted, hasMore} = this.state;
     return (
       <ScrollView
         style={{padding: 10}}
@@ -134,7 +169,11 @@ export class Dashboard extends Component {
           </View>
         </View>
         <ToggleButton.Row
-          onValueChange={value => this.setState({isDeleted: value})}
+          onValueChange={value => {
+            this.setState({isDeleted: value, efforts: {}}, () =>
+              this.getDonationEfforts(),
+            );
+          }}
           value={isDeleted}>
           <ToggleButton
             style={{width: 100}}
@@ -173,7 +212,13 @@ export class Dashboard extends Component {
             gotoViewDonos={this.gotoViewDonos}
           />
         ))}
-        <Button style={{marginVertical: 10}} onPress={() => this.handleLazyLoading()}>Load More</Button>
+        {hasMore && (
+          <Button
+            style={{marginVertical: 10}}
+            onPress={() => this.handleLazyLoading()}>
+            Load More
+          </Button>
+        )}
       </ScrollView>
     );
   }
