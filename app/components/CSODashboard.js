@@ -125,7 +125,7 @@ class CSODashboard extends Component {
                 onPress={() => gotoDono(data)}>
                 {button}
               </Button>
-              <Button onPress={() => gotoViewDonos(data[0], data[1].title)}>
+              <Button mode="contained" style={{marginLeft: 5}} onPress={() => gotoViewDonos(data[0], data[1].title)}>
                 View Donations
               </Button>
             </View>

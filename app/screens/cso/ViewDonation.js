@@ -56,7 +56,6 @@ class ViewDonation extends Component {
     const {request} = this.state;
     return (
       <ScrollView>
-        <Text>View Donation</Text>
         {Object.entries(request).map((efforts, key) => (
           <CSOIncomingDonation data={efforts} key={key} />
         ))}

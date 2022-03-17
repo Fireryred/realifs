@@ -137,6 +137,7 @@ export class Dashboard extends Component {
           onValueChange={value => this.setState({isDeleted: value})}
           value={isDeleted}>
           <ToggleButton
+            style={{width: 100}}
             value={false}
             icon={() => (
               <Text
@@ -151,6 +152,7 @@ export class Dashboard extends Component {
           />
           <ToggleButton
             value={true}
+            style={{width: 100}}
             icon={() => (
               <Text
                 style={{
@@ -171,7 +173,7 @@ export class Dashboard extends Component {
             gotoViewDonos={this.gotoViewDonos}
           />
         ))}
-        <Button onPress={() => this.handleLazyLoading()}>Load More</Button>
+        <Button style={{marginVertical: 10}} onPress={() => this.handleLazyLoading()}>Load More</Button>
       </ScrollView>
     );
   }
