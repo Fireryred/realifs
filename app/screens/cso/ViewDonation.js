@@ -24,7 +24,7 @@ class ViewDonation extends Component {
       .where('effortId', '==', data)
       .where('status', '==', 'delivered')
       .orderBy('creationDate')
-      .limit(10)
+      .limit(5)
       .get();
     query.forEach(doc => {
       request[doc.id] = {effortName: effortName, requestData: doc.data()};
@@ -43,7 +43,7 @@ class ViewDonation extends Component {
       .where('status', '==', 'delivered')
       .orderBy('creationDate')
       .startAfter(last)
-      .limit(10)
+      .limit(5)
       .get();
     query.forEach(doc => {
       request[doc.id] = {effortName: effortName, requestData: doc.data()};

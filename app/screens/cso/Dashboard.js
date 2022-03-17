@@ -67,7 +67,7 @@ export class Dashboard extends Component {
       .where('csoID', '==', auth().currentUser.uid)
       .where('isDeleted', '==', isDeleted)
       .orderBy('startDateTime', 'asc')
-      .limit(10)
+      .limit(5)
       .get();
     donationEfforts.forEach(doc => {
       effort[doc.id] = doc.data();
@@ -86,7 +86,7 @@ export class Dashboard extends Component {
       .where('isDeleted', '==', isDeleted)
       .orderBy('startDateTime', 'asc')
       .startAfter(lastEffort)
-      .limit(10)
+      .limit(5)
       .get();
     donationEfforts.forEach(doc => {
       effort[doc.id] = doc.data();
