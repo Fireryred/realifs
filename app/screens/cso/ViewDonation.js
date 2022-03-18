@@ -21,13 +21,13 @@ class ViewDonation extends Component {
   async getDonationEfforts() {
     const {data, effortName} = this.props.route.params;
     let last = {},
-      request = {};
+     request = {};
     let query = await firestore()
       .collection('fetch_requests')
       .where('effortId', '==', data)
       .where('status', '==', 'delivered')
       .orderBy('creationDate')
-      .limit(5)
+      .limit(3)
       .get();
     query.forEach(doc => {
       request[doc.id] = {effortName: effortName, requestData: doc.data()};
@@ -47,10 +47,10 @@ class ViewDonation extends Component {
       .where('status', '==', 'delivered')
       .orderBy('creationDate')
       .startAfter(last)
-      .limit(5)
+      .limit(3)
       .get();
     query.forEach(doc => {
-      request[doc.id] = {effortName: effortName, requestData: doc.data()};
+      requests[doc.id] = {effortName: effortName, requestData: doc.data()};
       lastData = doc.data().creationDate;
     });
     this.setState({request: {...requests}, last: lastData}, () =>

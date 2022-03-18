@@ -24,6 +24,13 @@ export class IncomingDonations extends Component {
     });
   }
   async getDonationEffortId() {
+    this.setState({
+      ...this.state,
+      pickup: {},
+      transit: {},
+      delivered: {},
+    })
+    
     await firestore()
       .collection('donation_efforts')
       .where('csoID', '==', auth().currentUser.uid)
