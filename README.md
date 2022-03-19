@@ -1,4 +1,4 @@
-# REALIFS: Real-time Integrated Fetching System for Online Donation Platforms
+# REALIFS React Native Android App
 
 ### Prerequisites
 - Node v.14
